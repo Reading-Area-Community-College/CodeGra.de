@@ -50,14 +50,9 @@ case "$TO_RUN" in
         set +o xtrace
         ;;
     "lint")
-        pylint "$(pwd)/psef/" --rcfile=setup.cfg
+        make lint
         res="$?"
-        make privacy_statement
-        [[ -z "$NO_INSTALL" ]] && npm install
-        if ! npm run lint; then
-            res="1"
-        fi
-        set +x xtrace
+        set +o xtrace
         ;;
     "yapf")
         out="$(yapf -rdp "$(pwd)/psef" "$(pwd)/psef_test")"

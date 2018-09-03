@@ -89,3 +89,4 @@ shrinkwrap:
 .PHONY: lint
 lint: install-deps privacy_statement
 	$(ENV) pylint psef --rcfile=setup.cfg
+	npm run lint
