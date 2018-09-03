@@ -1,10 +1,11 @@
 TEST_FILE ?= ./psef_test/
 TEST_FLAGS ?=
 SHELL = /bin/bash
+PYTHON ?= python3.6
 ENV = source ./env/bin/activate;
 
 env:
-	virtualenv3 ./env
+	virtualenv3 --python=$(PYTHON) ./env
 
 .PHONY: install-deps
 install-deps: install-pip-deps install-npm-deps
@@ -40,17 +41,17 @@ reset_db:
 
 .PHONY: migrate
 migrate: install-pip-deps
-	$(ENV) DEBUG_ON=True python3 manage.py db migrate
-	$(ENV) DEBUG_ON=True python3 manage.py db edit
+	$(ENV) DEBUG_ON=True $(PYTHON) manage.py db migrate
+	$(ENV) DEBUG_ON=True $(PYTHON) manage.py db edit
 	$(MAKE) db_upgrade
 
 .PHONY: db_upgrade
 db_upgrade: install-pip-deps
-	$(ENV) DEBUG_ON=True python3 manage.py db upgrade
+	$(ENV) DEBUG_ON=True $(PYTHON) manage.py db upgrade
 
 .PHONY: test_data
 test_data: install-pip-deps
-	$(ENV) DEBUG_ON=True python3 manage.py test_data
+	$(ENV) DEBUG_ON=True $(PYTHON) manage.py test_data
 
 .PHONY: start_dev_celery
 start_dev_celery: install-pip-deps
@@ -75,7 +76,7 @@ build_front-end: install-npm-deps privacy_statement
 
 .PHONY: seed_data
 seed_data: install-pip-deps
-	$(ENV) DEBUG_ON=True python3 manage.py seed
+	$(ENV) DEBUG_ON=True $(PYTHON) manage.py seed
 
 .PHONY: format
 format: install-pip-deps
@@ -86,5 +87,5 @@ shrinkwrap:
 	npm shrinkwrap --dev
 
 .PHONY: lint
-lint: install-pip-deps
+lint: install-deps privacy_statement
 	$(ENV) pylint psef --rcfile=setup.cfg
