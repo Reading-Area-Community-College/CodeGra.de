@@ -250,7 +250,7 @@ class LinterRunner():
 
             self.linter.run(os.path.join(tmpdir, code.name), __emit)
 
-        tmpdir = None
+        del tmpdir
 
         def __do(tree: psef.files.FileTree, parent: str) -> None:
             parent = os.path.join(parent, tree['name'])
@@ -303,7 +303,7 @@ def get_all_linters(
     for cls in get_all_subclasses(Linter):
         item: t.Dict[str, t.Union[str, t.Mapping[str, str]]]
         item = {
-            'desc': cls.__doc__,
+            'desc': cls.__doc__ or 'No linter documentation',
             'opts': cls.DEFAULT_OPTIONS,
         }
         res[cls.__name__] = item

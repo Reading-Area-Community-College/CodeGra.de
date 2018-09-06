@@ -46,7 +46,7 @@ def set_int(
 
 
 def set_str(
-    out: t.MutableMapping[str, t.Any], parser: t.Any, item: str, default: str
+    out: t.MutableMapping[str, t.Any], parser: t.Any, item: str, default: t.Optional[str]
 ) -> None:
     val = parser.get(item)
     out[item] = str(default if val is None else val)

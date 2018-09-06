@@ -59,7 +59,7 @@
                 </b-card>
             </div>
         </b-tab>
-        <b-tab title="Changed files" class="code">
+        <b-tab title="Changed files" class="code" v-if="canSeeRevision">
             <b-card v-if="changedFiles.length === 0" class="file-card">
                 <span>
                     No files were changed
@@ -81,7 +81,7 @@
                              :context="context"/>
             </b-card>
         </b-tab>
-        <b-tab title="Added or deleted files">
+        <b-tab title="Added or deleted files" v-if="canSeeRevision">
             <b-card v-if="newFiles.length + deletedFiles.length === 0" class="file-card">
                 No files were added or deleted.
             </b-card>
@@ -144,6 +144,10 @@ export default {
     name: 'overview-mode',
 
     props: {
+        canSeeRevision: {
+            type: Boolean,
+            default: false,
+        },
         assignment: {
             type: Object,
             default: null,

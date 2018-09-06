@@ -320,7 +320,7 @@ def select_rubric_items(submission_id: int, ) -> EmptyResponse:
 
     if any(
         item.rubricrow.assignment_id != submission.assignment_id
-        for item in items
+        for item in items if item.rubricrow is not None
     ):
         raise APIException(
             'Selected rubric item is not coupled to the given submission',
@@ -635,6 +635,8 @@ def create_new_file(submission_id: int) -> JSONResponse[t.Mapping[str, t.Any]]:
             400,
         )
 
+    filename: t.Optional[str]
+
     for idx, part in enumerate(patharr[end_idx:]):
         if _is_last(idx) and not create_dir:
             is_dir = False
@@ -655,6 +657,7 @@ def create_new_file(submission_id: int) -> JSONResponse[t.Mapping[str, t.Any]]:
         parent = code
     db.session.commit()
 
+    assert code is not None
     return jsonify(psef.files.get_stat_information(code))
 
 

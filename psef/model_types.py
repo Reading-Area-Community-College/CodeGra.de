@@ -204,6 +204,9 @@ class _MyQuery(t.Generic[T], t.Iterable):  # pragma: no cover
     all: t.Callable[[QuerySelf], t.List[T]]
     __iter__: t.Callable[[QuerySelf], t.Iterator[T]]
 
+    def select_from(self, other: t.Type[Base]) -> '_MyQuery[T]':
+        ...
+
     def get(self, arg: t.Any) -> t.Optional[T]:
         ...
 

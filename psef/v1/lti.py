@@ -8,6 +8,7 @@ directly after a successful lti launch.
 """
 import typing as t
 import urllib
+import urllib.parse
 import datetime
 import traceback
 

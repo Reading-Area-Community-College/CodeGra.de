@@ -1664,6 +1664,7 @@ def test_get_all_submissions(
         ),
         ('incorrect_date.tar.gz', False),
         ('incorrect_filename.tar.gz', False),
+        ('incorrect_info_file.tar.gz', False),
         ('incorrect_missing_files.tar.gz', False),
         ('incorrect_missing_index_files.tar.gz', False),
         ('incorrect_no_archive', False),
@@ -2773,9 +2774,9 @@ def test_grader_done(
     with logged_in(teacher_user):
         test_client.req(
             'post', (
-                f'/api/v1/assignments/{assig_id}/graders/' +
-                str(m.User.query.filter_by(name='Student1').first().id) +
-                '/done'
+                f'/api/v1/assignments/{assig_id}/graders/' + str(
+                    m.User.query.filter_by(name='Student1').first().id
+                ) + '/done'
             ),
             400,
             result=error_template
@@ -3186,8 +3187,8 @@ def test_notification_permission(
 ):
     assig_id = assignment.id
     teacher_user.courses[assignment.course_id].set_permission(
-        m.Permission.query.filter_by(name='can_update_course_notifications',
-                                     ).one(),
+        m.Permission.query.filter_by(name='can_update_course_notifications', )
+        .one(),
         False,
     )
     with logged_in(teacher_user):

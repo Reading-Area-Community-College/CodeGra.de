@@ -54,14 +54,17 @@ def send_whopie_done_email(assig: models.Assignment) -> None:
         assig_name=html.escape(assig.name),
         course_id=assig.course_id,
     )
-    _send_mail(
-        html_body,
-        (
-            f'Grading has finished for {assig.name} on '
-            f'{current_app.config["EXTERNAL_URL"]}'
-        ),
-        psef.parsers.parse_email_list(assig.done_email),
-    )
+
+    recipients = psef.parsers.parse_email_list(assig.done_email)
+    if recipients is not None:
+        _send_mail(
+            html_body,
+            (
+                f'Grading has finished for {assig.name} on '
+                f'{current_app.config["EXTERNAL_URL"]}'
+            ),
+            recipients,
+        )
 
 
 def send_grader_status_changed_mail(

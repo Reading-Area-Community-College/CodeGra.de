@@ -247,6 +247,8 @@ class LTI:  # pylint: disable=too-many-public-methods
                 fresh=True,
             )
 
+        assert user is not None
+
         updated_email = None
         if user.reset_email_on_lti:
             user.email = self.user_email

@@ -349,10 +349,13 @@ class AbstractRole:
             res = not perm.default_value
         else:
             if isinstance(permission, str):
-                permission = Permission.query.filter_by(
-                    course_permission=self.uses_course_permissions,
-                    name=permission,
-                ).first()
+                permission = t.cast(
+                    Permission,
+                    Permission.query.filter_by(
+                        course_permission=self.uses_course_permissions,
+                        name=permission,
+                    ).first()
+                )
 
             if permission is None:
                 raise KeyError(
@@ -569,7 +572,7 @@ class User(Base):
         index=True,
     )
 
-    reset_token: str = db.Column(
+    reset_token: t.Optional[str] = db.Column(
         'reset_token', db.String(UUID_LENGTH), nullable=True
     )
     reset_email_on_lti = db.Column(
@@ -674,9 +677,11 @@ class User(Base):
             t.cast(DbColumn[str], Permission.name).in_(wanted_perms)
         )
 
-        course_roles = db.session.query(user_course.c.course_id).join(
-            User, User.id == user_course.c.user_id
-        ).filter(User.id == self.id).subquery('course_roles')
+        course_roles = db.session.query(
+            user_course.c.course_id
+        ).join(User, User.id == user_course.c.user_id).filter(
+            User.id == self.id
+        ).subquery('course_roles')
 
         crp = db.session.query(
             course_permissions.c.course_role_id,
@@ -774,15 +779,17 @@ class User(Base):
                 name=perm).first()
         assert permission.course_permission
 
-        course_roles = db.session.query(user_course.c.course_id).join(
-            User, User.id == user_course.c.user_id
-        ).filter(User.id == self.id).subquery('course_roles')
+        course_roles = db.session.query(
+            user_course.c.course_id
+        ).join(User, User.id == user_course.c.user_id).filter(
+            User.id == self.id
+        ).subquery('course_roles')
         crp = db.session.query(course_permissions.c.course_role_id).join(
             Permission, course_permissions.c.permission_id == Permission.id
         ).filter(Permission.id == permission.id).subquery('crp')
-        res = db.session.query(course_roles.c.course_id).join(
-            crp, course_roles.c.course_id == crp.c.course_role_id
-        )
+        res = db.session.query(
+            course_roles.c.course_id
+        ).join(crp, course_roles.c.course_id == crp.c.course_role_id)
         link: bool = db.session.query(res.exists()).scalar()
 
         return (not link) if permission.default_value else link
@@ -1041,12 +1048,12 @@ class Work(Base):
     user_id: int = db.Column(
         'User_id', db.Integer, db.ForeignKey('User.id', ondelete='CASCADE')
     )
-    _grade: float = db.Column('grade', db.Float, default=None)
+    _grade: t.Optional[float] = db.Column('grade', db.Float, default=None)
     comment: str = orm.deferred(db.Column('comment', db.Unicode, default=None))
     created_at: datetime.datetime = db.Column(
         db.DateTime, default=datetime.datetime.utcnow
     )
-    assigned_to: int = db.Column(
+    assigned_to: t.Optional[int] = db.Column(
         'assigned_to', db.Integer, db.ForeignKey('User.id')
     )
     selected_items = db.relationship(
@@ -1061,7 +1068,7 @@ class Work(Base):
     )  # type: User
     assignee = db.relationship(
         'User', foreign_keys=assigned_to, lazy='joined'
-    )  # type: User
+    )  # type: t.Optional[User]
 
     def divide_new_work(self) -> None:
         """Divide a freshly created work.
@@ -1120,7 +1127,7 @@ class Work(Base):
             )
 
     @property
-    def grade(self) -> float:
+    def grade(self) -> t.Optional[float]:
         """Get the actual current grade for this work.
 
         This is done by not only checking the ``grade`` field but also checking
@@ -1131,14 +1138,17 @@ class Work(Base):
         if self._grade is None:
             if not self.selected_items:
                 return None
+
             max_points = self.assignment.max_rubric_points
+            assert max_points is not None
+
             selected = sum(item.points for item in self.selected_items)
             return psef.helpers.between(0, selected / max_points * 10, 10)
         return self._grade
 
     def set_grade(
         self,
-        new_grade: float,
+        new_grade: t.Optional[float],
         user: User,
         add_to_session: bool = True,
         never_passback: bool = False,
@@ -1191,6 +1201,8 @@ class Work(Base):
         """
         if self.assignment.lti_outcome_service_url is not None:
             lti_provider = self.assignment.course.lti_provider
+
+            url: t.Optional[str]
             if initial:
                 url = (
                     '{}/'
@@ -1634,7 +1646,9 @@ class File(Base):
         :returns: The absolute path.
         """
         assert not self.is_directory
-        return os.path.join(current_app.config['UPLOAD_DIR'], self.filename)
+        return os.path.join(
+            current_app.config['UPLOAD_DIR'], t.cast(str, self.filename)
+        )
 
     def delete_from_disk(self) -> None:
         """Delete the file from disk if it is not a directory.
@@ -1946,9 +1960,11 @@ class AssignmentLinter(Base):
         self.config = config
 
         self.tests = []
-        for work in Assignment.query.get(assignment_id
-                                         ).get_all_latest_submissions():
-            self.tests.append(LinterInstance(work, self))
+        assig = Assignment.query.get(assignment_id)
+
+        if assig is not None:
+            for work in assig.get_all_latest_submissions():
+                self.tests.append(LinterInstance(work, self))
 
         return self
 
@@ -2092,7 +2108,8 @@ class Assignment(Base):
     created_at: datetime.datetime = db.Column(
         db.DateTime, default=datetime.datetime.utcnow
     )
-    deadline: datetime.datetime = db.Column('deadline', db.DateTime)
+    deadline: t.Optional[datetime.datetime
+                         ] = db.Column('deadline', db.DateTime)
 
     _mail_task_id: t.Optional[str] = db.Column(
         'mail_task_id',
@@ -2100,19 +2117,19 @@ class Assignment(Base):
         nullable=True,
         default=None,
     )
-    reminder_email_time: datetime.datetime = db.Column(
+    reminder_email_time: t.Optional[datetime.datetime] = db.Column(
         'reminder_email_time',
         db.DateTime,
         default=None,
         nullable=True,
     )
-    done_email = db.Column(
+    done_email: t.Optional[str] = db.Column(
         'done_email',
         db.Unicode,
         default=None,
         nullable=True,
     )
-    done_type: AssignmentDoneType = db.Column(
+    done_type: t.Optional[AssignmentDoneType] = db.Column(
         'done_type',
         db.Enum(AssignmentDoneType),
         nullable=True,
@@ -2153,7 +2170,7 @@ class Assignment(Base):
         lazy='joined'
     )
 
-    fixed_max_rubric_points = db.Column(
+    fixed_max_rubric_points: t.Optional[float] = db.Column(
         'fixed_max_rubric_points',
         db.Float,
         nullable=True,
@@ -2336,10 +2353,9 @@ class Assignment(Base):
     def _dynamic_max_points(self) -> t.Optional[float]:
         sub = db.session.query(
             func.max(RubricItem.points).label('max_val')
-        ).join(RubricRow, RubricRow.id == RubricItem.rubricrow_id
-               ).filter(RubricRow.assignment_id == self.id).group_by(
-                   RubricRow.id
-               ).subquery('sub')
+        ).join(RubricRow, RubricRow.id == RubricItem.rubricrow_id).filter(
+            RubricRow.assignment_id == self.id
+        ).group_by(RubricRow.id).subquery('sub')
         return db.session.query(func.sum(sub.c.max_val)).scalar()
 
     @property
@@ -2348,6 +2364,7 @@ class Assignment(Base):
         state students submit work.
         """
         if (
+            self.deadline is not None and
             self.state == _AssignmentStateEnum.open and
             self.deadline >= psef.helpers.get_request_start_time()
         ):
@@ -2475,8 +2492,8 @@ class Assignment(Base):
             'id': self.id,
             'state': self.state_name,
             'description': self.description,
-            'created_at': self.created_at.isoformat(),
-            'deadline': self.deadline.isoformat(),
+            'created_at': self.created_at and self.created_at.isoformat(),
+            'deadline': self.deadline and self.deadline.isoformat(),
             'name': self.name,
             'is_lti': self.is_lti,
             'course': self.course,
@@ -2538,7 +2555,7 @@ class Assignment(Base):
             func.max(Work.created_at).label('max_date')
         ).filter_by(assignment_id=self.id).group_by(Work.user_id
                                                     ).subquery('sub')
-        return db.session.query(*to_query).select_from(Work).join(
+        return db.session.query(*to_query).select_from(Work).join(  # type: ignore
             sub,
             and_(
                 sub.c.user_id == Work.user_id,
@@ -2864,7 +2881,7 @@ class RubricItem(Base):
     points: float = db.Column('points', db.Float)
 
     # This variable is generated from the backref from RubricRow
-    rubricrow: RubricRow = None
+    rubricrow: RubricRow
 
     def __to_json__(self) -> t.Mapping[str, t.Any]:
         """Creates a JSON serializable representation of this object.

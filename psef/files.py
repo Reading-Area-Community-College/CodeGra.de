@@ -15,7 +15,6 @@ import typing as t
 import tarfile
 import zipfile
 import tempfile
-from functools import reduce
 
 import archive
 import mypy_extensions
@@ -137,8 +136,12 @@ def get_stat_information(file: models.File) -> t.Mapping[str, t.Any]:
     :returns: The information as described above.
     """
     mod_date = file.modification_date
-    filename = None if file.is_directory else file.get_diskname()
-    size = 0 if file.is_directory else os.stat(filename).st_size
+
+    if file.is_directory:
+        size = 0
+    else:
+        filename = file.get_diskname()
+        size = os.stat(filename).st_size
 
     return {
         'is_directory': file.is_directory,
@@ -271,13 +274,16 @@ def rename_directory_structure(rootdir: str) -> ExtractFileTree:
     directory = {}  # type: t.MutableMapping[str, t.Any]
     rootdir = rootdir.rstrip(os.sep)
     start = rootdir.rfind(os.sep) + 1
+
     for path, _, files in os.walk(rootdir):
         folders = path[start:].split(os.sep)
         subdir = dict.fromkeys(files)
 
         # `reduce` returns a reference within `directory` so `directory` will
         # change on the next two lines.
-        parent = reduce(dict.get, folders[:-1], directory)
+        parent = directory
+        for folder in folders[:-1]:
+            parent = parent[folder]
         parent[folders[-1]] = subdir
 
     def __to_lists(name: str,
@@ -473,7 +479,7 @@ def process_files(
     def consider_archive(f: FileStorage) -> bool:
         return not force_txt and is_archive(f)
 
-    def raise_error() -> None:
+    def raise_error() -> t.NoReturn:
         raise APIException(
             "All files are ignored by a rule in the assignment's ignore file",
             'No files were in the given archive after filtering.',
@@ -481,7 +487,7 @@ def process_files(
             400,
         )
 
-    tree = {}  # type: ExtractFileTree
+    tree = {}  # type: t.Optional[ExtractFileTree]
     if len(files) > 1 or not consider_archive(files[0]):
         res = []  # type: t.List[t.Union[ExtractFileTree, t.Tuple[str, str]]]
         for file in files:
@@ -491,6 +497,7 @@ def process_files(
                     res.append(new)
             else:
                 if handle_ignore != IgnoreHandling.keep:
+                    assert ignore_filter is not None
                     is_ignored, line = ignore_filter.is_ignored(file.name)
 
                     if not is_ignored:
@@ -499,7 +506,12 @@ def process_files(
                         continue
                     elif handle_ignore == IgnoreHandling.error:
                         raise IgnoredFilesException(
-                            invalid_files=[(file.filename, line)]
+                            invalid_files=[
+                                (
+                                    t.cast(str, file.filename),
+                                    t.cast(str, line)
+                                )
+                            ]
                         )
 
                 new_file_name, filename = random_file_path()
@@ -510,7 +522,7 @@ def process_files(
         tree = {'top': res}
     else:
         tree = extract(files[0], ignore_filter, handle_ignore)
-        if not tree:
+        if tree is None:
             raise_error()
 
     return dehead_filetree(tree)

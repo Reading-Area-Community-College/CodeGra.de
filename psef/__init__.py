@@ -51,7 +51,7 @@ _seed_lti_lookups()
 
 if t.TYPE_CHECKING:  # pragma: no cover
     import psef.models  # pylint: disable=unused-import
-    current_user: 'psef.models.User' = None
+    current_user: 'psef.models.User' = t.cast('psef.models.User', None)
 else:
     current_user = flask_jwt.current_user  # pylint: disable=invalid-name
 

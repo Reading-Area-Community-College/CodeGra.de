@@ -329,7 +329,7 @@ def permission_required(
     return __decorator
 
 
-class RequestValidatorMixin(object):
+class RequestValidatorMixin:
     '''
     A 'mixin' for OAuth request validation.
     '''

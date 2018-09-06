@@ -47,9 +47,11 @@ def get_all_assignments() -> JSONResponse[t.Sequence[models.Assignment]]:
 
     :raises PermissionException: If there is no logged in user. (NOT_LOGGED_IN)
     """
-    perm_can_see: models.Permission = models.Permission.query.filter_by(
-        name='can_see_assignments'
-    ).first()
+    perm_can_see: models.Permission = t.cast(
+        models.Permission,
+        models.Permission.query.filter_by(name='can_see_assignments').first()
+    )
+    assert perm_can_see is not None
     courses = []
 
     for course_role in current_user.courses.values():
@@ -1111,7 +1113,7 @@ def post_submissions(assignment_id: int) -> EmptyResponse:
         ).options(joinedload(models.User.courses))
     }
 
-    newly_assigned: t.Set[t.Optional[int]] = set()
+    newly_assigned: t.Set[int] = set()
 
     for submission_info, submission_tree in submissions:
         user = found_users.get(submission_info.student_id, None)

@@ -45,7 +45,7 @@ def add_snippet() -> JSONResponse[models.Snippet]:
     ensure_keys_in_dict(content, [('value', str), ('key', str)])
     value = t.cast(str, content['value'])
 
-    snippet: models.Snippet = models.Snippet.query.filter_by(
+    snippet: t.Optional[models.Snippet] = models.Snippet.query.filter_by(
         user_id=current_user.id, key=content['key']
     ).first()
     if snippet is None:
@@ -141,8 +141,10 @@ def delete_snippets(snippet_id: int) -> EmptyResponse:
     :raises PermissionException: If the user can not use snippets.
                                  (INCORRECT_PERMISSION)
     """
+    snip: t.Optional[models.Snippet]
     snip = helpers.get_or_404(models.Snippet, snippet_id)
     snip = models.Snippet.query.get(snippet_id)
+    assert snip is not None
 
     if snip.user_id != current_user.id:
         raise APIException(

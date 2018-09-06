@@ -55,7 +55,7 @@ def parse_enum(
     parse_into_enum: t.Type[T],
     allow_none: bool = False,
     option_name: t.Optional[str] = None,
-) -> T:
+) -> t.Optional[T]:
     """Parse the given string to the given parse_into_enum.
 
     :param to_parse: The object to parse. If this value is not a string or

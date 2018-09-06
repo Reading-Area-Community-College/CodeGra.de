@@ -127,10 +127,11 @@ def _passback_grades_1(submission_ids: t.Sequence[int]) -> None:
 @celery.task
 def _send_reminder_mails_1(assignment_id: int) -> None:
     assig = p.models.Assignment.query.get(assignment_id)
-    finished = set(g.user_id for g in assig.finished_graders)
 
     if assig is None or None in {assig.done_type, assig.reminder_email_time}:
         return
+
+    finished = set(g.user_id for g in assig.finished_graders)
 
     to_mail: t.Iterable[int]
 

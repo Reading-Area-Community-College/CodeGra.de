@@ -211,8 +211,8 @@ class IgnoreFilterManager:
                 return iter(matches)
         return iter([])
 
-    def is_ignored(self,
-                   path: str) -> t.Tuple[t.Optional[bool], t.Optional[str]]:
+    def is_ignored(self, path: str
+                   ) -> t.Union[t.Tuple[bool, str], t.Tuple[None, None]]:
         """Check whether a path is explicitly included or excluded in ignores.
 
         :param path: Path to check
@@ -299,5 +299,6 @@ class IgnoreFilterManager:
         for name in __get_names():
             is_ignored, line = self.is_ignored(name)
             if is_ignored:
+                assert line is not None
                 wrong_files.append((name, line))
         return wrong_files
