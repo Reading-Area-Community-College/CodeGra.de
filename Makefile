@@ -5,7 +5,7 @@ PYTHON ?= python3.6
 ENV = source ./env/bin/activate;
 
 env:
-	virtualenv3 --python=$(PYTHON) ./env
+	virtualenv --python=$(PYTHON) ./env
 
 .PHONY: install-deps
 install-deps: install-pip-deps install-npm-deps
