@@ -10,15 +10,15 @@ env:
 .PHONY: install-deps
 install-deps: install-pip-deps install-npm-deps
 
-install-pip-deps: env/_last_update
-env/_last_update: requirements.txt | env
+install-pip-deps: env/.last_update
+env/.last_update: requirements.txt | env
 	$(ENV) pip3 install -r $<
-	date > $@
+	@date > $@
 
-install-npm-deps: node_modules/_last_update
-node_modules/_last_update: package.json
+install-npm-deps: node_modules/.last_update
+node_modules/.last_update: package.json
 	npm install
-	date >$@
+	@date >$@
 
 .PHONY: test_setup
 test_setup:
