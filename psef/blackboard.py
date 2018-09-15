@@ -104,8 +104,8 @@ def parse_info_file(file: str) -> SubmissionInfo:
 
             if bb_files:
                 files = [
-                    FileInfo(org, cur) for org, cur in
-                    _TXT_FILES_FMT.findall(bb_files.decode('utf-8'))
+                    FileInfo(org, cur) for org, cur in _TXT_FILES_FMT.
+                    findall(bb_files.decode('utf-8'))
                 ]
             else:
                 content = (
@@ -120,8 +120,9 @@ def parse_info_file(file: str) -> SubmissionInfo:
                 student_id=match.group('id').decode('utf-8'),
                 assignment_name=match.group('assignment').decode('utf-8'),
                 created_at=dateparser.parse(
-                    match.group('datetime').decode('utf-8')
-                    .replace(" o'clock", ""),
+                    match.group('datetime').decode('utf-8').replace(
+                        " o'clock", ""
+                    ),
                     tzinfos={'CET': gettz('Europe/Amsterdam')}
                 ),
                 grade=grade,

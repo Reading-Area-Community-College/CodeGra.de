@@ -117,10 +117,8 @@ def get_assignment(assignment_id: int) -> JSONResponse[models.Assignment]:
 
 @api.route("/assignments/<int:assignment_id>/feedbacks/", methods=['GET'])
 @auth.login_required
-def get_assignments_feedback(
-    assignment_id: int
-) -> JSONResponse[t.Mapping[str, t.Mapping[str, t.Union[t.Sequence[str], str]]]
-                  ]:
+def get_assignments_feedback(assignment_id: int) -> JSONResponse[
+    t.Mapping[str, t.Mapping[str, t.Union[t.Sequence[str], str]]]]:
     """Get all feedbacks for all latest submissions for a given assignment.
 
     .. :quickref: Assignment; Get feedback for all submissions in a assignment.

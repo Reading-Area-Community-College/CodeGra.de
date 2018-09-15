@@ -17,8 +17,8 @@ passlib==1.7.1
 patool==1.12
 psycopg2-binary==2.7.5
 py==1.6.0
-pytest==3.7.4
-pytest-cov==2.5.1
+pytest==3.8.0
+pytest-cov==2.6.0
 python-dateutil==2.7.3
 python-editor==1.0.3
 six==1.11.0
@@ -32,13 +32,13 @@ git+https://github.com/i-kiwamu/python3-oauth2.git
 click==6.7
 lxml==4.2.4
 sphinx-rtd-theme==0.4.1
-Sphinx==1.7.8
-pyflakes==1.6.0
+Sphinx==1.7.9
+pyflakes==2.0.0
 git+https://github.com/libre-man/HTTPdomain#subdirectory=httpdomain
 git+https://github.com/libre-man/sphinx-autodoc-typehints
 mypy==0.620
 mypy-extensions==0.4.1
-yapf==0.23.0
+yapf==0.24.0
 isort==4.3.4
 PyJWT==1.6.4
 validate-email==1.3

@@ -5,14 +5,15 @@ import datetime
 import jwt
 import pytz
 import pytest
-import dateutil.parser
-
 import psef.lti as lti
 import psef.auth as auth
 import psef.models as m
+import dateutil.parser
 
-perm_error = pytest.mark.perm_error
-data_error = pytest.mark.data_error
+from helpers import create_marker
+
+perm_error = create_marker(pytest.mark.perm_error)
+data_error = create_marker(pytest.mark.data_error)
 
 
 @pytest.fixture(autouse=True)

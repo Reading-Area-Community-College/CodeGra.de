@@ -3,12 +3,13 @@ import sys
 import json
 
 import pytest
-
 import psef.auth as a
 import psef.models as m
 from psef.errors import APICodes, APIException
 
-should_raise = pytest.mark.should_raise
+from helpers import create_marker
+
+should_raise = create_marker(pytest.mark.should_raise)
 
 
 @pytest.mark.parametrize(
@@ -26,7 +27,7 @@ def test_course_permissions(
     ta_user, bs_course, pse_course, prolog_course, perm, vals, logged_in,
     test_client, request, error_template
 ):
-    should_r = request.node.get_marker('should_raise')
+    should_r = request.node.get_closest_marker('should_raise')
     error = bool(should_r)
 
     with logged_in(ta_user):
@@ -180,7 +181,7 @@ def test_all_permissions(
 def test_get_all_permissions(
     named_user, logged_in, test_client, permissions, error_template, request
 ):
-    err = bool(request.node.get_marker('should_raise'))
+    err = bool(request.node.get_closest_marker('should_raise'))
 
     with logged_in(named_user):
         course_perms = test_client.req(

@@ -6,15 +6,15 @@ import time
 import datetime
 from random import shuffle
 
-import pytest
-
 import psef
+import pytest
 import psef.models as m
-import psef.linters as l
 
-run_error = pytest.mark.run_error
-perm_error = pytest.mark.perm_error
-get_works = pytest.mark.get_works
+from helpers import create_marker
+
+run_error = create_marker(pytest.mark.run_error)
+perm_error = create_marker(pytest.mark.perm_error)
+get_works = create_marker(pytest.mark.get_works)
 
 ALL_LINTERS = sorted(['Flake8', 'MixedWhitespace', 'Pylint'])
 
@@ -87,8 +87,18 @@ ALL_LINTERS = sorted(['Flake8', 'MixedWhitespace', 'Pylint'])
 @pytest.mark.parametrize(
     'named_user,use_teacher', [
         ('Robin', False),
-        get_works(perm_error(error=403)(('Student1', True))),
-        get_works(perm_error(error=403)(('Student1', False))),
+        pytest.param(
+            'Student1',
+            True,
+            marks=[pytest.mark.get_works,
+                   pytest.mark.perm_error(error=403)]
+        ),
+        pytest.param(
+            'Student1',
+            False,
+            marks=[pytest.mark.get_works,
+                   pytest.mark.perm_error(error=403)]
+        ),
         perm_error(error=403)(('admin', False)),
         perm_error(error=401)(('NOT_LOGGED_IN', False)),
         perm_error(error=401)(('NOT_LOGGED_IN', True)),
@@ -103,15 +113,15 @@ def test_linters(
     assignment, single_work = assignment_real_works
     assig_id = assignment.id
     del assignment
-    run_err = request.node.get_marker('run_error')
+    run_err = request.node.get_closest_marker('run_error')
 
     if run_err:
         run_err = copy.deepcopy(run_err.kwargs)
     else:
         run_err = {}
 
-    get_work = request.node.get_marker('get_works')
-    perm_err = request.node.get_marker('perm_error')
+    get_work = request.node.get_closest_marker('get_works')
+    perm_err = request.node.get_closest_marker('perm_error')
     set_perm_err = (not use_teacher) and perm_err
     if set_perm_err:
         run_err['error'] = set_perm_err.kwargs['error']

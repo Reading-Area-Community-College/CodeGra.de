@@ -8,13 +8,12 @@ directly after a successful lti launch.
 """
 import typing as t
 import urllib
-import urllib.parse
 import datetime
 import traceback
+import urllib.parse
 
 import jwt
 import flask
-
 import psef.errors as errors
 import psef.models as models
 import psef.helpers as helpers
@@ -52,9 +51,8 @@ def launch_lti() -> t.Any:
 
 @api.route('/lti/launch/2', methods=['GET'])
 @helpers.feature_required('LTI')
-def second_phase_lti_launch(
-) -> helpers.JSONResponse[t.Mapping[str, t.Union[str, models.Assignment, bool]]
-                          ]:
+def second_phase_lti_launch() -> helpers.JSONResponse[
+    t.Mapping[str, t.Union[str, models.Assignment, bool]]]:
     """Do the second part of an LTI launch.
 
     .. :quickref: LTI; Do the callback of a LTI launch.
@@ -75,7 +73,7 @@ def second_phase_lti_launch(
         launch_params = jwt.decode(
             flask.request.headers.get('Jwt', None),
             app.config['LTI_SECRET_KEY'],
-            algorithm='HS512'
+            algorithms=['HS512'],
         )['params']
     except jwt.DecodeError:
         traceback.print_exc()

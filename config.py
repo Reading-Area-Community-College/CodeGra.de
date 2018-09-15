@@ -5,14 +5,14 @@ import typing as t
 import secrets
 import datetime
 import subprocess
-from configparser import SafeConfigParser
+from configparser import ConfigParser
 
 CONFIG: t.Dict[str, t.Any] = dict()
 CONFIG['BASE_DIR'] = os.path.dirname(os.path.abspath(__file__))
 
 os.environ['BASE_DIR'] = str(CONFIG['BASE_DIR'])
 
-parser = SafeConfigParser(os.environ)
+parser = ConfigParser(os.environ)
 parser.read('config.ini')
 
 if 'Back-end' not in parser:
@@ -252,7 +252,7 @@ set_bool(CONFIG['FEATURES'], feature_ops, 'REGISTER', True)
 # LTI keys #
 ############
 # All LTI consumer keys mapped to secret keys. Please add your own.
-parser = SafeConfigParser()
+parser = ConfigParser()
 parser.optionxform = str  # type: ignore
 if parser.read('config.ini') and 'LTI Consumer keys' in parser:
     CONFIG['LTI_CONSUMER_KEY_SECRETS'] = dict(parser['LTI Consumer keys'])
@@ -262,7 +262,7 @@ else:
 ##########
 # CELERY #
 ##########
-parser = SafeConfigParser()
+parser = ConfigParser()
 parser.optionxform = str  # type: ignore
 if parser.read('config.ini') and 'Celery' in parser:
     CONFIG['CELERY_CONFIG'] = dict(parser['Celery'])

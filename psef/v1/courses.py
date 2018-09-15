@@ -195,9 +195,10 @@ def update_role(course_id: int, role_id: int) -> EmptyResponse:
 
 
 @api.route('/courses/<int:course_id>/roles/', methods=['GET'])
-def get_all_course_roles(course_id: int) -> JSONResponse[t.Union[t.Sequence[
-    models.CourseRole
-], t.Sequence[t.MutableMapping[str, t.Union[t.Mapping[str, bool], bool]]]]]:
+def get_all_course_roles(
+    course_id: int
+) -> JSONResponse[t.Union[t.Sequence[models.CourseRole], t.Sequence[
+    t.MutableMapping[str, t.Union[t.Mapping[str, bool], bool]]]]]:
     """Get a list of all :class:`.models.CourseRole` objects of a given
     :class:`.models.Course`.
 
@@ -309,12 +310,10 @@ def set_course_permission_user(
                 APICodes.INVALID_PARAM, 400
             )
 
-        res = jsonify(
-            {
-                'User': user,
-                'CourseRole': role,
-            }, status_code=201
-        )
+        res = jsonify({
+            'User': user,
+            'CourseRole': role,
+        }, status_code=201)
     else:
         raise APIException(
             'None of the keys "user_id" or "role_id" were found', (

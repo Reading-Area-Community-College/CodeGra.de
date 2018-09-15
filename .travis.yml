@@ -29,13 +29,8 @@ matrix:
       env: TO_RUN="yapf"
     - python: "3.7-dev" # 3.7 development branch
       env: TO_RUN="tests"
-    - python: "nightly" # currently points to 3.7-dev
+    - python: "nightly" # currently points to 3.8-dev
       env: TO_RUN="tests"
-  allow_failures:
-    # These are allowed to fail because Python 3.7+ chose to change its syntax
-    # and doesn't allow `async` as a property anymore.
-    - python: "3.7-dev" # 3.7 development branch
-    - python: "nightly" # currently points to 3.7-dev
 
 install:
   - pip install -U wheel

@@ -51,6 +51,9 @@ export default {
                 params: {
                     courseId: this.course.id,
                 },
+                query: {
+                    sbloc: 'c',
+                },
             };
         },
     },

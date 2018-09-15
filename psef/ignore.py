@@ -87,8 +87,8 @@ def translate(pat: str) -> str:
             res += '(/.*)?'
         else:
             res += (
-                (re.escape('/')
-                 if i > 0 else '') + _translate_segment(segment)
+                (re.escape('/') if i > 0 else '') +
+                _translate_segment(segment)
             )
 
     if not pat.endswith('/'):

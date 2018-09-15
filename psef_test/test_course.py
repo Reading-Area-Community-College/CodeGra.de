@@ -1,10 +1,11 @@
 import pytest
-
 import psef.models as m
 
-perm_error = pytest.mark.perm_error
-data_error = pytest.mark.data_error
-missing_error = pytest.mark.missing_error
+from helpers import create_marker
+
+perm_error = create_marker(pytest.mark.perm_error)
+data_error = create_marker(pytest.mark.data_error)
+missing_error = create_marker(pytest.mark.missing_error)
 
 
 @pytest.mark.parametrize(
@@ -29,7 +30,7 @@ missing_error = pytest.mark.missing_error
 def test_get_all_courses(
     named_user, test_client, logged_in, request, expected, error_template
 ):
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -88,8 +89,8 @@ def test_get_course_data(
     error_template, request, logged_in, test_client, named_user, course_name,
     role, session, add_lti
 ):
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
     if perm_err:
         error = perm_err.kwargs['error']
     elif data_err:
@@ -129,8 +130,8 @@ def test_get_course_data(
 def test_add_course(
     request, named_user, test_client, logged_in, name, error_template
 ):
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
     if perm_err:
         error = perm_err.kwargs['error']
     elif data_err:
@@ -186,7 +187,7 @@ def test_get_course_assignments(
 ):
     course = session.query(m.Course).filter_by(name='Programmeertalen').one()
 
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -234,7 +235,7 @@ def test_get_course_users(
     course_n, users
 ):
     course = session.query(m.Course).filter_by(name=course_n).one()
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -287,9 +288,9 @@ def test_add_user_to_course(
         name=role_n, course=course
     ).one()
 
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
-    missing_err = request.node.get_marker('missing_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
+    missing_err = request.node.get_closest_marker('missing_error')
     if perm_err:
         error = perm_err.kwargs['error']
     elif missing_err:
@@ -359,9 +360,9 @@ def test_update_user_in_course(
     logged_in, named_user, test_client, request, session, course_n, role_n,
     include_user_id, include_role, error_template, to_update
 ):
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
-    missing_err = request.node.get_marker('missing_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
+    missing_err = request.node.get_closest_marker('missing_error')
     if perm_err:
         error = perm_err.kwargs['error']
     elif missing_err:
@@ -415,7 +416,7 @@ def test_get_courseroles(
     logged_in, named_user, test_client, request, session, error_template,
     course_n, extended, role
 ):
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -485,8 +486,8 @@ def test_add_courseroles(
     course_n,
     role_name,
 ):
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
     if perm_err:
         error = perm_err.kwargs['error']
     elif data_err:
@@ -522,8 +523,9 @@ def test_add_courseroles(
                     found_amount += 1
                     assert (
                         len(role['perms']) == len(
-                            session.query(m.Permission)
-                            .filter_by(course_permission=True).all()
+                            session.query(
+                                m.Permission
+                            ).filter_by(course_permission=True).all()
                         )
                     )
                     for perm_n, value in role['perms'].items():
@@ -569,9 +571,9 @@ def test_update_courseroles(
     logged_in, named_user, test_client, request, session, error_template,
     course_n, role_name, user_role, perm_value, perm_name
 ):
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
-    missing_err = request.node.get_marker('missing_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
+    missing_err = request.node.get_closest_marker('missing_error')
 
     if perm_err:
         error = perm_err.kwargs['error']
@@ -630,9 +632,9 @@ def test_delete_courseroles(
     logged_in, named_user, test_client, request, session, error_template,
     course_n, role_name, teacher_user
 ):
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
-    missing_err = request.node.get_marker('missing_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
+    missing_err = request.node.get_closest_marker('missing_error')
 
     if perm_err:
         error = perm_err.kwargs['error']
@@ -690,7 +692,7 @@ def test_delete_lti_courseroles(
     role_name, teacher_user, course_n, session, test_client, logged_in,
     request, error_template
 ):
-    data_err = request.node.get_marker('data_error')
+    data_err = request.node.get_closest_marker('data_error')
 
     if data_err:
         error = data_err.kwargs['error']
@@ -752,8 +754,8 @@ def test_add_assignment(
     request, named_user, test_client, logged_in, name, error_template,
     prog_course, session
 ):
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
     course = session.query(m.Course).filter_by(name='Programmeertalen').one()
     if perm_err:
         error = perm_err.kwargs['error']

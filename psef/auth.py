@@ -389,8 +389,8 @@ class RequestValidatorMixin:
         req: t.Any,
         parameters: t.Optional[t.MutableMapping[str, str]] = None,
         fake_method: t.Optional[t.Any] = None,
-    ) -> t.Tuple[str, str, t.MutableMapping[str, str],
-                 t.MutableMapping[str, str]]:  # pragma: no cover
+    ) -> t.Tuple[str, str, t.MutableMapping[str, str], t.
+                 MutableMapping[str, str]]:  # pragma: no cover
         '''
         This must be implemented for the framework you're using
         Returns a tuple: (method, url, headers, parameters)
@@ -415,8 +415,8 @@ class _FlaskOAuthValidator(RequestValidatorMixin):
         req: 'flask.Request',
         parameters: t.MutableMapping[str, str] = None,
         fake_method: t.Any = None,
-    ) -> t.Tuple[str, str, t.MutableMapping[str, str], t.MutableMapping[str,
-                                                                        str]]:
+    ) -> t.Tuple[str, str, t.MutableMapping[str, str], t.
+                 MutableMapping[str, str]]:
         '''
         Parse Flask request
         '''

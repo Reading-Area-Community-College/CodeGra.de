@@ -724,8 +724,8 @@ class OutcomeRequest:  # pragma: no cover, pylint: disable=protected-access,inva
             result = root['imsx_POXBody']['deleteResultRequest']
             self.operation = DELETE_REQUEST
             # Get result sourced id from resultRecord
-            self.lis_result_sourcedid = result['resultRecord']['sourcedGUID'
-                                                               ]['sourcedId']
+            self.lis_result_sourcedid = result['resultRecord']['sourcedGUID'][
+                'sourcedId']
         except (KeyError, TypeError):
             pass
 
@@ -733,8 +733,8 @@ class OutcomeRequest:  # pragma: no cover, pylint: disable=protected-access,inva
             result = root['imsx_POXBody']['readResultRequest']
             self.operation = READ_REQUEST
             # Get result sourced id from resultRecord
-            self.lis_result_sourcedid = result['resultRecord']['sourcedGUID'
-                                                               ]['sourcedId']
+            self.lis_result_sourcedid = result['resultRecord']['sourcedGUID'][
+                'sourcedId']
         except (KeyError, TypeError):
             pass
 
@@ -885,11 +885,10 @@ class OutcomeResponse:  # pragma: no cover
             root = t.cast(t.Mapping, objectify.fromstring(xml))
             # Get message idenifier from header info
             self.message_identifier = root['imsx_POXHeader'][
-                'imsx_POXResponseHeaderInfo'
-            ]['imsx_messageIdentifier']
+                'imsx_POXResponseHeaderInfo']['imsx_messageIdentifier']
 
-            status_node = root['imsx_POXHeader']['imsx_POXResponseHeaderInfo'
-                                                 ]['imsx_statusInfo']
+            status_node = root['imsx_POXHeader']['imsx_POXResponseHeaderInfo'][
+                'imsx_statusInfo']
 
             # Get status parameters from header info status
             self.code_major = status_node.imsx_codeMajor

@@ -120,8 +120,7 @@ def remove_comment(code_id: int, line: int) -> EmptyResponse:
 @api.route("/code/<int:file_id>", methods=['GET'])
 @auth.login_required
 def get_code(file_id: int) -> t.Union[werkzeug.wrappers.Response, JSONResponse[
-    t.Union[t.Mapping[str, str], models.File, _FeedbackMapping]
-]]:
+    t.Union[t.Mapping[str, str], models.File, _FeedbackMapping]]]:
     """Get data from the :class:`.models.File` with the given id.
 
     .. :quickref: Code; Get code or its metadata.

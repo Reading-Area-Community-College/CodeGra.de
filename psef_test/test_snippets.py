@@ -1,12 +1,13 @@
 import json
 
-import pytest
-
 import psef
+import pytest
 import psef.models as m
 from psef.errors import APICodes
 
-perm_error = pytest.mark.perm_error
+from helpers import create_marker
+
+perm_error = create_marker(pytest.mark.perm_error)
 
 
 @pytest.mark.parametrize(
@@ -22,7 +23,7 @@ perm_error = pytest.mark.perm_error
 def test_simple_add_delete(
     named_user, logged_in, test_client, request, error_template
 ):
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -77,7 +78,7 @@ def test_simple_add_delete(
 def test_simple_update(
     named_user, logged_in, test_client, error_template, request
 ):
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:

@@ -3,12 +3,13 @@ import uuid
 import datetime
 
 import pytest
-
 import psef.models as m
 
-perm_error = pytest.mark.perm_error
-data_error = pytest.mark.data_error
-late_error = pytest.mark.late_error
+from helpers import create_marker
+
+perm_error = create_marker(pytest.mark.perm_error)
+data_error = create_marker(pytest.mark.data_error)
+late_error = create_marker(pytest.mark.late_error)
 
 
 @pytest.mark.parametrize(
@@ -29,7 +30,7 @@ def test_get_code_metadata(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -109,8 +110,8 @@ def test_get_code_plaintext(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
     if perm_err:
         error = perm_err.kwargs['error']
     elif data_err:
@@ -233,7 +234,7 @@ def test_get_file_url(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -308,8 +309,9 @@ def test_delete_code_as_ta(
             result=error_template,
         )
 
-        assignment.deadline = datetime.datetime.utcnow(
-        ) - datetime.timedelta(days=1)
+        assignment.deadline = datetime.datetime.utcnow() - datetime.timedelta(
+            days=1
+        )
         session.commit()
 
         ents = test_client.req(
@@ -473,8 +475,9 @@ def test_delete_code_twice(
         )
         assert len(res['entries']) == 2
 
-        assignment.deadline = datetime.datetime.utcnow(
-        ) - datetime.timedelta(days=1)
+        assignment.deadline = datetime.datetime.utcnow() - datetime.timedelta(
+            days=1
+        )
         session.commit()
 
         test_client.req(
@@ -796,8 +799,8 @@ def test_rename_code(
             code_id, '/multiple_dir_archive/dir///NEW_NAME///', 200
         ) == code_id
         assert 'new_data\n' == get_code_data(code_id)
-        assert get_file_tree()['entries'][0]['entries'][0]['name'
-                                                           ] == 'NEW_NAME'
+        assert get_file_tree(
+        )['entries'][0]['entries'][0]['name'] == 'NEW_NAME'
 
         assert rename(
             files['entries'][0]['id'], '/multiple_dir_archive/dir3/', 200

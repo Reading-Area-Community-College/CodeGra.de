@@ -4,13 +4,14 @@ import zipfile
 import datetime
 
 import pytest
+import psef.models as m
 from pytest import approx
 
-import psef.models as m
+from helpers import create_marker
 
-http_error = pytest.mark.http_error
-perm_error = pytest.mark.perm_error
-data_error = pytest.mark.data_error
+http_error = create_marker(pytest.mark.http_error)
+perm_error = create_marker(pytest.mark.perm_error)
+data_error = create_marker(pytest.mark.data_error)
 
 
 @pytest.mark.parametrize('filename', ['test_flake8.tar.gz'], indirect=True)
@@ -74,7 +75,8 @@ def test_get_grade_history(
                     'grade': grade + 1,
                     'passed_back': False,
                     'user': dict,
-                }, {
+                },
+                {
                     'changed_at': str,
                     'is_rubric': False,
                     'grade': grade,
@@ -103,13 +105,15 @@ def test_get_grade_history(
                     'grade': -1,
                     'passed_back': False,
                     'user': dict,
-                }, {
+                },
+                {
                     'changed_at': str,
                     'is_rubric': False,
                     'grade': grade + 1,
                     'passed_back': False,
                     'user': dict,
-                }, {
+                },
+                {
                     'changed_at': str,
                     'is_rubric': False,
                     'grade': grade,
@@ -155,8 +159,8 @@ def test_patch_submission(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
     if perm_err:
         error = perm_err.kwargs['error']
     elif data_err:
@@ -367,7 +371,7 @@ def test_selecting_rubric(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
         can_get_rubric = perm_err.kwargs.get('can_get', False)
@@ -558,7 +562,7 @@ def test_clearing_rubric(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -750,8 +754,7 @@ def test_selecting_wrong_rubric(
 
     with logged_in(ta_user):
         test_client.req(
-            'patch',
-            f'/api/v1/submissions/{other_work_id}/'
+            'patch', f'/api/v1/submissions/{other_work_id}/'
             f'rubricitems/{rubric[0]["items"][0]["id"]}',
             400,
             result=error_template
@@ -775,7 +778,7 @@ def test_get_dir_contents(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -849,7 +852,7 @@ def test_get_zip_file(
     else:
         work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -1017,8 +1020,8 @@ def test_search_file(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
     if perm_err:
         error = perm_err.kwargs['error']
     elif data_err:
@@ -1238,7 +1241,8 @@ def test_add_file(
                                     }, {
                                         'name': 'file2',
                                         'id': int,
-                                    }, {
+                                    },
+                                    {
                                         'name':
                                             'wow',
                                         'id':
@@ -1299,7 +1303,8 @@ def test_add_file(
                                     }, {
                                         'name': 'file2',
                                         'id': int,
-                                    }, {
+                                    },
+                                    {
                                         'name':
                                             'wow',
                                         'id':
@@ -1430,7 +1435,7 @@ def test_change_grader(
     graders, named_user, logged_in, test_client, error_template, request,
     assignment_real_works, ta_user
 ):
-    marker = request.node.get_marker('http_error')
+    marker = request.node.get_closest_marker('http_error')
     code = 204 if marker is None else marker.kwargs['error']
     res = None if marker is None else error_template
 
@@ -1541,7 +1546,7 @@ def test_delete_submission(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -1604,7 +1609,7 @@ def test_selecting_multiple_rubric_items(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
         can_get_rubric = perm_err.kwargs.get('can_get', False)

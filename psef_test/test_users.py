@@ -3,9 +3,11 @@ import pytest
 import psef.errors as e
 import psef.models as m
 
-perm_error = pytest.mark.perm_error
-http_error = pytest.mark.http_error
-data_error = pytest.mark.data_error
+from helpers import create_marker
+
+perm_error = create_marker(pytest.mark.perm_error)
+http_error = create_marker(pytest.mark.http_error)
+data_error = create_marker(pytest.mark.data_error)
 
 
 @pytest.mark.parametrize(
@@ -29,8 +31,8 @@ data_error = pytest.mark.data_error
 def test_searching_users(
     named_user, error_template, logged_in, test_client, q, users, request
 ):
-    perm_marker = request.node.get_marker('perm_error')
-    http_marker = request.node.get_marker('http_error')
+    perm_marker = request.node.get_closest_marker('perm_error')
+    http_marker = request.node.get_closest_marker('http_error')
 
     code = 200 if http_marker is None else http_marker.kwargs['error']
     code = code if perm_marker is None else perm_marker.kwargs['error']
@@ -102,7 +104,7 @@ def test_register_user(
     username, test_client, error_template, name, password, email, request, app,
     session
 ):
-    data_err = request.node.get_marker('data_error')
+    data_err = request.node.get_closest_marker('data_error')
     code = 200 if data_err is None else data_err.kwargs['error']
 
     data = {}
@@ -149,10 +151,10 @@ def test_register_user(
         )
 
     elif username != 'thomas':
-        assert session.query(m.User).filter_by(username=username).first(
-        ) is None, ('The new user should not have been created')
+        assert session.query(m.User).filter_by(
+            username=username
+        ).first() is None, ('The new user should not have been created')
     else:
-        assert session.query(
-            m.User
-        ).filter_by(username=username
-                    ).one().name != name, ('The old user should be preserved')
+        assert session.query(m.User).filter_by(
+            username=username
+        ).one().name != name, ('The old user should be preserved')

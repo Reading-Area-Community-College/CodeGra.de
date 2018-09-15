@@ -1,10 +1,11 @@
 import pytest
-
 import psef.models as m
 
-perm_error = pytest.mark.perm_error
-data_error = pytest.mark.data_error
-missing_error = pytest.mark.missing_error
+from helpers import create_marker
+
+perm_error = create_marker(pytest.mark.perm_error)
+data_error = create_marker(pytest.mark.data_error)
+missing_error = create_marker(pytest.mark.missing_error)
 
 
 @pytest.mark.parametrize(
@@ -24,7 +25,7 @@ def test_get_roles(
     session,
     error_template,
 ):
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         error = perm_err.kwargs['error']
     else:
@@ -88,9 +89,9 @@ def test_update_global_roles(
     logged_in, named_user, test_client, request, session, error_template,
     role_name, perm_value, perm_name, admin_user
 ):
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
-    missing_err = request.node.get_marker('missing_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
+    missing_err = request.node.get_closest_marker('missing_error')
 
     if perm_err:
         error = perm_err.kwargs['error']

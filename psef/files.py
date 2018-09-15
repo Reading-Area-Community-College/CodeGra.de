@@ -61,24 +61,18 @@ class FileTree(  # pylint: disable=inherit-non-class,missing-docstring
 if t.TYPE_CHECKING and not hasattr(t, 'SPHINX'):  # pragma: no cover
     # pylint: disable=invalid-name
     _ExtractFileTreeValue0 = t.MutableSequence[
-        t.Union[t.Tuple[str, str], t.MutableMapping[str, t.Any]]
-    ]
+        t.Union[t.Tuple[str, str], t.MutableMapping[str, t.Any]]]
     _ExtractFileTreeValue1 = t.MutableSequence[t.Union[
-        t.Tuple[str, str], t.MutableMapping[str, _ExtractFileTreeValue0]
-    ]]
+        t.Tuple[str, str], t.MutableMapping[str, _ExtractFileTreeValue0]]]
     _ExtractFileTreeValue2 = t.MutableSequence[t.Union[
-        t.Tuple[str, str], t.MutableMapping[str, _ExtractFileTreeValue1]
-    ]]
+        t.Tuple[str, str], t.MutableMapping[str, _ExtractFileTreeValue1]]]
     _ExtractFileTreeValueN = t.MutableSequence[t.Union[
-        t.Tuple[str, str], t.MutableMapping[str, _ExtractFileTreeValue2]
-    ]]
+        t.Tuple[str, str], t.MutableMapping[str, _ExtractFileTreeValue2]]]
     ExtractFileTreeValue = t.MutableSequence[t.Union[
-        t.Tuple[str, str], t.MutableMapping[str, _ExtractFileTreeValueN]
-    ]]
+        t.Tuple[str, str], t.MutableMapping[str, _ExtractFileTreeValueN]]]
 else:
     ExtractFileTreeValue = t.MutableSequence[  # pylint: disable=invalid-name
-        t.Union[t.Tuple[str, str], t.MutableMapping[str, t.Any]]
-    ]
+        t.Union[t.Tuple[str, str], t.MutableMapping[str, t.Any]]]
 ExtractFileTree = t.MutableMapping[str, ExtractFileTreeValue]  # pylint: disable=invalid-name
 
 

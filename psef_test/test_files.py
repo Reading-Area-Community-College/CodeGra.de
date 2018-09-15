@@ -1,7 +1,9 @@
 import pytest
 
-perm_error = pytest.mark.perm_error
-data_error = pytest.mark.data_error
+from helpers import create_marker
+
+perm_error = create_marker(pytest.mark.perm_error)
+data_error = create_marker(pytest.mark.data_error)
 
 
 @pytest.mark.parametrize(
@@ -18,8 +20,8 @@ def test_get_code_metadata(
 ):
     filestr = 'a' * size
 
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error')
     if perm_err:
         error = perm_err.kwargs['error']
     elif data_err:

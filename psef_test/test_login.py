@@ -1,16 +1,17 @@
 import copy
 
-import pytest
-
 import psef
+import pytest
 import psef.models as m
 
-data_error = pytest.mark.data_error
-perm_error = pytest.mark.perm_error
-missing_error = pytest.mark.missing_error
-password_error = pytest.mark.password_error
-does_have_permission = pytest.mark.does_have_permission
-needs_password = pytest.mark.needs_password
+from helpers import create_marker
+
+data_error = create_marker(pytest.mark.data_error)
+perm_error = create_marker(pytest.mark.perm_error)
+missing_error = create_marker(pytest.mark.missing_error)
+password_error = create_marker(pytest.mark.password_error)
+does_have_permission = create_marker(pytest.mark.does_have_permission)
+needs_password = create_marker(pytest.mark.needs_password)
 
 
 @pytest.mark.parametrize('active', [True, False])
@@ -45,7 +46,7 @@ def test_login(
     session.add(new_user)
     session.commit()
 
-    data_err = request.node.get_marker('data_error')
+    data_err = request.node.get_closest_marker('data_error')
     if data_err:
         error = 400
         if data_err.kwargs.get('wrong'):
@@ -101,7 +102,7 @@ def test_login(
     indirect=True
 )
 def test_extended_get_login(test_client, named_user, logged_in, request):
-    perm_true = bool(request.node.get_marker('does_have_permission'))
+    perm_true = bool(request.node.get_closest_marker('does_have_permission'))
 
     with logged_in(named_user):
         test_client.req(
@@ -251,11 +252,11 @@ def test_update_user_info(
     session.commit()
     user_id = user.id
 
-    missing_err = request.node.get_marker('missing_error')
-    data_err = request.node.get_marker('data_error')
-    perm_err = request.node.get_marker('perm_error')
-    password_err = request.node.get_marker('password_error')
-    needs_pw = request.node.get_marker('needs_password')
+    missing_err = request.node.get_closest_marker('missing_error')
+    data_err = request.node.get_closest_marker('data_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    password_err = request.node.get_closest_marker('password_error')
+    needs_pw = request.node.get_closest_marker('needs_password')
     if missing_err:
         error = 400
     elif perm_err:
@@ -553,7 +554,7 @@ def test_reset_password(
 def test_reset_email_on_lti(
     session, named_user, error_template, logged_in, test_client, request
 ):
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
     if perm_err:
         code = perm_err.kwargs['error']
     else:

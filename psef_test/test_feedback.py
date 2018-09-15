@@ -1,13 +1,14 @@
 import re
 
 import pytest
-
 import psef.models as m
 
-perm_error = pytest.mark.perm_error
-data_error = pytest.mark.data_error
-late_error = pytest.mark.late_error
-only_own = pytest.mark.only_own
+from helpers import create_marker
+
+perm_error = create_marker(pytest.mark.perm_error)
+data_error = create_marker(pytest.mark.data_error)
+late_error = create_marker(pytest.mark.late_error)
+only_own = create_marker(pytest.mark.only_own)
 
 
 @pytest.mark.parametrize('filename', ['test_flake8.tar.gz'], indirect=True)
@@ -40,8 +41,8 @@ def test_add_feedback(
     session, data, error_template, ta_user
 ):
     assignment, work = assignment_real_works
-    perm_err = request.node.get_marker('perm_error')
-    data_err = request.node.get_marker('data_error') is not None
+    perm_err = request.node.get_closest_marker('perm_error')
+    data_err = request.node.get_closest_marker('data_error') is not None
 
     code_id = session.query(m.File.id).filter(
         m.File.work_id == work['id'],
@@ -116,8 +117,8 @@ def test_get_feedback(
 ):
     assignment, work = assignment_real_works
     assig_id = assignment.id
-    perm_err = request.node.get_marker('perm_error')
-    late_err = request.node.get_marker('late_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    late_err = request.node.get_closest_marker('late_error')
 
     code_id = session.query(m.File.id).filter(
         m.File.work_id == work['id'],
@@ -211,7 +212,7 @@ def test_delete_feedback(
     session, error_template, ta_user
 ):
     assignment, work = assignment_real_works
-    perm_err = request.node.get_marker('perm_error')
+    perm_err = request.node.get_closest_marker('perm_error')
 
     code_id = session.query(m.File.id).filter(
         m.File.work_id == work['id'],
@@ -288,8 +289,8 @@ def test_get_all_feedback(
 ):
     assignment, work = assignment_real_works
     assig_id = assignment.id
-    perm_err = request.node.get_marker('perm_error')
-    late_err = request.node.get_marker('late_error')
+    perm_err = request.node.get_closest_marker('perm_error')
+    late_err = request.node.get_closest_marker('late_error')
 
     code_id = session.query(m.File.id).filter(
         m.File.work_id == work['id'],
@@ -432,8 +433,8 @@ def test_get_assignment_all_feedback(
 ):
     assignment, work = assignment_real_works
     assig_id = assignment.id
-    perm_err = request.node.get_marker('perm_error')
-    only_own_subs = request.node.get_marker('only_own')
+    perm_err = request.node.get_closest_marker('perm_error')
+    only_own_subs = request.node.get_closest_marker('only_own')
 
     code_id = session.query(m.File.id).filter(
         m.File.work_id == work['id'],

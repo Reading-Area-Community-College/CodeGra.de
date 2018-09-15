@@ -593,20 +593,18 @@ class User(Base):
     )
 
     assignments_assigned: t.MutableMapping[
-        int, AssignmentAssignedGrader
-    ] = db.relationship(
-        'AssignmentAssignedGrader',
-        collection_class=attribute_mapped_collection('assignment_id'),
-        backref=db.backref('user', lazy='select')
-    )
+        int, AssignmentAssignedGrader] = db.relationship(
+            'AssignmentAssignedGrader',
+            collection_class=attribute_mapped_collection('assignment_id'),
+            backref=db.backref('user', lazy='select')
+        )
 
     assignment_results: t.MutableMapping[
-        int, AssignmentResult
-    ] = db.relationship(
-        'AssignmentResult',
-        collection_class=attribute_mapped_collection('assignment_id'),
-        backref=db.backref('user', lazy='select')
-    )
+        int, AssignmentResult] = db.relationship(
+            'AssignmentResult',
+            collection_class=attribute_mapped_collection('assignment_id'),
+            backref=db.backref('user', lazy='select')
+        )
 
     role: Role = db.relationship('Role', foreign_keys=role_id, lazy='select')
 
@@ -1232,11 +1230,9 @@ class Work(Base):
 
             db.session.query(GradeHistory).filter(
                 GradeHistory.id == newest_grade_history_id.as_scalar(),
-            ).update(
-                {
-                    'passed_back': True
-                }, synchronize_session='fetch'
-            )
+            ).update({
+                'passed_back': True
+            }, synchronize_session='fetch')
 
     def select_rubric_items(
         self, items: t.List['RubricItem'], user: User, override: bool = False
@@ -2015,8 +2011,8 @@ class LinterInstance(Base):
 
     def add_comments(
         self,
-        feedbacks: t.Mapping[int, t.Mapping[int, t.Sequence[t.Tuple[str, str]]]
-                             ],
+        feedbacks: t.Mapping[int, t.Mapping[int, t.Sequence[t.
+                                                            Tuple[str, str]]]],
     ) -> t.Iterable[LinterComment]:
         """Add comments written by this instance.
 
@@ -2141,13 +2137,12 @@ class Assignment(Base):
     lti_outcome_service_url: str = db.Column(db.Unicode)
 
     assigned_graders: t.MutableMapping[
-        int, AssignmentAssignedGrader
-    ] = db.relationship(
-        'AssignmentAssignedGrader',
-        cascade='delete-orphan, delete',
-        collection_class=attribute_mapped_collection('user_id'),
-        backref=db.backref('assignment', lazy='select')
-    )
+        int, AssignmentAssignedGrader] = db.relationship(
+            'AssignmentAssignedGrader',
+            cascade='delete-orphan, delete',
+            collection_class=attribute_mapped_collection('user_id'),
+            backref=db.backref('assignment', lazy='select')
+        )
 
     finished_graders = db.relationship(
         'AssignmentGraderDone',
@@ -2156,12 +2151,11 @@ class Assignment(Base):
     )  # type: t.MutableSequence['AssignmentGraderDone']
 
     assignment_results: t.MutableMapping[
-        int, AssignmentResult
-    ] = db.relationship(
-        'AssignmentResult',
-        collection_class=attribute_mapped_collection('user_id'),
-        backref=db.backref('assignment', lazy='select')
-    )
+        int, AssignmentResult] = db.relationship(
+            'AssignmentResult',
+            collection_class=attribute_mapped_collection('user_id'),
+            backref=db.backref('assignment', lazy='select')
+        )
 
     course: Course = db.relationship(
         'Course',
@@ -2575,8 +2569,8 @@ class Assignment(Base):
 
     def get_divided_amount_missing(
         self
-    ) -> t.Tuple[t.Mapping[int, float], t.Callable[[int], t.Mapping[int, float]
-                                                   ]]:
+    ) -> t.Tuple[t.Mapping[int, float], t.Callable[[int], t.
+                                                   Mapping[int, float]]]:
         """Get a mapping between user and the amount of submissions that they
         should be assigned but are not.
 
@@ -2625,9 +2619,9 @@ class Assignment(Base):
             missing = {}
 
             for assigned_user_id, assigned in self.assigned_graders.items():
-                missing[assigned_user_id
-                        ] = (assigned.weight / total_weight *
-                             amount_subs) - divided_amount[assigned_user_id]
+                missing[assigned_user_id] = (
+                    assigned.weight / total_weight * amount_subs
+                ) - divided_amount[assigned_user_id]
 
             return missing
 
