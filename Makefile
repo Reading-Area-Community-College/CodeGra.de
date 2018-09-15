@@ -31,7 +31,7 @@ test: install-pip-deps test_setup
 
 .PHONY: test_quick
 test_quick: TEST_FLAGS += -x
-test_quick: install-pip-deps test_setup test
+test_quick: test
 
 .PHONY: reset_db
 reset_db:
