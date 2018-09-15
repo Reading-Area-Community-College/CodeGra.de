@@ -1,7 +1,7 @@
 TEST_FILE ?= ./psef_test/
 TEST_FLAGS ?=
 SHELL = /bin/bash
-PYTHON ?= python3.6
+PYTHON ?= python3
 ENV = source ./env/bin/activate;
 
 env:
