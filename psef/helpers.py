@@ -14,9 +14,9 @@ import mypy_extensions
 from typing_extensions import Protocol
 
 import psef
-import psef.json as json
 import psef.errors
 import psef.models
+import psef.json_encoders as json
 
 if t.TYPE_CHECKING:  # pragma: no cover
     from psef import model_types  # pylint: disable=unused-import
@@ -26,6 +26,9 @@ if t.TYPE_CHECKING:  # pragma: no cover
 T = t.TypeVar('T')
 Z = t.TypeVar('Z', bound='Comparable')
 Y = t.TypeVar('Y', bound='model_types.Base')
+T_Type = t.TypeVar('T_Type', bound=t.Type)  # pylint: disable=invalid-name
+
+IsInstanceType = t.Union[t.Type, t.Tuple[t.Type, ...]]  # pylint: disable=invalid-name
 
 
 def init_app(_: t.Any) -> None:
@@ -57,7 +60,7 @@ class Comparable(Protocol):  # pragma: no cover
         return not (self < other)  # pylint: disable=superfluous-parens
 
 
-def get_all_subclasses(cls: t.Type[T]) -> t.Iterable[t.Type['T']]:
+def get_all_subclasses(cls: T_Type) -> t.Iterable[T_Type]:
     """Returns all subclasses of the given class.
 
     Stolen from:
@@ -289,8 +292,7 @@ def get_or_404(
 
 
 def ensure_keys_in_dict(
-    mapping: t.Mapping[T, t.Any],
-    keys: t.Sequence[t.Tuple[T, t.Union[t.Type, t.Tuple[t.Type, ...]]]]
+    mapping: t.Mapping[T, object], keys: t.Sequence[t.Tuple[T, IsInstanceType]]
 ) -> None:
     """Ensure that the given keys are in the given mapping.
 
@@ -368,7 +370,10 @@ def extended_jsonify(
     obj: T,
     status_code: int = 200,
     warning: t.Optional[psef.errors.HttpWarning] = None,
-    use_extended: t.Callable[[object], bool] = lambda _: True
+    use_extended: t.Union[t.Callable[[object], bool],
+                          type,
+                          t.Tuple[type, ...],
+                          ] = object,
 ) -> ExtendedJSONResponse[T]:
     """Create a response with the given object ``obj`` as json payload.
 
@@ -381,11 +386,16 @@ def extended_jsonify(
     :param warning: The warning that should be added to the response
     :param use_extended: The ``__extended_to_json__`` method is only used if
         this function returns something that equals to ``True``. This method is
-        called with object that is currently being encoded.
+        called with object that is currently being encoded. You can also pass a
+        class or tuple as this parameter which is converted to
+        ``lambda o: isinstance(o, passed_value)``.
     :returns: The response with the jsonified object as payload
     """
 
     try:
+        if isinstance(use_extended, (tuple, type)):
+            class_only = use_extended  # needed to please mypy
+            use_extended = lambda o: isinstance(o, class_only)
         psef.app.json_encoder = json.get_extended_encoder_class(use_extended)
         response = flask.make_response(flask.jsonify(obj))
     finally:
@@ -512,3 +522,30 @@ def callback_after_this_request(
         return res
 
     return after
+
+
+def get_class_by_name(superclass: T_Type, name: str) -> T_Type:
+    """Get a class with given name
+
+    :param superclass: A superclass of the class found
+    :param name: The name of the class wanted.
+    :returns: The class with the attribute `__name__` equal to `name`. If
+        there are multiple classes with the name `name` the result can be any
+        one of these classes.
+    :raises ValueError: If the class with the specified name is not found.
+    """
+    for subcls in get_all_subclasses(superclass):
+        if subcls.__name__ == name:
+            return subcls
+    raise ValueError('No class with name {} found.'.format(name))
+
+
+def extended_requested() -> bool:
+    """Check if a extended JSON serialization was requested.
+
+    :returns: ``True`` if and only iff the ``extended`` get parameter was
+        present and it value equals (case insensitive) ``'true'``, ``'1'``, or
+        ``''`` (empty string).
+    """
+    return flask.request.args.get('extended',
+                                  'false').lower() in {'true', '1', ''}

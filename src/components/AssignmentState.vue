@@ -1,5 +1,5 @@
 <template>
-<div v-if="editable">
+<div class="assignment-state" v-if="editable">
     <b-button-group @click="updateState">
         <b-button class="state-button larger"
                   v-if="assignment.is_lti"
@@ -45,7 +45,7 @@
     </b-button-group>
 </div>
 <icon :name="icons[assignment.state]"
-      class="state-icon"
+      class="assignment-state state-icon"
       v-b-popover.bottom.hover="labels[assignment.state]"
       v-else/>
 </template>

@@ -120,14 +120,12 @@
     <b-card class="button-bar" v-if="editable">
         <b-button-group class="danger-buttons">
             <submit-button default="danger"
-                           show-inline
                            :label="false"
                            v-b-popover.top.hover="'Delete rubric'"
                            @click="$root.$emit('bv::show::modal','modal_delete_rubric')">
                 <icon name="times"/>
             </submit-button>
-            <submit-button show-inline
-                           class="reset-button"
+            <submit-button class="reset-button"
                            default="danger"
                            :label="false"
                            ref="resetButton"

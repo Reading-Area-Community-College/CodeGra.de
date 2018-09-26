@@ -14,19 +14,18 @@ class CustomJSONEncoder(JSONEncoder):
     method.
     """
 
-    # These are false positives by pylint.
-    def default(self, obj: t.Any) -> t.Any:  # pylint: disable=E0202,arguments-differ
+    def default(self, o: t.Any) -> t.Any:  # pylint: disable=method-hidden
         """A way to serialize arbitrary methods to JSON.
 
         Classes can use this method by implementing a `__to_json__` method that
         should return a JSON serializable object.
 
-        :param object obj: The object that should be converted to JSON.
+        :param obj: The object that should be converted to JSON.
         """
         try:
-            return obj.__to_json__()
+            return o.__to_json__()
         except AttributeError:  # pragma: no cover
-            return super().default(obj)
+            return super().default(o)
 
 
 def get_extended_encoder_class(
@@ -53,24 +52,24 @@ def get_extended_encoder_class(
         """
 
         # These are false positives by pylint.
-        def default(self, obj: t.Any) -> t.Any:  # pylint: disable=E0202,arguments-differ
+        def default(self, o: t.Any) -> t.Any:  # pylint: disable=method-hidden
             """A way to serialize arbitrary methods to JSON.
 
             Classes can use this method by implementing a `__to_json__` method
             that should return a JSON serializable object.
 
-            :param object obj: The object that should be converted to JSON.
+            :param o: The object that should be converted to JSON.
             """
-            if hasattr(obj, '__extended_to_json__') and use_extended(obj):
+            if hasattr(o, '__extended_to_json__') and use_extended(o):
                 try:
-                    return obj.__extended_to_json__()
+                    return o.__extended_to_json__()
                 except AttributeError:  # pragma: no cover
                     pass
 
             try:
-                return obj.__to_json__()
+                return o.__to_json__()
             except AttributeError:  # pragma: no cover
-                return super().default(obj)
+                return super().default(o)
 
     return CustomExtendedJSONEncoder
 

@@ -6,3 +6,4 @@ Source code documentation of psef
 
    psef
    psef.v1
+   psef.plagiarism_providers

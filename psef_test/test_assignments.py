@@ -885,7 +885,7 @@ def test_set_fixed_max_points(
             'single_file_archive', [{
                 'id': int,
                 'name': 'single_file_work'
-            }], 'single_file_archive', ['.tar.gz', '.zip']
+            }], 'single_file_archive', ['.tar.gz', '.tar.xz', '.zip']
         ), (
             'multiple_file_archive', [
                 {

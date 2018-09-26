@@ -39,6 +39,7 @@ module.exports = {
         'no-else-return': 'off',
         'no-plusplus': 'off',
         'function-paren-newline': ['error', 'consistent'],
+        'no-bitwise': 'off',
 
         // allow vuex
         'no-param-reassign': ["error", { 'props': false }],

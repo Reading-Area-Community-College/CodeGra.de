@@ -26,7 +26,7 @@ from psef import app, blackboard
 from psef.errors import APICodes, APIException
 from psef.ignore import InvalidFile, IgnoreFilterManager
 
-_KNOWN_ARCHIVE_EXTENSIONS = tuple(archive.extension_map.keys())
+_KNOWN_ARCHIVE_EXTENSIONS = (*archive.extension_map.keys(), '.tar.xz')
 
 # Gestolen van Erik Kooistra
 _BB_TXT_FORMAT = re.compile(
@@ -167,6 +167,61 @@ def get_file_contents(code: models.File) -> bytes:
         )
     with open(filename, 'rb') as codefile:
         return codefile.read()
+
+
+def search_path_in_filetree(filetree: FileTree, path: str) -> int:
+    """Search for a path in a filetree.
+
+    >>> filetree = { \
+           "id": 1, \
+           "name": "rootdir", \
+           "entries": [ \
+               { \
+                   "id": 2, \
+                   "name": "file1.txt" \
+               }, \
+               { \
+                   "id": 3, \
+                   "name": "subdir", \
+                   "entries": [ \
+                       { \
+                           "id": 4, \
+                           "name": "file2.txt" \
+                       }, \
+                       { \
+                           "id": 5, \
+                           "name": "file3.txt" \
+                       } \
+                   ], \
+               }, \
+           ], \
+        }
+    >>> search_path_in_filetree(filetree, "file1.txt")
+    2
+    >>> search_path_in_filetree(filetree, "/subdir/")
+    3
+    >>> search_path_in_filetree(filetree, "/subdir/file2.txt")
+    4
+    >>> search_path_in_filetree(filetree, "Non existing/path")
+    Traceback (most recent call last):
+    ...
+    KeyError: 'Path (Non existing/path) not in tree'
+
+    :param filetree: The filetree to search.
+    :param path: The path the search for.
+    :returns: The id of the file associated with the path in the filetree.
+    """
+    cur = filetree
+    for part in path.split('/'):
+        if not part:
+            continue
+        for entry in cur['entries']:
+            if entry['name'] == part:
+                cur = entry
+                break
+        else:
+            raise KeyError(f'Path ({path}) not in tree')
+    return cur['id']
 
 
 def restore_directory_structure(

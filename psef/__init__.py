@@ -68,7 +68,7 @@ def limiter_key_func() -> None:  # pragma: no cover
 limiter = Limiter(key_func=limiter_key_func)  # pylint: disable=invalid-name
 
 
-def create_app(config: t.Mapping = None, skip_celery: bool = False) -> t.Any:
+def create_app(config: t.Mapping = None, skip_celery: bool = False) -> t.Any:  # pylint: disable=too-many-statements
     """Create a new psef app.
 
     :param config: The config mapping that can be used to override config.
@@ -135,8 +135,8 @@ def create_app(config: t.Mapping = None, skip_celery: bool = False) -> t.Any:
     from . import tasks
     tasks.init_app(resulting_app)
 
-    from . import json  # pylint: disable=reimported
-    json.init_app(resulting_app)
+    from . import json_encoders
+    json_encoders.init_app(resulting_app)
 
     from . import files
     files.init_app(resulting_app)
@@ -153,6 +153,9 @@ def create_app(config: t.Mapping = None, skip_celery: bool = False) -> t.Any:
     # Register blueprint(s)
     from . import v1 as api_v1
     api_v1.init_app(resulting_app)
+
+    from . import plagiarism
+    plagiarism.init_app(resulting_app)
 
     # Make sure celery is working
     if not skip_celery:  # pragma: no cover

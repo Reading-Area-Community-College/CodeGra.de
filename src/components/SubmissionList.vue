@@ -352,6 +352,7 @@ export default {
                 this.$emit('assigneeUpdated', submission, newAssignee);
                 this.updateAssigneeFilter();
             }, ({ response }) => {
+                // TODO: visual feedback
                 // eslint-disable-next-line
                 console.log(response);
             });

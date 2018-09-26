@@ -9,6 +9,8 @@ export const MANAGE_ASSIGNMENT_PERMISSIONS = Object.freeze([
     'manage_rubrics',
     'can_upload_bb_zip',
     'can_submit_others_work',
+    'can_view_plagiarism',
+    'can_manage_plagiarism',
 ]);
 
 export const MANAGE_GENERAL_COURSE_PERMISSIONS = Object.freeze([

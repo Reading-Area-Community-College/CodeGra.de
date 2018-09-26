@@ -72,8 +72,7 @@ export default {
 
 <style lang="less" scoped>
 .submit-button {
-    display: flex;
-    margin-top: 15px;
-    justify-content: flex-end;
+    float: right;
+    margin-top: 1rem;
 }
 </style>

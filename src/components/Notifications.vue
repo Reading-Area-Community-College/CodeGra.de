@@ -200,7 +200,6 @@ label {
 }
 
 .submit-button {
-    display: flex;
-    justify-content: flex-end;
+    float: right;
 }
 </style>

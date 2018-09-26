@@ -16,9 +16,9 @@
     </div>
 
     <p v-if="showForgot">
-        We will send you a link to reset your password to your email. You
-        can use this link for a limited period of time. Please check you spam
-        folder if you not receive the email shortly after requesting it.
+        A link to reset your password will be send to your e-mail shortly. This
+        link can be used for a limited period of time. Please check your spam
+        folder if you did not receive the e-mail shortly after requesting it.
     </p>
 
     <b-form-fieldset class="text-center">

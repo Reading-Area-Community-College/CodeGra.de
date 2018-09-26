@@ -236,6 +236,68 @@ def ensure_can_edit_work(work: 'psef.models.Work') -> None:
         ensure_permission('can_edit_others_work', work.assignment.course_id)
 
 
+@login_required
+def ensure_can_see_plagiarims_case(
+    case: 'psef.models.PlagiarismCase',
+    assignments: bool = True,
+    submissions: bool = True,
+) -> None:
+    """Make sure the current user can see the given plagiarism case.
+
+    :param assignments: Make sure the user can see the assignments of these
+        cases.
+    :param submissions: Make sure the user can see the submissions of these
+        cases.
+    :returns: Nothing
+    """
+    ensure_permission(
+        'can_view_plagiarism', case.plagiarism_run.assignment.course_id
+    )
+
+    if case.work1.assignment_id == case.work2.assignment_id:
+        return
+
+    other_work_index = (
+        1
+        if case.work1.assignment_id == case.plagiarism_run.assignment_id else 0
+    )
+    other_work = case.work1 if other_work_index == 0 else case.work2
+    other_assignment = other_work.assignment
+    other_course_id = other_work.assignment.course_id
+
+    # Different assignment but same course, so no troubles here.
+    if other_course_id == case.plagiarism_run.assignment.course_id:
+        return
+
+    # If we have this permission in the external course we may also see al
+    # the other information
+    if psef.current_user.has_permission(
+        'can_view_plagiarism', other_course_id
+    ):
+        return
+
+    # We probably don't have permission, however we could have the necessary
+    # permissions for this information on the external course.
+    if assignments:
+        ensure_can_see_assignment(other_assignment)
+
+    if submissions and other_work.user_id != psef.current_user.id:
+        ensure_permission('can_see_others_work', other_course_id)
+
+
+@login_required
+def ensure_can_see_assignment(assignment: 'psef.models.Assignment') -> None:
+    """Make sure the current user can see the given assignment.
+
+    :param assignment: The assignment to check for.
+    :returns: Nothing.
+    """
+    ensure_permission('can_see_assignments', assignment.course_id)
+
+    if assignment.is_hidden:
+        ensure_permission('can_see_hidden_assignments', assignment.course_id)
+
+
 def ensure_can_view_files(
     work: 'psef.models.Work', teacher_files: bool
 ) -> None:
@@ -247,8 +309,12 @@ def ensure_can_view_files(
     :raises PermissionException: If the user should not be able te see these
         files.
     """
+
     if work.user_id != psef.current_user.id:
-        ensure_permission('can_see_others_work', work.assignment.course_id)
+        try:
+            ensure_permission('can_see_others_work', work.assignment.course_id)
+        except PermissionException:
+            ensure_permission('can_view_plagiarism', work.assignment.course_id)
 
     if teacher_files:
         if work.user_id == psef.current_user.id and work.assignment.is_done:

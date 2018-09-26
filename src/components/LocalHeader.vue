@@ -1,13 +1,15 @@
 <template>
 <div class="local-header">
     <b-button-toolbar class="toolbar" justify>
+        <slot v-show="$slots.title" name="prepend"/>
         <div class="sidebar-toggle">
             <img src="/static/img/bars.svg"
                  @click="toggleSidebar()">
         </div>
 
-        <h4 v-if="title || $slots.title" class="title">
-            <slot name="title">{{ title }}</slot>
+        <slot v-if="$slots.title" name="title">{{ title }}</slot>
+        <h4 v-else-if="title" class="title">
+            {{ title }}
         </h4>
 
         <slot/>

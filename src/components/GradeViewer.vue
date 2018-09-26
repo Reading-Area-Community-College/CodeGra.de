@@ -13,7 +13,7 @@
     <b-alert :class="{closed: $refs.rubricViewer.outOfSync.size === 0,
                      'out-of-sync-alert': true,}"
              show
-             v-if="showRubric && $refs.rubricViewer"
+             v-if="showRubric && $refs.rubricViewer && !UserConfig.features.incremental_rubric_submission"
              variant="warning">
         <b>The rubric is not yet saved!</b>
     </b-alert>
@@ -111,6 +111,7 @@ export default {
 
     data() {
         return {
+            UserConfig,
             grade: formatGrade(this.submission.grade),
             rubricPoints: {},
             rubricHasSelectedItems: false,

@@ -156,10 +156,6 @@ export default {
 <style lang="less">
 @import '~mixins.less';
 
-#app.dark .user-selector {
-    .dark-selects-colors;
-}
-
 .user-selector.multiselect {
     .multiselect__tags {
         border-top-right-radius: 0;
@@ -179,6 +175,7 @@ export default {
 
         &.multiselect__option--selected {
             background: #d9534f !important;
+
             &::after {
                 background: #d9534f !important;
             }

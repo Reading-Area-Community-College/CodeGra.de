@@ -16,7 +16,7 @@ import psef
 import psef.files
 import psef.models as models
 from psef.models import db
-from psef.helpers import get_all_subclasses
+from psef.helpers import get_class_by_name, get_all_subclasses
 
 
 def init_app(_: t.Any) -> None:
@@ -319,7 +319,4 @@ def get_linter_by_name(name: str) -> t.Type[Linter]:
         one of these linters.
     :raises ValueError: If the linter with the specified name is not found.
     """
-    for linter in get_all_subclasses(Linter):
-        if linter.__name__ == name:
-            return linter
-    raise ValueError('No linter with name {} found.'.format(name))
+    return get_class_by_name(Linter, name)

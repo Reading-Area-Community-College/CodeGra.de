@@ -5,6 +5,7 @@ the APIs in this module are mostly used to manipulate
 
 :license: AGPLv3, see LICENSE for details.
 """
+import json
 import typing as t
 import numbers
 import datetime
@@ -33,6 +34,7 @@ from psef.helpers import (
 )
 
 from . import api
+from .. import plagiarism
 
 
 @api.route('/assignments/', methods=['GET'])
@@ -105,12 +107,7 @@ def get_assignment(assignment_id: int) -> JSONResponse[models.Assignment]:
     """
     assignment = helpers.get_or_404(models.Assignment, assignment_id)
 
-    auth.ensure_permission('can_see_assignments', assignment.course_id)
-
-    if assignment.is_hidden:
-        auth.ensure_permission(
-            'can_see_hidden_assignments', assignment.course_id
-        )
+    auth.ensure_can_see_assignment(assignment)
 
     return jsonify(assignment)
 
@@ -1033,9 +1030,7 @@ def get_all_works_for_assignment(
     ):
         obj = obj.filter_by(user_id=current_user.id)
 
-    extended = request.args.get('extended', 'false').lower()
-
-    if extended in {'true', '1', ''}:
+    if helpers.extended_requested():
         obj = obj.options(undefer(models.Work.comment))
         return extended_jsonify(
             obj.all(),
@@ -1077,6 +1072,8 @@ def post_submissions(assignment_id: int) -> EmptyResponse:
     try:
         submissions = psef.files.process_blackboard_zip(files[0])
     except Exception:  # pylint: disable=broad-except
+        import traceback
+        traceback.print_exc()
         # TODO: Narrow this exception down.
         submissions = []
 
@@ -1190,7 +1187,6 @@ def get_linters(assignment_id: int
     :param int assignment_id: The id of the assignment
     :returns: A response containing the JSON serialized linters which is sorted
         by the name of the linter.
-    :rtype: flask.Response
 
     :>jsonarr str state: The state of the linter, which can be ``new``, or any
         state from :py:class:`.models.LinterState`.
@@ -1319,3 +1315,136 @@ def start_linting(assignment_id: int) -> JSONResponse[models.AssignmentLinter]:
         db.session.commit()
 
     return jsonify(res)
+
+
+@api.route('/assignments/<int:assignment_id>/plagiarism/', methods=['GET'])
+def get_plagiarism_runs(
+    assignment_id: int,
+) -> JSONResponse[t.Iterable[models.PlagiarismRun]]:
+    """Get all plagiarism runs for the given :class:`.models.Assignment`.
+
+    .. :quickref: Assignment; Get all plagiarism runs for an assignment.
+
+    :param int assignment_id: The id of the assignment
+    :returns: A response containing the JSON serialized list of plagiarism
+        runs.
+
+    :raises PermissionException: If the user can not view plagiarism runs or
+        cases for this course. (INCORRECT_PERMISSION)
+    """
+    assig = helpers.get_or_404(models.Assignment, assignment_id)
+    try:
+        auth.ensure_permission('can_view_plagiarism', assig.course_id)
+    except auth.PermissionException:
+        auth.ensure_permission('can_manage_plagiarism', assig.course_id)
+
+    return jsonify(
+        models.PlagiarismRun.query.filter_by(assignment=assig).order_by(
+            models.PlagiarismRun.created_at
+        ).all()
+    )
+
+
+@api.route('/assignments/<int:assignment_id>/plagiarism', methods=['POST'])
+@auth.login_required
+def start_plagiarism_check(
+    assignment_id: int,
+) -> JSONResponse[models.PlagiarismRun]:
+    """Run a plagiarism checker for the given :class:`.models.Assignment`.
+
+    .. :quickref: Assignment; Run a plagiarism checker for an assignment.
+
+    :param int assignment_id: The id of the assignment
+    :returns: The json serialization newly created
+        :class:`.models.PlagiarismRun`.
+
+    :<json str provider: The name of the plagiarism checker to use.
+    :<json list old_assignments: The id of the assignments that need to be used
+        as old assignments.
+    :<json ``**rest``: The other options used by the provider, as indicated by
+        ``/api/v1/plagiarism/``. Each key should be a possible option and its
+        value is the value that should be used.
+
+    :raises PermissionException: If the user can not manage plagiarism runs or
+        cases for this course. (INCORRECT_PERMISSION)
+    """
+    assig = helpers.get_or_404(models.Assignment, assignment_id)
+    auth.ensure_permission('can_manage_plagiarism', assig.course_id)
+
+    content = ensure_json_dict(request.get_json())
+    ensure_keys_in_dict(
+        content, [
+            ('provider', str),
+            ('old_assignments', list),
+        ]
+    )
+    provider_name = t.cast(str, content['provider'])
+    old_assig_ids = t.cast(t.List[object], content['old_assignments'])
+    json_config = json.dumps(sorted(content.items()))
+
+    if db.session.query(
+        models.PlagiarismRun.query.filter_by(
+            assignment_id=assignment_id, json_config=json_config
+        ).exists()
+    ).scalar():
+        raise APIException(
+            'This run has already been done!',
+            'This assignment already has a run with the exact same config',
+            APICodes.OBJECT_ALREADY_EXISTS, 400
+        )
+
+    try:
+        provider_cls = helpers.get_class_by_name(
+            plagiarism.PlagiarismProvider, provider_name
+        )
+    except ValueError:
+        raise APIException(
+            'The given provider does not exist',
+            f'The provider "{provider_name}" does not exist',
+            APICodes.OBJECT_NOT_FOUND, 404
+        )
+
+    if not all(isinstance(item, int) for item in old_assig_ids):
+        raise APIException(
+            'All assignment ids should be integers',
+            'Some ids were not integers', APICodes.INVALID_PARAM, 400
+        )
+
+    old_assigs = models.Assignment.query.filter(
+        t.cast(models.DbColumn[int],
+               models.Assignment.id).in_(t.cast(t.List[int], old_assig_ids))
+    ).all() if old_assig_ids else []
+
+    if len(old_assigs) != len(old_assig_ids):
+        not_found = set(old_assig_ids) - set(a.id for a in old_assigs)
+        raise APIException(
+            f'Some old assignments could not be found', (
+                f'The assignments with ids "{", ".join(map(str, not_found))}" '
+                'were not found'
+            ), APICodes.OBJECT_ID_NOT_FOUND, 404
+        )
+
+    for old_course_id in set(a.course_id for a in old_assigs):
+        auth.ensure_permission('can_view_plagiarism', old_course_id)
+
+    run = models.PlagiarismRun(json_config=json_config, assignment=assig)
+    db.session.add(run)
+
+    # provider_cls is a subclass of PlagiarismProvider and that can be
+    # instantiated
+    provider: plagiarism.PlagiarismProvider = t.cast(t.Any, provider_cls)()
+    provider.set_options(content)
+
+    helpers.callback_after_this_request(
+        lambda: psef.tasks.run_plagiarism_control(
+            run.id,
+            assig.id,
+            old_assig_ids,
+            provider.get_program_call(),
+            provider.matches_output,
+        )
+    )
+
+    db.session.commit()
+
+    return jsonify(run)

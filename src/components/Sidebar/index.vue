@@ -140,6 +140,8 @@ const floatingRoutes = new Set([
     'home',
     'submission',
     'submission_file',
+    'plagiarism_overview',
+    'plagiarism_detail',
 ]);
 const hideRoutes = floatingRoutes;
 
@@ -307,8 +309,12 @@ export default {
 
         this.canManageSite = perms.every(x => x);
 
-        this.$root.$on('sidebar::show', () => {
-            this.toggleMobileSidebar();
+        this.$root.$on('sidebar::show', (submenu) => {
+            if (submenu === undefined) {
+                this.toggleMobileSidebar();
+            } else {
+                this.openUpperSubMenu(this.findEntry(submenu), false);
+            }
         });
 
         this.$on('sidebar::close', () => {

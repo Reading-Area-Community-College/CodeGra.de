@@ -577,7 +577,7 @@ class OutcomeRequest:  # pragma: no cover, pylint: disable=protected-access,inva
         return request
 
     def post_replace_result(
-        self, score: str, result_data: t.Mapping[str, str] = None
+        self, score: t.Optional[str], result_data: t.Mapping[str, str] = None
     ) -> 'OutcomeResponse':
         '''
         POSTs the given score to the Tool Consumer with a replaceResult.

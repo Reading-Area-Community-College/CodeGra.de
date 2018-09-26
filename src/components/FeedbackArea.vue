@@ -46,7 +46,6 @@
                 <submit-button @click="cancelFeedback"
                                ref="deleteFeedbackButton"
                                default="danger"
-                               show-inline
                                :label="false">
                     <icon name="times" aria-hidden="true"/>
                 </submit-button>
@@ -255,6 +254,16 @@ export default {
 
 .feedback-area {
     .default-text-colors;
+
+    &.non-editable {
+        background-color: @footer-color;
+
+        #app.dark & {
+            background-color: @color-primary;
+            border-color: @color-primary-darkest;
+        }
+    }
+
     &.edit {
         padding-top: @line-spacing;
     }

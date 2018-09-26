@@ -13,6 +13,7 @@ import axios from 'axios';
 import Toasted from 'vue-toasted';
 import localforage from 'localforage';
 import memoryStorageDriver from 'localforage-memoryStorageDriver';
+import VueMasonry from 'vue-masonry-css';
 
 import '@/polyfills';
 import App from '@/App';
@@ -23,6 +24,7 @@ import PermissionStore from './permissions';
 
 Vue.use(BootstrapVue);
 Vue.use(Toasted);
+Vue.use(VueMasonry);
 
 Vue.config.productionTip = false;
 
@@ -148,6 +150,9 @@ localforage.defineDriver(memoryStorageDriver).then(() => {
         data() {
             return {
                 screenWidth: window.innerWidth,
+                smallWidth: 628,
+                mediumWidth: 768,
+                largeWidth: 992,
             };
         },
 
@@ -161,15 +166,15 @@ localforage.defineDriver(memoryStorageDriver).then(() => {
 
         computed: {
             $isSmallWindow() {
-                return this.screenWidth <= 628;
+                return this.screenWidth <= this.smallWidth;
             },
 
             $isMediumWindow() {
-                return this.screenWidth >= 768;
+                return this.screenWidth >= this.mediumWidth;
             },
 
             $isLargeWindow() {
-                return this.screenWidth >= 992;
+                return this.screenWidth >= this.largeWidth;
             },
         },
 

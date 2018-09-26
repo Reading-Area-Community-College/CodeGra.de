@@ -184,5 +184,17 @@
     "course_permission": false,
     "short_description": "Search users",
     "long_description": "Users with this permission can search for users on the side, this means they can see all other users on the site."
+  },
+  "can_view_plagiarism": {
+      "default_value": false,
+      "course_permission": true,
+      "short_description": "View plagiarism",
+      "long_description": "Users with this permission can view plagiarism runs and cases, this permission only really makes sense for users with the 'can_see_others_work' permission."
+  },
+  "can_manage_plagiarism": {
+      "default_value": false,
+      "course_permission": true,
+      "short_description": "Manage plagiarism",
+      "long_description": "Users with this permission can add and delete plagiarism runs."
   }
 }

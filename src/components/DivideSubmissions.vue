@@ -153,8 +153,7 @@ tbody .weight {
 }
 
 .submit-button {
-    display: flex;
-    justify-content: flex-end;
+    float: right;
     margin-right: 1rem;
 }
 </style>

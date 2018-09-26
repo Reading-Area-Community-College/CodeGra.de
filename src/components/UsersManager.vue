@@ -16,12 +16,14 @@
         </template>
 
         <template slot="CourseRole" slot-scope="item">
-            <loader :scale="1" v-if="updating[item.item.User.id]"/>
+            <loader :scale="2" v-if="updating[item.item.User.id]"/>
             <b-dropdown :text="item.value.name"
                         disabled
+                        class="role-dropdown"
                         v-b-popover.top.hover="'You cannot change your own role'"
                         v-else-if="item.item.User.name == userName"/>
             <b-dropdown :text="item.value.name"
+                        class="role-dropdown"
                         :disabled="item.item.User.name == userName"
                         v-else>
                 <b-dropdown-header>Select the new role</b-dropdown-header>
@@ -75,7 +77,7 @@ import 'vue-awesome/icons/pencil';
 import 'vue-awesome/icons/floppy-o';
 import 'vue-awesome/icons/ban';
 
-import { cmpNoCase, cmpOneNull } from '@/utils';
+import { cmpNoCase, cmpOneNull, waitAtLeast } from '@/utils';
 import Loader from './Loader';
 import SubmitButton from './SubmitButton';
 import UserSelector from './UserSelector';
@@ -193,13 +195,16 @@ export default {
                 }
             }
             this.$set(this.updating, user.User.id, true);
-            this.$http.put(`/api/v1/courses/${this.courseId}/users/`, {
+            const req = this.$http.put(`/api/v1/courses/${this.courseId}/users/`, {
                 user_id: user.User.id,
                 role_id: role.id,
-            }).then(() => {
+            });
+
+            waitAtLeast(250, req).then(() => {
                 this.$set(this.updating, user.User.id, false);
                 delete this.updating[user.User.id];
             }).catch((err) => {
+                // TODO: visual feedback
                 // eslint-disable-next-line
                 console.dir(err)
             });
@@ -274,6 +279,12 @@ export default {
     -moz-hyphens: auto;
     -ms-hyphens: auto;
     hyphens: auto;
+}
+
+
+.role-dropdown .dropdown-toggle {
+    padding-top: 3px;
+    padding-bottom: 4px;
 }
 </style>
 

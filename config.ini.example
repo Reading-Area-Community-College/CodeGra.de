@@ -175,6 +175,14 @@
 # The external URL the server runs on.
 # external_url = http://localhost:8080
 
+# Path to the java runtime executable. May also be just the name of the
+# executable, if it is in a directory in the PATH environment variable.
+# java_path = java
+
+# Path to jplag.jar. The path must be absolute or relative to the working
+# directory of the celery instance.
+# jplag_jar = jplag.jar
+
 # This section enables you to disable certain features. If you change this
 # config you need to rebuild/restart the front-end and restart the backend
 # otherwise the changes are not applied.

@@ -132,6 +132,10 @@ set_str(CONFIG, backend_ops, 'DEFAULT_ROLE', 'Student')
 # The external URL the server runs on.
 set_str(CONFIG, backend_ops, 'EXTERNAL_URL', 'http://localhost:8080')
 
+set_str(CONFIG, backend_ops, 'JAVA_PATH', 'java')
+
+set_str(CONFIG, backend_ops, 'JPLAG_JAR', 'jplag.jar')
+
 CONFIG['_VERSION'] = subprocess.check_output(
     ['git', 'describe', '--abbrev=0', '--tags']
 ).decode('utf-8').strip()

@@ -60,10 +60,10 @@ psef\.ignore module
     :undoc-members:
     :show-inheritance:
 
-psef\.json module
------------------
+psef\.json_encoders module
+--------------------------
 
-.. automodule:: psef.json
+.. automodule:: psef.json_encoders
     :members:
     :undoc-members:
     :show-inheritance:
@@ -115,3 +115,11 @@ psef\.tasks module
     :members:
     :show-inheritance:
     :special-members:
+
+psef\.plagiarism module
+--------------------------
+
+.. automodule:: psef.plagiarism
+    :members:
+    :undoc-members:
+    :show-inheritance:

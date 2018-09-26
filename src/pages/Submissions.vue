@@ -160,6 +160,7 @@ export default {
                 if (done) this.loading = false;
                 done = true;
             }, (err) => {
+                // TODO: visual feedback
                 // eslint-disable-next-line
                 console.dir(err);
             });

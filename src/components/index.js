@@ -37,3 +37,7 @@ export { default as UsersManager } from './UsersManager';
 export { default as FileUploader } from './FileUploader';
 export { default as OverviewMode } from './OverviewMode';
 export { default as SubmissionUploader } from './SubmissionUploader';
+export { default as PlagiarismOverview } from './PlagiarismOverview';
+export { default as PlagiarismDetail } from './PlagiarismDetail';
+export { default as PlagiarismRunner } from './PlagiarismRunner';
+export { default as HomeGrid } from './HomeGrid';

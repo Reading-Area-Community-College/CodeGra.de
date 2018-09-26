@@ -23,9 +23,9 @@ matrix:
       env: TO_RUN="postgres-test"
     - python: "3.6-dev"
       env: TO_RUN="lint"
-    - python: "3.6-dev"
+    - python: "3.7-dev"
       env: TO_RUN="mypy"
-    - python: "3.6-dev"
+    - python: "3.7-dev"
       env: TO_RUN="yapf"
     - python: "3.7-dev" # 3.7 development branch
       env: TO_RUN="tests"
