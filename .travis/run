@@ -1,6 +1,22 @@
 #!/bin/bash
 
-res="127"
+changed_files() {
+    git diff --name-only HEAD "$(git merge-base HEAD master)"
+}
+
+run_config_changed() {
+    changed_files | grep '.*travis.*\|Makefile\|setup\.cfg'
+}
+
+should_run_py_tests() {
+    run_config_changed || changed_files | grep '\.\(py\|json\)$\|requirements.txt'
+}
+
+should_run_js_tests() {
+    run_config_changed || changed_files | grep '\.\(js\|vue\|json\|less\)$\|package.json'
+}
+
+res=0
 
 echo "Running test with pwd: $(pwd)"
 
@@ -13,58 +29,54 @@ fi
 
 case "$TO_RUN" in
     "coverage")
-        pytest --cov psef --cov-report term-missing "$(pwd)/psef_test/" -vvvv
-        res="$?"
-        if [[ "$res" -eq 0 ]]; then
-            pytest --cov psef \
-                   --cov-append \
-                   --cov-report term-missing \
-                   --doctest-modules psef \
-                   -vvvv
+        if should_run_py_tests; then
+            make test
             res="$?"
+            if [[ "$res" -eq 0 ]]; then
+                make test TEST_FILE= TEST_FLAGS='--cov-append --doctest-modules psef'
+                res="$?"
+            fi
         fi
-        set +o xtrace
         ;;
     "tests"|"postgres-test")
-        pytest -vvvv $TEST_FLAGS "$(pwd)/psef_test/"
-        res="$?"
-        if [[ "$res" -eq 0 ]]; then
-            cd docs || exit 1
-            make html
+        if should_run_py_tests; then
+            make test TEST_FLAGS="$TEST_FLAGS"
             res="$?"
-            cd .. || exit 1
+            if [[ "$res" -eq 0 ]]; then
+                make -C docs html
+                res="$?"
+            fi
+            if [[ "$res" -eq 0 ]]; then
+                make test TEST_FILE= TEST_FLAGS='--doctest-modules psef'
+                res="$?"
+            fi
         fi
-        if [[ "$res" -eq 0 ]]; then
-            pytest --doctest-modules psef -vvvv
-            res="$?"
-        fi
-        set +o xtrace
         ;;
     "mypy")
-        mypy --ignore-missing-imports \
-             --disallow-untyped-defs \
-             --check-untyped-defs \
-             --disallow-subclassing-any \
-             "$(pwd)/psef/"
-        res="$?"
-        set +o xtrace
-        ;;
-    "lint")
-        make lint
-        res="$?"
-        set +o xtrace
-        ;;
-    "yapf")
-        out="$(yapf -rdp "$(pwd)/psef" "$(pwd)/psef_test")"
-        set +o xtrace
-        if [[ "$out" ]]; then
-            echo "$out"
-            res=1
-        else
-            res=0
+        if should_run_py_tests; then
+            make mypy
+            res="$?"
         fi
         ;;
-
+    "lint")
+        if should_run_py_tests; then
+            make lint-py
+            res="$?"
+        fi
+        if should_run_js_tests; then
+            make lint-js
+            [ "$res" == 0 ] && res="$?"
+        fi
+        ;;
+    "yapf")
+        if should_run_py_tests; then
+            make format FORMAT_FLAGS="-rdp '$(pwd)/psef' '$(pwd)/psef_test'"
+            res="$?"
+        fi
+        ;;
+    *)
+        res=127
+        ;;
 esac
 
 set +o xtrace

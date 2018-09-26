@@ -1,5 +1,6 @@
 TEST_FILE ?= ./psef_test/
 TEST_FLAGS ?=
+FORMAT_FLAGS ?= -rip
 SHELL = /bin/bash
 PYTHON ?= python3
 ENV = source ./env/bin/activate;
@@ -10,24 +11,26 @@ env:
 .PHONY: install-deps
 install-deps: install-pip-deps install-npm-deps
 
+.PHONY: install-pip-deps
 install-pip-deps: env/.last_update
 env/.last_update: requirements.txt | env
 	$(ENV) pip3 install -r $<
 	@date > $@
 
+.PHONY: install-npm-deps
 install-npm-deps: node_modules/.last_update
 node_modules/.last_update: package.json
 	npm install
 	@date >$@
 
-.PHONY: test_setup
-test_setup:
+.PHONY: test-setup
+test-setup:
 	mkdir -p /tmp/psef/uploads
 	mkdir -p /tmp/psef/mirror_uploads
 
 .PHONY: test
-test: install-pip-deps test_setup
-	$(ENV) DEBUG=on pytest -n auto --cov psef --cov-report term-missing $(TEST_FILE) -vvvvv $(TEST_FLAGS)
+test: install-pip-deps test-setup
+	$(ENV) DEBUG=on pytest -n auto -vvvvv --cov psef --cov-report term-missing $(TEST_FLAGS) $(TEST_FILE)
 
 .PHONY: test_quick
 test_quick: TEST_FLAGS += -x
@@ -80,13 +83,23 @@ seed_data: install-pip-deps
 
 .PHONY: format
 format: install-pip-deps
-	$(ENV) yapf -rip ./psef ./psef_test
+	$(ENV) yapf $(FORMAT_FLAGS) ./psef ./psef_test
 
 .PHONY: shrinkwrap
 shrinkwrap:
 	npm shrinkwrap --dev
 
 .PHONY: lint
-lint: install-deps privacy_statement
+lint: lint-py lint-js
+
+.PHONY: lint-py
+lint-py: install-pip-deps
 	$(ENV) pylint psef --rcfile=setup.cfg
+
+.PHONY: lint-js
+lint-js: install-npm-deps privacy_statement
 	npm run lint
+
+.PHONY: mypy
+mypy:
+	$(ENV) mypy ./psef/
