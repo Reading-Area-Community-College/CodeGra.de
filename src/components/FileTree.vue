@@ -1,6 +1,6 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-only -->
 <template>
-    <div class="file-tree" :class="{ collapsed: isCollapsed, }">
+    <div class="file-tree" :class="{ collapsed: isCollapsed, 'rounded-border': depth === 0 }">
         <div class="directory" :class="{ faded: depth > 0 && !dirHasRevision(tree) }" @click="toggle($event)">
             <span class="label">
                 <icon name="caret-right" class="caret-icon" v-if="isCollapsed"/>
@@ -160,6 +160,10 @@ export default {
     user-select: none;
     cursor: default;
     color: @color-primary;
+
+    &.rounded-border {
+        padding: .375rem .75rem;
+    }
 
     #app.dark & {
         color: @text-color-dark;

@@ -4,7 +4,7 @@
         <div v-html="error"></div>
     </b-alert>
     <loader class="text-center" v-else-if="loading"></loader>
-    <div class="code-viewer form-control" v-else>
+    <div class="code-viewer" v-else>
         <div class="scroller">
             <ol :class="{ editable, 'lint-whitespace': assignment.whitespace_linter, 'show-whitespace': showWhitespace }"
                 :style="{
@@ -335,6 +335,8 @@ export default {
     padding: 0;
     background: #f8f8f8;
 
+    .rounded-border;
+
     #app.dark & {
         background: @color-primary-darker;
     }
@@ -343,8 +345,7 @@ export default {
 .scroller {
     width: 100%;
     height: 100%;
-    overflow-x: auto;
-    overflow-y: auto;
+    overflow: auto;
 }
 
 ol {

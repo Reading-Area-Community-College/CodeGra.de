@@ -1,22 +1,22 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-only -->
 <template>
-    <div class="pdf-viewer">
-        <loader v-if="loading"/>
-        <object :data="pdfURL"
-                type="application/pdf"
-                width="100%"
-                height="100%"
-                v-else-if="pdfURL !== ''">
-            <b-alert variant="danger" :show="true">
-                Your browser doesn't support the PDF viewer. Please download
-                the PDF <a class="alert-link" :href="pdfURL">here</a>.
-            </b-alert>
-        </object>
-        <b-alert variant="danger"
-                 :show="error !== ''">
-            {{ error }}
+<div class="pdf-viewer">
+    <loader v-if="loading"/>
+    <object :data="pdfURL"
+            type="application/pdf"
+            width="100%"
+            height="100%"
+            v-else-if="pdfURL !== ''">
+        <b-alert variant="danger" :show="true">
+            Your browser doesn't support the PDF viewer. Please download
+            the PDF <a class="alert-link" :href="pdfURL">here</a>.
         </b-alert>
-    </div>
+    </object>
+    <b-alert variant="danger"
+                :show="error !== ''">
+        {{ error }}
+    </b-alert>
+</div>
 </template>
 
 <script>

@@ -1,15 +1,15 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-only -->
 <template>
-    <div class="image-viewer form-control">
-        <loader v-if="loading"/>
-        <img :src="imgURL"
-             :title="name"
-             v-else-if="imgURL !== ''"/>
-        <b-alert variant="danger"
-                 :show="error !== ''">
-            {{ error }}
-        </b-alert>
-    </div>
+<div class="image-viewer">
+    <loader v-if="loading"/>
+    <img :src="imgURL"
+            :title="name"
+            v-else-if="imgURL !== ''"/>
+    <b-alert variant="danger"
+                :show="error !== ''">
+        {{ error }}
+    </b-alert>
+</div>
 </template>
 
 <script>
@@ -81,10 +81,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~mixins.less";
+
 .image-viewer {
     padding: 0;
     overflow: hidden;
     text-align: center;
+
+    .rounded-border;
 
     img {
         max-width: 100%;

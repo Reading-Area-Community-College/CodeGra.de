@@ -145,7 +145,7 @@
     </local-header>
 
     <loader center v-if="loadingInner"/>
-    <div class="row justify-content-center inner-container"
+    <div class="row inner-container"
          v-else
          id="submission-page-inner">
         <div class="code-and-grade"
@@ -202,7 +202,6 @@
                     :scale="3"
                     v-if="!fileTree"/>
             <file-tree v-else
-                       class="form-control"
                        :collapsed="false"
                        :tree="fileTree"/>
         </div>
@@ -894,10 +893,10 @@ export default {
     will-change: transform;
 
     @media @media-no-large {
-        flex: 0 1 auto;
-        flex: 0 1 -webkit-max-content;
-        flex: 0 1 -moz-max-content;
-        flex: 0 1 max-content;
+        flex: 1 1 auto;
+        flex: 1 1 -webkit-max-content;
+        flex: 1 1 -moz-max-content;
+        flex: 1 1 max-content;
     }
 }
 
@@ -919,10 +918,8 @@ export default {
     padding: 0;
 }
 
-@small-max-tree-height: 15vh;
-
 .file-tree-container {
-    max-height: 100%;
+    flex-direction: column;
 
     @media @media-no-large {
         flex: 0 0 auto;
@@ -934,7 +931,7 @@ export default {
     overflow: auto;
 
     @media @media-no-large {
-        max-height: @small-max-tree-height;
+        max-height: 15vh;
     }
 }
 

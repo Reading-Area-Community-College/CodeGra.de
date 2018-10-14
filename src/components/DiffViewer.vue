@@ -4,7 +4,7 @@
     <div v-html="error"></div>
 </b-alert>
 <loader class="text-center" v-else-if="loading"></loader>
-<div class="diff-viewer form-control" v-else-if="diffOnly">
+<div class="diff-viewer" v-else-if="diffOnly">
     <div v-for="(part, i) in changedParts"
          :key="`part-${i}-line-${part[0]}`">
         <hr v-if="i !== 0">
@@ -239,6 +239,8 @@ export default {
     position: relative;
     padding: 0;
     background: #f8f8f8;
+
+    .rounded-border;
 
     #app.dark & {
         background: @color-primary-darker;
