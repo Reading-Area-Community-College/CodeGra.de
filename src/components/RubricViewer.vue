@@ -4,9 +4,14 @@
      :class="{ editable }">
     <b-tabs no-fade>
         <b-tab class="rubric"
-               :head-html="getHeadHtml(rubric)"
                v-for="(rubric, i) in rubrics"
                :key="`rubric-${rubric.id}`">
+            <div slot="title">
+                {{ rubric.header }} -
+                <sup>{{ selectedRows[rubric.id] ? selectedRows[rubric.id].points : 'Nothing' }}</sup>
+                &frasl;
+                <sub>{{ Math.max(...rubric.items.map(i => i.points)) }}</sub>
+            </div>
             <b-card class="rubric-category"
                     :header="rubric.description"
                     body-class="rubric-items">
@@ -139,26 +144,6 @@ export default {
     },
 
     methods: {
-        getHeadHtml(rubric) {
-            const selected = this.selectedRows[rubric.id];
-            const maxPoints = this.$htmlEscape(Math.max(...rubric.items.map(i => i.points)));
-            const header = this.$htmlEscape(`${rubric.header}`) || '<span class="unnamed">Unnamed category</span>';
-
-            const getFraction = (upper, lower) => `<sup>${upper}</sup>&frasl;<sub>${lower}</sub>`;
-            let res;
-
-            if (selected) {
-                const selectedPoints = this.$htmlEscape(selected.points);
-                res = `<span>${header}</span> - <span>${getFraction(selectedPoints, maxPoints)}</span>`;
-            } else if (this.editable) {
-                res = header;
-            } else {
-                res = `<span>${header}</span> - <span>${getFraction('Nothing', maxPoints)}<span>`;
-            }
-
-            return `<div class="tab-header">${res}</div>`;
-        },
-
         clearSelected() {
             const clear = () => {
                 this.selected = {};
