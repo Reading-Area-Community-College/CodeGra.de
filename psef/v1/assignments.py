@@ -9,7 +9,6 @@ import os
 import json
 import shutil
 import typing as t
-import numbers
 import datetime
 from collections import defaultdict
 
@@ -332,8 +331,6 @@ def get_assignment_rubric(assignment_id: int
     :raises APIException: If the assignment has no rubric.
         (OBJECT_ID_NOT_FOUND)
     :raises PermissionException: If there is no logged in user. (NOT_LOGGED_IN)
-    :raises PermissionException: If the user is not allowed to see this is
-                                 assignment. (INCORRECT_PERMISSION)
     """
     assig = helpers.get_or_404(
         models.Assignment,
@@ -440,31 +437,24 @@ def add_assignment_rubric(assignment_id: int
     if 'rows' in content:
         with db.session.begin_nested():
             helpers.ensure_keys_in_dict(content, [('rows', list)])
-            rows = t.cast(list, content['rows'])
+            rows = t.cast(t.List[JSONType], content['rows'])
+            assig.rubric_rows = [process_rubric_row(assig, r) for r in rows]
 
-            id_wrong = [process_rubric_row(assig, row) for row in rows]
-            seen = set(
-                item_id for item_id, _ in id_wrong if item_id is not None
-            )
-            wrong_rows = set(err for _, err in id_wrong if err is not None)
-
-            if wrong_rows:
+            if any(not row.is_valid for row in assig.rubric_rows):
+                wrong_rows = [r for r in assig.rubric_rows if not r.is_valid]
                 single = len(wrong_rows) == 1
                 raise APIException(
-                    'The row{s} {rows} do{es} not contain at least one item.'.
-                    format(
-                        rows=', and '.join(wrong_rows),
+                    (
+                        'The row{s} {rows} do{es} not contain at least one'
+                        ' item with 0 or higher as points.'
+                    ).format(
+                        rows=', and '.join(r.header for r in wrong_rows),
                         s='' if single else 's',
                         es='es' if single else '',
                     ), 'Not all rows contain at least one '
                     'item after updating the rubric.', APICodes.INVALID_STATE,
                     400
                 )
-
-            assig.rubric_rows = [
-                row for row in assig.rubric_rows
-                if row is None or row.id in seen
-            ]
 
             db.session.flush()
             max_points = assig.max_rubric_points
@@ -484,13 +474,14 @@ def add_assignment_rubric(assignment_id: int
 def process_rubric_row(
     assig: models.Assignment,
     row: JSONType,
-) -> t.Tuple[t.Optional[int], t.Optional[str]]:
+) -> models.RubricRow:
     """Process a single rubric row updating or adding it.
 
     This function works on the input json data. It makes sure that the input
     has the correct format and dispatches it to the necessary functions.
 
     :param assig: The assignment this rubric row should be added to.
+    :param row: The row to process.
     :returns: A tuple with as the first element the id of the rubric row that
         has been processed (this is ``None`` for a new row) and as second item
         a string that describes were an error occurred if such an error did
@@ -503,139 +494,33 @@ def process_rubric_row(
               ('items', list)]
     )
     header = t.cast(str, row['header'])
-    description = t.cast(str, row['description'])
-    items = t.cast(list, row['items'])
-    row_id = None
+    desc = t.cast(str, row['description'])
+    items: t.Sequence[models.RubricItem.JSONBaseSerialization]
+    items = [
+        # This is a mypy bug that is why we need this cast:
+        # https://github.com/python/mypy/issues/5723
+        t.cast(
+            models.RubricItem.JSONBaseSerialization,
+            helpers.coerce_json_value_to_typeddict(
+                it, models.RubricItem.JSONBaseSerialization
+            )
+        ) for it in t.cast(list, row['items'])
+    ]
 
     if header == '':
         raise APIException(
-            'A row can\'t have an empty header',
+            "A row can't have an empty header",
             f'The row "{row}" has an empty header', APICodes.INVALID_PARAM, 400
         )
 
     if 'id' in row:
         ensure_keys_in_dict(row, [('id', int)])
         row_id = t.cast(int, row['id'])
-        row_amount = patch_rubric_row(header, description, row_id, items)
+        rubric_row = helpers.get_or_404(models.RubricRow, row_id)
+        rubric_row.update_from_json(header, desc, items)
+        return rubric_row
     else:
-        row_amount = add_new_rubric_row(assig, header, description, items)
-
-    # No items were added which is wrong
-    err = header if row_amount == 0 else None
-    return row_id, err
-
-
-def add_new_rubric_row(
-    assig: models.Assignment, header: str, description: str,
-    items: t.Sequence[JSONType]
-) -> int:
-    """Add new rubric row to the assignment.
-
-    :param assig: The assignment to add the rubric row to
-    :param header: The name of the new rubric row.
-    :param description: The description of the new rubric row.
-    :param items: The items (:py:class:`.models.RubricItem`) that should be
-        added to the new rubric row, the JSONType should be a dictionary with
-        the keys ``description`` (:py:class:`str`), ``header``
-        (:py:class:`str`) and ``points`` (:py:class:`float`).
-    :returns: The amount of items in this row.
-
-    :raises APIException: If `description` or `points` fields are not in
-        `item`. (INVALID_PARAM)
-    """
-    rubric_row = models.RubricRow(
-        assignment_id=assig.id, header=header, description=description
-    )
-    for item in items:
-        item = ensure_json_dict(item)
-        ensure_keys_in_dict(
-            item,
-            [('description', str),
-             ('header', str),
-             ('points', numbers.Real)]
-        )
-        description = t.cast(str, item['description'])
-        header = t.cast(str, item['header'])
-        points = t.cast(numbers.Real, item['points'])
-        rubric_item = models.RubricItem(
-            rubricrow_id=rubric_row.id,
-            header=header,
-            description=description,
-            points=points
-        )
-        db.session.add(rubric_item)
-        rubric_row.items.append(rubric_item)
-    db.session.add(rubric_row)
-
-    return len(items)
-
-
-def patch_rubric_row(
-    header: str,
-    description: str,
-    rubric_row_id: int,
-    items: t.Sequence[JSONType],
-) -> int:
-    """Update a rubric row of the assignment.
-
-    .. note::
-
-      All items not present in the given ``items`` array will be deleted from
-      the rubric row.
-
-    :param rubric_row_id: The id of the rubric row that should be updated.
-    :param items: The items (:py:class:`models.RubricItem`) that should be
-        added or updated. The format should be the same as in
-        :py:func:`add_new_rubric_row` with the addition that if ``id`` is in
-        the item the item will be updated instead of added.
-    :returns: The amount of items in the resulting row.
-
-    :raises APIException: If `description` or `points` fields are not in
-        `item`. (INVALID_PARAM)
-    :raises APIException: If no rubric item with given id exists.
-        (OBJECT_ID_NOT_FOUND)
-    """
-    rubric_row = helpers.get_or_404(models.RubricRow, rubric_row_id)
-
-    rubric_row.header = header
-    rubric_row.description = description
-
-    seen = set()
-
-    for item in items:
-        item = ensure_json_dict(item)
-        ensure_keys_in_dict(
-            item,
-            [('description', str),
-             ('points', numbers.Real),
-             ('header', str)]
-        )
-        description = t.cast(str, item['description'])
-        header = t.cast(str, item['header'])
-        points = t.cast(numbers.Real, item['points'])
-
-        if 'id' in item:
-            seen.add(item['id'])
-            rubric_item = helpers.get_or_404(models.RubricItem, item['id'])
-
-            rubric_item.header = header
-            rubric_item.description = description
-            rubric_item.points = float(points)
-        else:
-            rubric_item = models.RubricItem(
-                rubricrow_id=rubric_row.id,
-                description=description,
-                header=header,
-                points=points
-            )
-            db.session.add(rubric_item)
-            rubric_row.items.append(rubric_item)
-
-    rubric_row.items = [
-        item for item in rubric_row.items if item.id is None or item.id in seen
-    ]
-
-    return len(rubric_row.items)
+        return models.RubricRow.create_from_json(assig, header, desc, items)
 
 
 @api.route("/assignments/<int:assignment_id>/submission", methods=['POST'])

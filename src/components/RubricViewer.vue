@@ -126,8 +126,9 @@ export default {
             if (Object.keys(this.selected).length === 0) {
                 grade = null;
             }
-            if (this.assignment && this.assignment.max_grade < grade) {
-                grade = this.assignment.max_grade;
+            const maxGrade = (this.assignment && this.assignment.max_grade) || 10;
+            if (grade > maxGrade) {
+                grade = maxGrade;
             }
             return grade;
         },
@@ -242,8 +243,7 @@ export default {
             const doRequest = UserConfig.features.incremental_rubric_submission;
 
             if (!doRequest) {
-                req = Promise.resolve().then(() => {
-                });
+                req = Promise.resolve();
             } else if (selectItem) {
                 req = this.$http.patch(`/api/v1/submissions/${this.submission.id}/rubricitems/${item.id}`);
             } else {

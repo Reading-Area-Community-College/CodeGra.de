@@ -157,11 +157,7 @@ export default {
             if (!this.rubricHasSelectedItems) {
                 return true;
             }
-            const rubricGrade = Math.max(
-                0,
-                (this.rubricPoints.selected / this.rubricPoints.max) * 10,
-            );
-            return this.grade !== formatGrade(rubricGrade);
+            return this.grade !== formatGrade(this.$refs.rubricViewer.grade);
         },
 
         rubricScore() {

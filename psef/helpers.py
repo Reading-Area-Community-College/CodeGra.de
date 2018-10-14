@@ -35,6 +35,10 @@ T = t.TypeVar('T')
 Z = t.TypeVar('Z', bound='Comparable')
 Y = t.TypeVar('Y', bound='model_types.Base')
 T_Type = t.TypeVar('T_Type', bound=t.Type)  # pylint: disable=invalid-name
+T_TypedDict = t.TypeVar(  # pylint: disable=invalid-name
+    'T_TypedDict',
+    bound=t.Mapping,
+)
 
 IsInstanceType = t.Union[t.Type, t.Tuple[t.Type, ...]]  # pylint: disable=invalid-name
 
@@ -360,6 +364,33 @@ def filter_users_by_name(
     return base.filter(or_(*likes)).order_by(
         t.cast(psef.models.DbColumn[str], psef.models.User.name)
     )
+
+
+def coerce_json_value_to_typeddict(
+    obj: JSONType, typeddict: t.Type[T_TypedDict]
+) -> T_TypedDict:
+    """Coerce a json object to a typed dict.
+
+    .. warning::
+
+        All types of the typed dict must be types that can be used with
+        :func:`isinstance`.
+
+    .. note::
+
+        The original object is returned, this only checks if all values are
+        valid.
+
+    :param obj: The object to coerce:
+    :param typeddict: The typeddict type that ``obj`` should be coerced to.
+    :returns: The given value ``obj``.
+    """
+    mapping = ensure_json_dict(obj)
+    annots = list(typeddict.__annotations__.items())
+    assert all(isinstance(t, type) for _, t in annots
+               ), "This function only supports checking for basic types"
+    ensure_keys_in_dict(mapping, annots)
+    return t.cast(T_TypedDict, mapping)
 
 
 def ensure_keys_in_dict(

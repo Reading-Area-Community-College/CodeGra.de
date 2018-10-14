@@ -1,13 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 import io
 import os
-import sys
 import copy
-import json
 import uuid
 import random
 import datetime
-from functools import reduce
 from collections import defaultdict
 
 import pytest
@@ -38,12 +35,12 @@ def original_rubric_data():
                             {
                                 'description': 'item description',
                                 'header': 'header',
-                                'points': 5,
+                                'points': 4,
                             },
                             {
                                 'description': 'item description',
                                 'header': 'header',
-                                'points': 4,
+                                'points': 5,
                             }
                         ]
                 }
@@ -302,6 +299,7 @@ def test_update_assignment_wrong_permissions(
 
 
 err400 = http_err(error=400)
+err404 = http_err(error=404)
 
 
 @pytest.mark.parametrize(
@@ -309,7 +307,11 @@ err400 = http_err(error=400)
     [err400(None), 'new idesc', err400(5)]
 )
 @pytest.mark.parametrize('item_header', [err400(None), 'new ihead', err400(5)])
-@pytest.mark.parametrize('item_points', [err400(None), 5.3, 11, err400('Wow')])
+@pytest.mark.parametrize(
+    'item_points',
+    [err400(None), 5.3, 11, err400(-2),
+     err400('Wow')]
+)
 @pytest.mark.parametrize(
     'row_description',
     [err400(None), 'new rdesc', err400(5)]
@@ -417,6 +419,59 @@ def test_update_rubric_row(
                 'description']
             assert len(data[0]['items']) == 2
             assert data[0]['items'][0]['id'] > 0
+            assert data[0]['items'][0]['points'] == item_points
+            assert data[0]['items'][0]['header'] == item_header
+            assert data[0]['items'][0]['description'] == item_description
+        else:
+            test_client.req(
+                'get',
+                f'/api/v1/assignments/{assignment.id}/rubrics/',
+                status_code=200,
+                result=rubric,
+            )
+
+
+@pytest.mark.parametrize('item_id', [err404(-1), None, err404(1000)])
+@pytest.mark.parametrize('item_description', [err400(None), 'new idesc'])
+@pytest.mark.parametrize('item_header', [err400(None), 'new ihead'])
+@pytest.mark.parametrize('item_points', [err400(None), 2])
+def test_update_rubric_item(
+    item_description, item_points, assignment, teacher_user, logged_in,
+    test_client, error_template, request, rubric, item_id, item_header
+):
+    new_rubric = copy.deepcopy(rubric)
+    old_rubric = copy.deepcopy(rubric)
+
+    row = new_rubric[0]
+
+    item = {}
+    if item_header is not None:
+        item['header'] = item_header
+    if item_description is not None:
+        item['description'] = item_description
+    if item_points is not None:
+        item['points'] = item_points
+    if item_id is not None:
+        item['id'] = item_id
+    else:
+        item['id'] = row['items'][0]['id']
+
+    row['items'][0] = item
+
+    marker = request.node.get_closest_marker('http_err')
+    code = 200 if marker is None else marker.kwargs['error']
+
+    with logged_in(teacher_user):
+        data = test_client.req(
+            'put',
+            f'/api/v1/assignments/{assignment.id}/rubrics/',
+            status_code=code,
+            data={'rows': new_rubric},
+            result=error_template if marker else [dict],
+        )
+        if marker is None:
+            assert len(data) == len(rubric)
+            assert data[0]['items'][0]['id'] == old_rubric[0]['items'][0]['id']
             assert data[0]['items'][0]['points'] == item_points
             assert data[0]['items'][0]['header'] == item_header
             assert data[0]['items'][0]['description'] == item_description
@@ -652,11 +707,11 @@ def test_creating_wrong_rubric(
                 'header': 'My header2',
                 'description': 'My description',
                 'items': [{
-                    'description': '5points',
-                    'points': -15
-                }, {
                     'description': '10points',
                     'points': -10,
+                }, {
+                    'description': '5points',
+                    'points': -15
                 }],
             }]
         }  # yapf: disable

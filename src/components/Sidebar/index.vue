@@ -181,7 +181,6 @@ export default {
                     onClick: () => {
                         this.$router.push({ name: 'login' });
                     },
-                    animateAdd: true,
                 },
                 {
                     name: 'register',
@@ -191,7 +190,6 @@ export default {
                     onClick: () => {
                         this.$router.push({ name: 'register' });
                     },
-                    animateAdd: true,
                 },
                 {
                     name: 'user',

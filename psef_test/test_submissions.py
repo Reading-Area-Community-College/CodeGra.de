@@ -300,10 +300,14 @@ def test_negative_points(
                 'description': 'BLA',
                 'header': 'Negative',
                 'points': -1,
+            }, {
+                'description': 'BLA+',
+                'header': 'Positive',
+                'points': 0,
             }],
         }]
     }  # yapf: disable
-    max_points = 9
+    max_points = 10
 
     with logged_in(teacher_user):
         rubric = test_client.req(
@@ -423,10 +427,14 @@ def test_selecting_rubric(
                 'description': 'BLA',
                 'header': 'Never selected',
                 'points': -1,
+            }, {
+                'description': 'BLA+',
+                'header': 'Never selected 2',
+                'points': 0,
             }],
         }]
     }  # yapf: disable
-    max_points = 11
+    max_points = 12
 
     with logged_in(teacher_user):
         rubric = test_client.req(
