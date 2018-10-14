@@ -473,6 +473,7 @@ def extract_to_temp(
     ignore_filter: IgnoreFilterManager,
     handle_ignore: IgnoreHandling = IgnoreHandling.keep,
     archive_name: str = 'archive',
+    parent_result_dir: t.Optional[str] = None,
 ) -> str:
     """Extracts the contents of file into a temporary directory.
 
@@ -480,16 +481,18 @@ def extract_to_temp(
     :param ignore_filter: The files and directories that should be ignored.
     :param handle_ignore: Determines how ignored files should be handled.
     :param archive_name: The name used for the archive in error messages.
+    :param parent_result_dir: The location the resulting directory should be
+        placed in.
     :returns: The pathname of the new temporary directory.
     """
     tmpfd, tmparchive = tempfile.mkstemp()
 
     try:
         os.remove(tmparchive)
-        tmparchive += os.path.basename(
-            secure_filename('archive_' + file.filename)
+        tmparchive += '_archive_{}'.format(
+            os.path.basename(secure_filename(file.filename))
         )
-        tmpdir = tempfile.mkdtemp()
+        tmpdir = tempfile.mkdtemp(dir=parent_result_dir)
         file.save(tmparchive)
 
         arch = archive.Archive.create_from_file(tmparchive)

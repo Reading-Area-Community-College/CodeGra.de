@@ -1365,6 +1365,7 @@ def start_plagiarism_check(
             base_code,
             psef.files.IgnoreFilterManager(None),
             archive_name='base_code_archive',
+            parent_result_dir=current_app.config['SHARED_TEMP_DIR'],
         )
 
     try:

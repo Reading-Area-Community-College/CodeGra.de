@@ -178,6 +178,14 @@
 # upload_dir = %(BASE_DIR)s/uploads
 # mirror_upload_dir = %(BASE_DIR)s/mirror_uploads
 
+# The directory used by CodeGrade to temporarily share files between different
+# layers which can be located on multiple machines. When you set this to another
+# path this DOES NOT mean that CodeGrade will store all its temporary files in
+# this directory. This directory is ONLY used for temporary files (neither
+# submissions or upload mirrors) that need to be used in multiple requests, such
+# as files that need to be shared by the web workers and celery.
+# shared_temp_dir =
+
 # Maximum size in bytes for single upload request in bytes, defaults to 64 * 2
 # ** 20 = 64 megabytes.
 # max_upload_size = 67108864

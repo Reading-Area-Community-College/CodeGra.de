@@ -4,6 +4,8 @@ import json
 import typing as t
 import secrets
 import datetime
+import tempfile
+import warnings
 import subprocess
 from configparser import ConfigParser
 
@@ -73,8 +75,8 @@ set_str(
     backend_ops,
     'SECRET_KEY',
     (
-        'secret' if CONFIG['DEBUG'] else
-        os.environ.get('CODEGRADE_JWT_SECRET_KEY')
+        'secret'
+        if CONFIG['DEBUG'] else os.environ.get('CODEGRADE_JWT_SECRET_KEY')
     ),
 )
 
@@ -84,8 +86,8 @@ set_str(
     backend_ops,
     'LTI_SECRET_KEY',
     (
-        'hunter123' if CONFIG['DEBUG'] else
-        os.environ.get('CODEGRADE_LTI_SECRET_KEY')
+        'hunter123'
+        if CONFIG['DEBUG'] else os.environ.get('CODEGRADE_LTI_SECRET_KEY')
     ),
 )
 
@@ -103,9 +105,8 @@ set_str(
     os.path.join(CONFIG['BASE_DIR'], 'uploads')
 )
 if not os.path.isdir(CONFIG['UPLOAD_DIR']):
-    print(
+    warnings.warn(
         f'The given uploads directory "{CONFIG["UPLOAD_DIR"]}" does not exist',
-        file=sys.stderr
     )
 
 set_str(
@@ -113,10 +114,16 @@ set_str(
     os.path.join(CONFIG['BASE_DIR'], 'mirror_uploads')
 )
 if not os.path.isdir(CONFIG['MIRROR_UPLOAD_DIR']):
-    print(
+    warnings.warn(
         f'The given uploads directory "{CONFIG["MIRROR_UPLOAD_DIR"]}"'
         ' does not exist',
-        file=sys.stderr
+    )
+
+set_str(CONFIG, backend_ops, 'SHARED_TEMP_DIR', tempfile.gettempdir())
+if not os.path.isdir(CONFIG['SHARED_TEMP_DIR']):
+    warnings.warn(
+        f'The given shared temp dir "{CONFIG["SHARED_TEMP_DIR"]}"'
+        ' does not exist'
     )
 
 # Maximum size in bytes for single upload request
