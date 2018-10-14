@@ -602,7 +602,7 @@ export default {
 
     .sidebar-bottom-item {
         flex: 1 1 auto;
-        padding: .5rem .25rem .25rem;
+        padding: .5rem .25rem .5rem;
         text-align: center;
     }
 }
