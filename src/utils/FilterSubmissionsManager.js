@@ -60,10 +60,10 @@ export function sortSubmissions(a, b, sortBy) {
     }
 
     if (sortBy === 'assignee') {
-        return cmpNoCase(nameOfUser(first.name), nameOfUser(second.name));
+        return cmpNoCase(nameOfUser(first), nameOfUser(second));
     } else if (sortBy === 'user') {
         return cmpNoCase(nameOfUser(first), nameOfUser(second));
-    } else if (sortBy === 'created_at') {
+    } else if (sortBy === 'formatted_created_at') {
         const createdA = a.formatted_created_at;
         const createdB = b.formatted_created_at;
 
