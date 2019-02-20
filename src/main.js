@@ -20,7 +20,6 @@ import router from '@/router';
 import { htmlEscape } from '@/utils';
 import store from './store';
 import * as mutationTypes from './store/mutation-types';
-import PermissionStore from './permissions';
 
 Vue.use(BootstrapVue);
 Vue.use(Toasted);
@@ -126,10 +125,26 @@ localforage.defineDriver(memoryStorageDriver).then(() => {
         })(),
     );
 
-    const permissionStore = new PermissionStore(axios, { driver: DRIVERS });
+    Vue.prototype.$hasPermission = (permission, courseId, asMap) => {
+        function makeResponse(map) {
+            if (typeof permission === 'string') {
+                return map[permission];
+            } else if (asMap) {
+                return map;
+            } else {
+                return permission.map(p => map[p]);
+            }
+        }
+        if (courseId) {
+            return store.dispatch('courses/loadCourses').then(() => {
+                const map = store.getters['courses/courses'][courseId].permissions;
+                return makeResponse(map);
+            });
+        } else {
+            return Promise.resolve(makeResponse(store.getters['user/permissions']));
+        }
+    };
 
-    Vue.prototype.$clearPermissions = (...args) => permissionStore.clearCache(...args);
-    Vue.prototype.$hasPermission = (...args) => permissionStore.hasPermission(...args);
 
     /* eslint-disable no-new */
     const app = new Vue({
@@ -217,7 +232,6 @@ localforage.defineDriver(memoryStorageDriver).then(() => {
 
             if (isF5 && (event.ctrlKey || event.shiftKey)) {
                 event.preventDefault();
-                await permissionStore.clearCache();
                 await app.$store.commit(`user/${mutationTypes.CLEAR_CACHE}`);
                 window.location.reload(true);
             }

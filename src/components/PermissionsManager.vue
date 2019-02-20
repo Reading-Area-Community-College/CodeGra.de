@@ -75,7 +75,7 @@
                  @input="hideWarning"
                  variant="info"
                  class="perm-warning">
-            Reload the page using <kbd>Shift</kbd> + <kbd>F5</kbd> to apply the changes.
+            Reload the page to apply the changes.
         </b-alert>
     </transition>
 

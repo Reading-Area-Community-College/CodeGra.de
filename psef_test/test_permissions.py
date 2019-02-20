@@ -215,7 +215,11 @@ def test_get_all_permissions(
         course_perms = test_client.req(
             'get',
             f'/api/v1/permissions/',
-            400,
+            200,
             query={'type': 'course'},
-            result=error_template
         )
+        for course_id, p_val in course_perms.items():
+            for p in CoursePermission:
+                assert p_val[p.name] == named_user.has_permission(
+                    CoursePermission.get_by_name(p.name), int(course_id)
+                )

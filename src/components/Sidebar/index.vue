@@ -178,7 +178,6 @@ export default {
         return {
             loading: true,
             loaded: false,
-            canManageSite: false,
             entries: [
                 {
                     name: 'login',
@@ -303,6 +302,12 @@ export default {
         ...mapGetters('courses', ['courses', 'assignments']),
 
         ...mapGetters('user', ['loggedIn', 'name']),
+        ...mapGetters('user', { globalPermissions: 'permissions' }),
+
+
+        canManageSite() {
+            return MANAGE_SITE_PERIMSSIONS.every(x => this.globalPermissions[x]);
+        },
 
         courseId() {
             return Number(this.$route.params.courseId);
@@ -361,16 +366,6 @@ export default {
     },
 
     watch: {
-        loggedIn(newVal) {
-            if (newVal) {
-                this.$hasPermission(MANAGE_SITE_PERIMSSIONS).then(perms => {
-                    this.canManageSite = perms.every(x => x);
-                });
-            } else {
-                this.canManageSite = false;
-            }
-        },
-
         $route(newVal, oldVal) {
             if (newVal.name === oldVal.name) {
                 return;
@@ -391,12 +386,7 @@ export default {
         this.fixAppMargin();
 
         if (this.loggedIn) {
-            const [, perms] = await Promise.all([
-                this.loadCourses(),
-                this.$hasPermission(MANAGE_SITE_PERIMSSIONS),
-            ]);
-
-            this.canManageSite = perms.every(x => x);
+            await this.loadCourses();
         }
 
         this.$root.$on('sidebar::show', submenu => {

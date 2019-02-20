@@ -19,8 +19,8 @@ from psef.errors import APICodes, APIWarnings, APIException
 from psef.models import db
 from psef.helpers import (
     JSONResponse, EmptyResponse, ExtendedJSONResponse, jsonify, validate,
-    add_warning, ensure_json_dict, extended_jsonify, ensure_keys_in_dict,
-    make_empty_response
+    add_warning, ensure_json_dict, extended_jsonify, request_arg_true,
+    ensure_keys_in_dict, make_empty_response
 )
 from psef.exceptions import WeakPasswordException
 
@@ -38,6 +38,9 @@ def login() -> ExtendedJSONResponse[t.Mapping[str, t.Union[models.User, str]]]:
 
     :<json str username: The username of the user to log in.
     :<json str password: The password of the user to log in.
+    :query with_permissions: Setting this to true will add the key
+        ``permissions`` to the user. The value will be a mapping indicating
+        which global permissions this user has.
 
     :>json user: The user that was logged in.
     :>jsonobj user: :py:class:`~.models.User`
@@ -96,10 +99,13 @@ def login() -> ExtendedJSONResponse[t.Mapping[str, t.Union[models.User, str]]]:
         )
 
     auth.set_current_user(user)
+    json_user = user.__extended_to_json__()
+    if request_arg_true('with_permissions'):
+        json_user['permissions'] = GPerm.create_map(user.get_all_permissions())
     return extended_jsonify(
         {
             'user':
-                user,
+                json_user,
             'access_token':
                 flask_jwt.create_access_token(
                     identity=user.id,
@@ -124,6 +130,9 @@ def self_information(
         :py:meth:`.models.User.__extended_to_json__()` will be returned. If
         this is something else or not present the result of
         :py:meth:`.models.User.__to_json__()` will be returned.
+    :query with_permissions: Setting this to true will add the key
+        ``permissions`` to the user. The value will be a mapping indicating
+        which global permissions this user has.
     :returns: A response containing the JSON serialized user
 
     :raises PermissionException: If there is no logged in user. (NOT_LOGGED_IN)
@@ -138,7 +147,12 @@ def self_information(
         )
 
     elif helpers.extended_requested() or args.get('type') == 'extended':
-        return extended_jsonify(current_user)
+        obj = current_user.__extended_to_json__()
+        if request_arg_true('with_permissions'):
+            obj['permissions'] = GPerm.create_map(
+                current_user.get_all_permissions()
+            )
+        return extended_jsonify(obj)
     return jsonify(current_user)
 
 

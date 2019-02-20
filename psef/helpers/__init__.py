@@ -67,6 +67,25 @@ def add_warning(warning: str, code: psef.exceptions.APIWarnings) -> None:
     g.request_warnings.append(psef.errors.make_warning(warning, code))
 
 
+def add_deprecate_warning(warning: str) -> None:
+    """Add a deprecation warning to the request.
+
+    :param warning: Explanation about what api is deprecated.
+    :returns: Nothing
+    """
+    logger.info(
+        'A deprecated api was used',
+        deprecation_warning=True,
+        warning_msg=warning,
+    )
+    g.request_warnings.append(
+        psef.errors.make_warning(
+            f'This API is deprecated: {warning}',
+            psef.exceptions.APIWarnings.DEPRECATED,
+        )
+    )
+
+
 class Comparable(Protocol):  # pragma: no cover
     """A protocol that for comparable variables.
 

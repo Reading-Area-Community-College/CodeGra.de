@@ -12,7 +12,9 @@ from flask import request
 import psef.auth as auth
 from psef import current_user
 from psef.errors import APICodes, APIException
-from psef.helpers import JSONResponse, jsonify, ensure_keys_in_dict
+from psef.helpers import (
+    JSONResponse, jsonify, ensure_keys_in_dict, add_deprecate_warning
+)
 
 from . import api
 from ..permissions import CoursePermMap, GlobalPermMap
@@ -35,7 +37,8 @@ def get_course_or_global_permissions(
         ``course``.
     :qparam str permission: The permissions to get when getting course
         permissions. You can pass this parameter multiple times to get multiple
-        permissions.
+        permissions. DEPRECATED: This option is deprecated, as it is preferred
+        that you simply get all permissions for a course.
 
     :returns: The returning object depends on the given ``type``. If it was
         ``global`` a mapping between permissions name and a boolean indicating
@@ -44,14 +47,19 @@ def get_course_or_global_permissions(
         If it was ``course`` such a mapping is returned for every course the
         user is enrolled in. So it is a mapping between course ids and
         permission mapping. The permissions given as ``permission`` query
-        parameter are the only ones that are present in the permission map.
+        parameter are the only ones that are present in the permission
+        map. When no ``permission`` query is given all course permissions are
+        returned.
     """
     ensure_keys_in_dict(request.args, [('type', str)])
     permission_type = t.cast(str, request.args['type']).lower()
 
     if permission_type == 'global':
         return jsonify(GPerm.create_map(current_user.get_all_permissions()))
-    elif permission_type == 'course':
+    elif permission_type == 'course' and 'permission' in request.args:
+        add_deprecate_warning(
+            'Requesting a subset of course permissions is deprecated'
+        )
         # Make sure at least one permission is present
         ensure_keys_in_dict(request.args, [('permission', str)])
         perm_names = t.cast(t.List[str], request.args.getlist('permission'))
@@ -61,6 +69,14 @@ def get_course_or_global_permissions(
                 for course_id, v in current_user.get_permissions_in_courses(
                     [CPerm.get_by_name(p) for p in perm_names]
                 ).items()
+            }
+        )
+    elif permission_type == 'course':
+        return jsonify(
+            {
+                course_id: CPerm.create_map(v)
+                for course_id, v in current_user.
+                get_all_permissions_in_courses().items()
             }
         )
     else:

@@ -50,7 +50,6 @@ export default {
                         await this.updateAccessToken(data.access_token);
                     } else {
                         this.clearPlagiarismCases();
-                        this.$clearPermissions();
                     }
 
                     this.$LTIAssignmentId = data.assignment.id;

@@ -43,7 +43,8 @@ def test_login(
         email='a@a.nl',
         password='a',
         active=active,
-        username='a-the-a-er'
+        username='a-the-a-er',
+        role=session.query(m.Role).first(),
     )
     session.add(new_user)
     session.commit()
@@ -69,7 +70,7 @@ def test_login(
     with app.app_context():
         res = test_client.req(
             'post',
-            f'/api/v1/login',
+            f'/api/v1/login?with_permissions',
             error or 200,
             data=data,
             result=error_template if error else {
@@ -80,6 +81,7 @@ def test_login(
                         'name': 'NEW_USER',
                         'username': 'a-the-a-er',
                         'hidden': False,
+                        'permissions': dict,
                         'group': None,
                     },
                 'access_token': str
@@ -152,12 +154,13 @@ def test_extended_get_login(test_client, named_user, logged_in, request):
             'get',
             '/api/v1/login',
             200,
-            query={'type': 'extended'},
+            query={'type': 'extended', 'with_permissions': ''},
             result={
                 'name': str,
                 'id': int,
                 'email': str,
                 'hidden': perm_true,
+                'permissions': dict,
                 'group': None,
                 'username': str,
             }

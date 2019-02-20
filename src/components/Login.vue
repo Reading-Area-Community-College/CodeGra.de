@@ -74,7 +74,7 @@ export default {
                 return Promise.reject(new Error('Please enter a username and password.'));
             }
 
-            return this.$http.post('/api/v1/login', {
+            return this.$http.post('/api/v1/login?with_permissions', {
                 username: this.username,
                 password: this.password,
             });

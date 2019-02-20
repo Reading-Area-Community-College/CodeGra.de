@@ -219,6 +219,40 @@ class User(Base):
                 return self.courses[course_id].has_permission(permission)
             return False
 
+    def get_all_permissions_in_courses(
+        self,
+    ) -> t.Mapping[int, t.Mapping[CoursePermission, bool]]:
+        """Get all permissions for all courses the current user is enrolled in
+
+        :returns: A mapping from course id to a mapping from
+            :py:class:`.CoursePermission` to a boolean indicating if the
+            current user has this permission.
+        """
+        permission_links = db.session.query(
+            user_course.c.course_id, Permission.get_name_column()
+        ).join(User, User.id == user_course.c.user_id).filter(
+            user_course.c.user_id == self.id
+        ).join(
+            course_permissions,
+            course_permissions.c.course_role_id == user_course.c.course_id
+        ).join(
+            Permission,
+            course_permissions.c.permission_id == Permission.id,
+            isouter=True
+        )
+        lookup: t.Mapping[int, t.Set[int]] = defaultdict(set)
+        for course_role_id, perm_name in permission_links:
+            lookup[course_role_id].add(perm_name)
+
+        out: t.MutableMapping[int, t.Mapping[CoursePermission, bool]] = {}
+        for course_id, course_role in self.courses.items():
+            perms = lookup[course_role.id]
+            out[course_id] = {
+                p: (p.name in perms) ^ p.value.default_value
+                for p in CoursePermission
+            }
+        return out
+
     def get_permissions_in_courses(
         self,
         wanted_perms: t.Sequence[CoursePermission],

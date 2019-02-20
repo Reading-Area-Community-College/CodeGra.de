@@ -13,6 +13,7 @@ const getters = {
     name: state => state.name,
     username: state => state.username,
     canSeeHidden: state => state.canSeeHidden,
+    permissions: state => state.permissions || {},
     findSnippetsByPrefix(state) {
         let values = [];
         if (state && state.snippets !== UNLOADED_SNIPPETS) {
@@ -82,7 +83,7 @@ const actions = {
     verifyLogin({ commit, state, dispatch }) {
         return new Promise((resolve, reject) => {
             axios
-                .get('/api/v1/login?type=extended')
+                .get('/api/v1/login?type=extended&with_permissions')
                 .then(response => {
                     // We are already logged in. Update state to logged in state
                     commit(types.LOGIN, {
@@ -129,6 +130,7 @@ const mutations = {
         state.name = userdata.name;
         state.canSeeHidden = userdata.hidden;
         state.username = userdata.username;
+        state.permissions = userdata.permissions;
     },
 
     [types.SNIPPETS](state, snippets) {
@@ -143,7 +145,6 @@ const mutations = {
         state.canSeeHidden = false;
         state.jwtToken = null;
         state.username = null;
-        Vue.prototype.$clearPermissions();
     },
 
     [types.NEW_SNIPPET](state, { id, key, value }) {
@@ -184,6 +185,7 @@ export default {
         email: '',
         name: '',
         snippets: UNLOADED_SNIPPETS,
+        permissions: null,
         canSeeHidden: false,
         username: '',
     },
