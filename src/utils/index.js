@@ -205,3 +205,14 @@ export function loadCodeAndFeedback(http, fileId) {
         },
     );
 }
+
+export function enumerateItems(list) {
+    if (list.length === 1) {
+        return list[0];
+    } else if (list.length === 2) {
+        return `${list[0]} and ${list[1]}`;
+    } else {
+        const butLast = list.slice(0, -1);
+        return `${butLast.join(',')}, and ${list[list.length - 1]}`;
+    }
+}

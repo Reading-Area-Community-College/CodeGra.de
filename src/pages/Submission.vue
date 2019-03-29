@@ -141,6 +141,15 @@
         </component>
     </local-header>
 
+    <b-alert show dismissible
+                variant="warning"
+                class="linter-crashed-alert"
+                v-if="crashedLinters.length">
+        The <span v-html="enumerateItems(crashedLinters)"/>
+        linter{{ crashedLinters.length > 1 ? 's' : '' }}
+        crashed on this submission.
+    </b-alert>
+
     <loader center v-if="loadingInner"/>
     <component
         :is="!overviewMode && $root.$isLargeWindow ? 'rs-panes' : 'div'"
@@ -180,8 +189,7 @@
                        :editable="editable"
                        @new-lang="languageChanged"
                        :language="selectedLanguage"
-                       :can-use-snippets="canUseSnippets"
-                       />
+                       :can-use-snippets="canUseSnippets"/>
         </div>
         <div class="file-tree-container " v-if="!overviewMode"
              slot="secondPane">
@@ -197,6 +205,7 @@
                        @revision="revisionChanged"/>
         </div>
     </component>
+
     <grade-viewer :assignment="assignment"
                   :submission="submission"
                   :rubric="rubric"
@@ -219,7 +228,7 @@ import ResSplitPane from 'vue-resize-split-pane';
 
 import { mapGetters, mapActions } from 'vuex';
 
-import { cmpNoCase, parseBool, nameOfUser } from '@/utils';
+import { cmpNoCase, parseBool, nameOfUser, enumerateItems } from '@/utils';
 
 import {
     CodeViewer,
@@ -265,6 +274,7 @@ export default {
             gradeHistory: true,
             editable: false,
             canUseSnippets: false,
+            crashedLinters: [],
         };
     },
 
@@ -581,7 +591,7 @@ export default {
         },
 
         getSubmissionData() {
-            return Promise.all([this.getFileTrees(), this.getRubric()]);
+            return Promise.all([this.getFileTrees(), this.getRubric(), this.getLinterState()]);
         },
 
         getFileTrees() {
@@ -705,6 +715,19 @@ export default {
                 }, () => null);
         },
 
+        getLinterState() {
+            if (!UserConfig.features.linters) {
+                return Promise.resolve(null);
+            }
+            return this.$http
+                .get(`/api/v1/assignments/${this.assignmentId}/linters/`)
+                .then(({ data: linters }) => {
+                    this.crashedLinters = linters
+                        .filter(linter => linter.state === 'crashed')
+                        .map(linter => `<b>${this.$htmlEscape(linter.name)}</b>`);
+                }, () => null);
+        },
+
         // Returns the first file in the file tree that is not a folder
         // The file tree is searched with BFS
         getFirstFile(fileTree) {
@@ -782,6 +805,10 @@ export default {
 
         revisionChanged(val) {
             this.setRevision(val);
+        },
+
+        enumerateItems(list) {
+            return enumerateItems(list);
         },
     },
 
