@@ -47,7 +47,7 @@ import 'vue-awesome/icons/cog';
 
 import Baby from 'babyparse';
 
-import { nameOfUser } from '@/utils';
+import { downloadFile, nameOfUser } from '@/utils';
 
 export default {
     name: 'submissions-exporter',
@@ -204,9 +204,7 @@ export default {
                     fields: this.enabledColumns.map(obj => obj.name),
                     data,
                 });
-                this.$http.post('/api/v1/files/', csv).then(response => {
-                    window.open(`/api/v1/files/${response.data}/${this.currentFilename}`);
-                });
+                downloadFile(csv, this.currentFilename, 'text/csv');
             });
         },
     },

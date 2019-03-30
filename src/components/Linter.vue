@@ -114,9 +114,9 @@
                                     <div v-b-popover.top.hover="'Download the output of the linter.'"
                                          v-if="test.state === 'crashed'">
                                         <submit-button size="sm"
-                                                    :submit="() => downloadLog(test)"
-                                                    @success="afterDownloadLog"
-                                                    class="download-log-btn">
+                                                       :submit="() => downloadLog(test)"
+                                                       @success="afterDownloadLog"
+                                                       class="download-log-btn">
                                             <icon name="download"/>
                                         </submit-button>
                                     </div>
@@ -141,7 +141,7 @@ import Icon from 'vue-awesome/components/Icon';
 import 'vue-awesome/icons/exclamation-triangle';
 import 'vue-awesome/icons/download';
 
-import { nameOfUser } from '@/utils';
+import { downloadFile, nameOfUser } from '@/utils';
 
 import SubmitButton from './SubmitButton';
 import InnerMarkdownViewer from './InnerMarkdownViewer';
@@ -262,28 +262,15 @@ export default {
         downloadLog(test) {
             return this.$http
                 .get(`/api/v1/linters/${this.id}/linter_instances/${test.id}`)
-                .then(({ data }) =>
-                    this.$http
-                        .post(
-                            '/api/v1/files/',
-                            `${data.error_summary}\n${data.stdout}\n${data.stderr}`,
-                        )
-                        .then(res => ({
-                            data: res.data,
-                            user: test.work.user,
-                        })),
-                );
+                .then(({ data }) => ({
+                    data: `${data.error_summary}\n${data.stdout}\n${data.stderr}`,
+                    user: test.work.user,
+                }));
         },
 
-        afterDownloadLog(response) {
-            const params = new URLSearchParams();
-            params.append('not_as_attachment', '');
-            const filename = `Linter log for ${nameOfUser(response.user)}.txt`;
-            window.open(
-                `/api/v1/files/${response.data}/${encodeURIComponent(
-                    filename,
-                )}?${params.toString()}`,
-            );
+        afterDownloadLog({ data, user }) {
+            const filename = `Linter log for ${nameOfUser(user)}.txt`;
+            downloadFile(data, filename, 'text/plain');
         },
 
         changeSubCollapse(state) {

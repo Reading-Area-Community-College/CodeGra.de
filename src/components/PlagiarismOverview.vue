@@ -16,11 +16,12 @@
             Plagiarism overview for assignment &quot;{{assignment.name}}&quot; of &quot;{{assignment.course.name}}&quot;
         </template>
 
-        <submit-button label="Download log"
-                       class="download-btn"
-                       variant="secondary"
-                       :submit="downloadLog"
-                       @success="afterDownloadLog"/>
+        <b-button class="download-btn"
+                  variant="secondary"
+                  @click="downloadLog">
+            Download log
+        </b-button>
+
         <input v-model="filter"
                class="filter-input form-control"
                placeholder="Filter students"/>
@@ -79,7 +80,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 import { SubmitButton, Loader, LocalHeader, DescriptionPopover, User } from '@/components';
 
-import { getOtherAssignmentPlagiarismDesc, nameOfUser } from '@/utils';
+import { downloadFile, getOtherAssignmentPlagiarismDesc, nameOfUser } from '@/utils';
 
 export default {
     name: 'plagiarism-overview',
@@ -172,18 +173,8 @@ export default {
         }),
 
         downloadLog() {
-            return this.$http.post('/api/v1/files/', this.run.log);
-        },
-
-        afterDownloadLog(response) {
-            const params = new URLSearchParams();
-            params.append('not_as_attachment', '');
             const filename = `Plagiarism log for ${this.assignment.name}.txt`;
-            window.open(
-                `/api/v1/files/${response.data}/${encodeURIComponent(
-                    filename,
-                )}?${params.toString()}`,
-            );
+            downloadFile(this.run.log, filename, 'text/plain');
         },
 
         rowClicked(item) {

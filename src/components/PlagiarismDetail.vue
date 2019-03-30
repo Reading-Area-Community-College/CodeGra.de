@@ -131,7 +131,7 @@
 import { mapActions, mapGetters } from 'vuex';
 import decodeBuffer from '@/utils/decode';
 
-import { nameOfUser } from '@/utils';
+import { downloadFile, nameOfUser } from '@/utils';
 
 import { Loader, LocalHeader, SubmitButton, User } from '@/components';
 
@@ -523,14 +523,14 @@ export default {
                 throw new Error('Select at least one case.');
             }
 
-            return this.getTexFile(matches).then(text => this.$http.post('/api/v1/files/', text));
+            return this.getTexFile(matches);
         },
 
-        afterExportToLatex(response) {
+        afterExportToLatex(texData) {
             this.exportMatches = {};
             const [user1, user2] = this.detail.users;
             const fileName = `plagiarism_case_${nameOfUser(user1)}+${nameOfUser(user2)}.tex`;
-            window.open(`/api/v1/files/${response.data}/${encodeURIComponent(fileName)}`, '_blank');
+            downloadFile(texData, fileName, 'text/x-tex');
         },
     },
 
