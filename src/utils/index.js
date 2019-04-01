@@ -209,9 +209,10 @@ export function loadCodeAndFeedback(http, fileId) {
 // https://stackoverflow.com/questions/13405129/javascript-create-and-save-file
 export function downloadFile(data, filename, type) {
     const file = new Blob([data], { type });
-    if (window.navigator.msSaveOrOpenBlob) { // IE10+
+    if (window.navigator.msSaveOrOpenBlob) {
+        // IE10+
         window.navigator.msSaveOrOpenBlob(file, filename);
-    } else { // Others
+    } else {
         const url = URL.createObjectURL(file);
         const a = document.createElement('a');
         a.href = url;
