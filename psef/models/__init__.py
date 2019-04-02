@@ -208,6 +208,7 @@ if True:  # pylint: disable=using-constant-test
     from .comment import Comment
     from .role import AbstractRole, Role, CourseRole
     from .snippet import Snippet
+    from .course_snippet import CourseSnippet
     from .rubric import RubricItem, RubricRow
     from .group import GroupSet, Group
     from .link_tables import user_course

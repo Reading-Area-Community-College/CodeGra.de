@@ -715,3 +715,164 @@ def create_group_set(course_id: int) -> JSONResponse[models.GroupSet]:
     models.db.session.commit()
 
     return jsonify(group_set)
+
+
+@api.route('/courses/<int:course_id>/snippets/', methods=['GET'])
+@auth.permission_required(GPerm.can_use_snippets)
+@auth.login_required
+def get_course_snippets(course_id: int
+                        ) -> JSONResponse[t.Sequence[models.CourseSnippet]]:
+    """Get all snippets (:class:`.models.CourseSnippet`) of the given
+    :class:`.models.Course`.
+
+    .. :quickref: CourseSnippet; Get all snippets for the given course.
+
+    :returns: An array containing all snippets for the given course.
+
+    :raises PermissionException: If there is no logged in user. (NOT_LOGGED_IN)
+    :raises PermissionException: If the user can not use snippets.
+        (INCORRECT_PERMISSION)
+    :raises PermissionException: If the user can not manage snippets for this
+        course. (INCORRECT_PERMISSION)
+    """
+    auth.ensure_any_of_permissions(
+        [CPerm.can_view_course_snippets, CPerm.can_manage_course_snippets],
+        course_id,
+    )
+    course = helpers.get_or_404(models.Course, course_id)
+
+    return jsonify(models.CourseSnippet.get_course_snippets(course))
+
+
+@api.route('/courses/<int:course_id>/snippet', methods=['PUT'])
+@auth.permission_required(GPerm.can_use_snippets)
+@auth.login_required
+def create_course_snippet(course_id: int
+                          ) -> JSONResponse[models.CourseSnippet]:
+    """Add or modify a :class:`.models.CourseSnippet` by key.
+
+    .. :quickref: CourseSnippet; Add or modify a course snippet.
+
+    :returns: A response containing the JSON serialized snippet and return
+              code 201.
+    :<json str value: The new value of the snippet.
+    :<json str key: The key of the new or existing snippet.
+
+    :raises APIException: If the parameters "key", "value", and/or "course_id"
+        were not in the request. (MISSING_REQUIRED_PARAM)
+    :raises PermissionException: If there is no logged in user. (NOT_LOGGED_IN)
+    :raises PermissionException: If the user can not use snippets
+        (INCORRECT_PERMISSION)
+    """
+    auth.ensure_permission(CPerm.can_manage_course_snippets, course_id)
+    content = ensure_json_dict(request.get_json())
+    ensure_keys_in_dict(content, [('value', str), ('key', str)])
+    key = t.cast(str, content['key'])
+    value = t.cast(str, content['value'])
+
+    snippet: t.Optional[models.CourseSnippet
+                        ] = models.CourseSnippet.query.filter_by(
+                            course_id=course_id,
+                            key=key,
+                        ).first()
+
+    if snippet is None:
+        snippet = models.CourseSnippet(
+            course_id=course_id,
+            key=key,
+            value=value,
+        )
+        db.session.add(snippet)
+    else:
+        snippet.value = value
+
+    db.session.commit()
+
+    return jsonify(snippet, status_code=201)
+
+
+@api.route(
+    '/courses/<int:course_id>/snippets/<int:snippet_id>', methods=['PATCH']
+)
+@auth.permission_required(GPerm.can_use_snippets)
+def patch_course_snippet(course_id: int, snippet_id: int) -> EmptyResponse:
+    """Modify the :class:`.models.CourseSnippet` with the given id.
+
+    .. :quickref: CourseSnippet; Change a snippets key and value.
+
+    :param int snippet_id: The id of the snippet to change.
+    :returns: An empty response with return code 204.
+
+    :<json str key: The new key of the snippet.
+    :<json str value: The new value of the snippet.
+
+    :raises APIException: If the parameters "key" and/or "value" were not in
+        the request. (MISSING_REQUIRED_PARAM)
+    :raises APIException: If the snippet does not belong to the current user.
+        (INCORRECT_PERMISSION)
+    :raises PermissionException: If there is no logged in user. (NOT_LOGGED_IN)
+    :raises PermissionException: If the user can not use snippets.
+        (INCORRECT_PERMISSION)
+    """
+    auth.ensure_permission(CPerm.can_manage_course_snippets, course_id)
+    content = ensure_json_dict(request.get_json())
+
+    ensure_keys_in_dict(content, [('key', str), ('value', str)])
+    key = t.cast(str, content['key'])
+    value = t.cast(str, content['value'])
+
+    snip = helpers.get_or_404(models.CourseSnippet, snippet_id)
+
+    if snip.course_id != course_id:
+        raise APIException(
+            'The given snippet does not belong to the given course',
+            'The snippet "{}" does not belong to course "{}"'.format(
+                snip.id, course_id
+            ), APICodes.INCORRECT_PERMISSION, 403
+        )
+
+    snip.key = key
+    snip.value = value
+    db.session.commit()
+
+    return make_empty_response()
+
+
+@api.route(
+    '/courses/<int:course_id>/snippets/<int:snippet_id>', methods=['DELETE']
+)
+@auth.permission_required(GPerm.can_use_snippets)
+def delete_course_snippets(course_id: int, snippet_id: int) -> EmptyResponse:
+    """Delete the :class:`.models.CourseSnippet` with the given id.
+
+    .. :quickref: CourseSnippet; Delete a course snippet.
+
+    :param int snippet_id: The id of the snippet
+    :returns: An empty response with return code 204
+
+    :raises APIException: If the snippet with the given id does not exist.
+        (OBJECT_ID_NOT_FOUND)
+    :raises APIException: If the snippet does not belong the current user.
+        (INCORRECT_PERMISSION)
+    :raises PermissionException: If there is no logged in user. (NOT_LOGGED_IN)
+    :raises PermissionException: If the user can not use snippets.
+        (INCORRECT_PERMISSION)
+    """
+    auth.ensure_permission(CPerm.can_manage_course_snippets, course_id)
+
+    snip: t.Optional[models.CourseSnippet]
+    snip = helpers.get_or_404(models.CourseSnippet, snippet_id)
+    snip = models.CourseSnippet.query.get(snippet_id)
+    assert snip is not None
+
+    if snip.course_id != course_id:
+        raise APIException(
+            'The given snippet does not belong to the given course',
+            'The snippet "{}" does not belong to course "{}"'.format(
+                snip.id, course_id
+            ), APICodes.INCORRECT_PERMISSION, 403
+        )
+    else:
+        db.session.delete(snip)
+        db.session.commit()
+        return make_empty_response()

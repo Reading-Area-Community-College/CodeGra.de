@@ -27,7 +27,8 @@
       "can_edit_others_groups",
       "can_edit_groups_after_submission",
       "can_view_others_groups",
-      "can_create_groups"
+      "can_create_groups",
+      "can_view_course_snippets"
     ],
     "initial_role": false
   },
@@ -67,7 +68,9 @@
       "can_view_others_groups",
       "can_edit_group_assignment",
       "can_edit_group_set",
-      "can_create_groups"
+      "can_create_groups",
+      "can_view_course_snippets",
+      "can_manage_course_snippets"
     ],
     "initial_role": true
   },
