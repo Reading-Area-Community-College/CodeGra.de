@@ -10,7 +10,7 @@
 
     <ul class="sidebar-list"
         v-if="assignments.length > 0">
-        <li class="sidebar-list-section-header"
+        <li class="sidebar-list-section-header text-muted"
             v-if="showTopAssignments">
             <small>Nearest deadlines</small>
         </li>

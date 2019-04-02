@@ -8,13 +8,7 @@
                      :to="{ name: 'home' }"
                      :target="$inLTI ? '_blank' : undefined"
                      @click.native="closeSubMenu(true)">
-            <img src="/static/img/CodeGrade_christmas.svg"
-                 v-if="isChristmas && showRegularLogo"/>
-            <img src="/static/img/CodeGrade_christmas_dark.svg"
-                 v-else-if="isChristmas && showInvertedLogo"/>
-            <img src="/static/img/logo.svg" v-else-if="showRegularLogo"/>
-            <img src="/static/img/logo-inv.svg" v-else-if="showInvertedLogo"/>
-            <img src="/static/img/codegrade.svg" v-else/>
+            <img :src="logoSrc"/>
         </router-link>
         <hr class="separator">
         <div class="sidebar-top">
@@ -302,6 +296,8 @@ export default {
         ...mapGetters('user', ['loggedIn', 'name']),
         ...mapGetters('user', { globalPermissions: 'permissions' }),
 
+        ...mapGetters('pref', ['darkMode']),
+
         canManageSite() {
             return MANAGE_SITE_PERIMSSIONS.every(x => this.globalPermissions[x]);
         },
@@ -365,12 +361,22 @@ export default {
             return this.$inLTI || !this.$root.$isMediumWindow || hideRoutes.has(route);
         },
 
-        showRegularLogo() {
-            return !(this.mobileVisible || (this.$inLTI && !this.$store.getters['pref/darkMode']));
-        },
+        logoSrc() {
+            let logo;
 
-        showInvertedLogo() {
-            return !this.mobileVisible && this.$inLTI && !this.$store.getters['pref/darkMode'];
+            if (this.isChristmas) {
+                logo = 'CodeGrade_christmas';
+            } else if (!this.mobileVisible) {
+                logo = 'logo';
+            } else {
+                logo = 'codegrade';
+            }
+
+            if (!this.darkMode && this.$inLTI) {
+                logo += '-inv';
+            }
+
+            return `/static/img/${logo}.svg`;
         },
     },
 
@@ -606,15 +612,14 @@ export default {
     flex-direction: column;
     min-width: 6rem;
     height: 100%;
-
     color: white;
     background-color: @color-primary;
-    @{lti-colors} & {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+    #app.lti:not(.dark) & {
         background-color: white;
         color: @text-color;
     }
-
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
     @media @media-no-small {
         width: 6em;
@@ -751,11 +756,12 @@ export default {
         width: 100%;
         height: 100%;
 
-        background-color: @color-primary;
-        color: white;
-        @{lti-colors} & {
-            background-color: white;
-            color: @color-primary;
+        background-color: white;
+        color: @color-primary;
+
+        #app.dark & {
+            background-color: @color-primary;
+            color: white;
         }
 
         &:last-child {
@@ -814,27 +820,27 @@ export default {
         border-radius: 0;
 
         background-color: transparent !important;
-        color: @text-color-dark;
+        color: @text-color;
+
+        #app.dark & {
+            color: @text-color-dark;
+        }
 
         &:hover {
-            background-color: @color-primary-darker !important;
+            background-color: @color-light-gray !important;
 
-            @{lti-colors} & {
-                background-color: @color-light-gray !important;
+            #app.dark & {
+                background-color: @color-primary-darker !important;
             }
         }
 
-        @{lti-colors} & {
-            color: @text-color;
-        }
-
         &.active {
-            background-color: white !important;
-            color: @color-primary !important;
+            background-color: @color-primary !important;
+            color: white !important;
 
-            @{lti-colors} & {
-                background-color: @color-primary !important;
-                color: white !important;
+            #app.dark & {
+                background-color: white !important;
+                color: @color-primary !important;
             }
         }
     }
@@ -857,8 +863,7 @@ export default {
     }
 
     & &-list-section-header {
-        padding: 0 0.75rem;
-        color: @color-light-gray;
+        padding: 0 0.75rem 0.25rem;
     }
 
     & &-list-item {
@@ -867,19 +872,21 @@ export default {
     }
 
     & &-top-item,
-    & &-bottom-item,
-    & &-list-item {
+    & &-bottom-item {
         cursor: pointer;
 
         &:hover {
             background-color: lighten(@color-primary-darker, 2%);
-            @{lti-colors} & {
+
+            #app.lti:not(.dark) & {
                 background-color: @color-lighter-gray;
             }
         }
+
         &:not(.light-selected) a:hover {
             background-color: @color-primary-darkest;
-            @{lti-colors} & {
+
+            #app.lti:not(.dark) & {
                 background-color: @color-light-gray;
             }
         }
@@ -887,14 +894,15 @@ export default {
         &.light-selected {
             background-color: lightgray;
             color: @color-primary;
-            @{lti-colors} & {
+
+            #app.lti:not(.dark) & {
                 background-color: lighten(@color-primary, 5%);
                 color: white;
             }
 
             a:hover:not(.selected) {
                 background-color: darken(lightgray, 7.9%);
-                @{lti-colors} & {
+                #app.lti:not(.dark) & {
                     background-color: @color-primary-darkest;
                 }
             }
@@ -904,7 +912,8 @@ export default {
         &.selected {
             background-color: white;
             color: @color-primary;
-            @{lti-colors} & {
+
+            #app.lti:not(.dark) & {
                 color: white;
                 background-color: @color-primary;
             }
@@ -913,9 +922,70 @@ export default {
             a:hover {
                 background-color: darken(white, 7.9%);
                 color: @color-primary;
-                @{lti-colors} & {
+
+                #app.lti:not(.dark) & {
                     background-color: darken(@color-primary, 2%);
                     color: white;
+                }
+            }
+        }
+    }
+
+    & &-list-item {
+        cursor: pointer;
+
+        &:hover {
+            background-color: @color-lighter-gray;
+
+            #app.dark & {
+                background-color: lighten(@color-primary-darker, 2%);
+            }
+        }
+
+        &:not(.light-selected) a:hover {
+            background-color: @color-light-gray;
+
+            #app.dark & {
+                background-color: @color-primary-darkest;
+            }
+        }
+
+        &.light-selected {
+            background-color: lighten(@color-primary, 5%);
+            color: white;
+
+            #app.dark & {
+                background-color: lightgray;
+                color: @color-primary;
+            }
+
+            a:hover:not(.selected) {
+                background-color: @color-primary-darkest;
+
+                #app.dark & {
+                    background-color: darken(lightgray, 7.9%);
+                }
+            }
+        }
+
+        .selected,
+        &.selected {
+            color: white;
+            background-color: @color-primary;
+
+            #app.dark & {
+                background-color: white;
+                color: @color-primary;
+            }
+
+            &:hover,
+            a:hover {
+                background-color: darken(@color-primary, 2%);
+                color: white;
+
+                #app.dark & {
+                    background-color: darken(white, 7.9%);
+                    color: @color-primary;
                 }
             }
         }

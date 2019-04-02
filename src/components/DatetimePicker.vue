@@ -37,6 +37,8 @@ export default {
                     time_24hr: true,
                     onChange: this.emitDate,
                     onClose: this.emitDate,
+                    defaultHour: 23,
+                    defaultMinute: 59,
                 },
                 this.config,
             );

@@ -46,8 +46,6 @@
 @media-large: ~'only screen and (min-width: 992px)';
 @media-no-large: ~'only screen and (max-width: 992px)';
 
-@lti-colors: ~'#app.lti:not(.dark)';
-
 @color-warning: #ffd65d;
 @color-warning-dark: #b59320;
 
@@ -57,7 +55,6 @@
     background-color: @footer-color;
     color: @color-secondary-text;
 
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         background-color: @color-primary-darker;
         color: @color-secondary-text-lighter;
@@ -65,7 +62,6 @@
 }
 
 .default-alter-danger-colors {
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         background-color: @alert-danger-color;
         border-color: @alert-danger-color;
@@ -74,7 +70,6 @@
 }
 
 .default-text-colors {
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         color: @text-color-dark;
     }
@@ -82,7 +77,6 @@
 }
 
 .default-secondary-text-colors {
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         color: @color-secondary-text-lighter;
     }
@@ -98,7 +92,6 @@
         }
     }
 
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         color: lighten(@color-primary, 30%);
         &:hover {
@@ -110,7 +103,6 @@
 .navbar-color {
     background-color: @color-primary;
 
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         background-color: @color-primary-darker;
     }
@@ -119,7 +111,6 @@
 .default-background {
     background-color: #fff;
 
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         background-color: @color-primary;
     }
@@ -127,7 +118,7 @@
 
 .default-color {
     color: @text-color;
-    #app:not(.lti) #global-sidebar &,
+
     #app.dark & {
         color: @text-color-dark;
     }
@@ -143,7 +134,6 @@
         border-color: saturate(lighten(@color-primary, 7.5%), 10%);
     }
 
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         color: @text-color-dark;
         border-color: @color-primary-darker;
@@ -170,8 +160,6 @@
         border-color: fade(@color-primary, 60);
     }
 
-    .sidebar &,
-    #app:not(.lti) #global-sidebar &,
     #app.dark &,
     #app.dark ~ .popover & {
         background-color: @color-primary-darker;
@@ -200,7 +188,6 @@
             color: @text-color;
             border-color: #ccc;
 
-            #app:not(.lti) #global-sidebar &,
             #app.dark & {
                 background-color: @color-primary;
                 border-color: @color-primary-darker;
@@ -233,7 +220,6 @@
         }
     }
 
-    #app:not(.lti) #global-sidebar &,
     #app.dark &,
     #app.dark ~ .popover & {
         & ~ .custom-control-indicator {
@@ -261,7 +247,6 @@
 }
 
 .default-card-colors {
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         background-color: @color-primary;
         border-color: @color-primary-darker;
@@ -274,7 +259,6 @@
 }
 
 .tab-colors {
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         border-color: @color-primary-darker;
 
@@ -353,7 +337,6 @@
 }
 
 .default-table-colors {
-    #app:not(.lti) #global-sidebar &,
     #app.dark &,
     #app.dark ~ .popover & {
         .dark-table-colors;
@@ -363,7 +346,6 @@
 .default-collapse-wrapper-colors,
 .default-form-control-colors,
 .default-list-group-item-colors {
-    #app:not(.lti) #global-sidebar &:not(.list-group-item-info),
     #app.dark &:not(.list-group-item-info) {
         background-color: @color-primary;
         border-color: @color-primary-darker;
@@ -372,19 +354,16 @@
 }
 
 .default-form-control-colors {
-    #app.lti #global-sidebar &:focus,
     #app:not(.dark) #main-content &:focus {
         box-shadow: inset 0 0 0.2em 0 #ced4da;
         border-color: #ced4da;
     }
 
-    #app:not(.lti) #global-sidebar &:focus,
     #app.dark &:focus {
         box-shadow: inset 0 0 0.2em 0 @color-primary-darkest;
         border-color: @color-primary-darkest;
     }
 
-    #app:not(.lti) #global-sidebar .has-danger &,
     #app.dark .has-danger & {
         border-color: #d9534f;
     }
@@ -401,7 +380,6 @@
 }
 
 .default-input-colors {
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         .dark-input-colors;
     }
@@ -505,14 +483,12 @@
         }
     }
 
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         .dark-input-group-colors;
     }
 }
 
 .default-dropdown-menu-colors {
-    #app:not(.lti) #global-sidebar &,
     #app.dark & {
         background-color: @color-primary;
         .dropdown-item {
@@ -552,7 +528,6 @@
             }
         }
 
-        #app:not(.lti) #global-sidebar &,
         #app.dark & {
             background-color: @color-primary;
             color: @text-color-dark;
