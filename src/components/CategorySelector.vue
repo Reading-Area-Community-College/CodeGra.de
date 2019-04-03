@@ -5,7 +5,7 @@
          :class="{selected: cat.name === value}"
          v-for="cat in categories"
          v-if="cat.enabled"
-         @click="processInput(cat.name)"
+         @click="processInput(cat.name, false)"
          :key="cat.name">
         <span>{{ cat.name }}</span>
         <div class="indicator"/>
@@ -49,9 +49,21 @@ export default {
         },
 
         $route(newVal) {
-            const val = (newVal.hash && newVal.hash.slice(1)) || this.default;
+            let val = (newVal.hash && newVal.hash.slice(1)) || this.default;
             if (val !== this.value) {
-                this.$emit('input', val);
+                // Selected value is not available
+                if (!this.enabledCats.find(x => x.name === val)) {
+                    // Keep the same value
+                    if (
+                        this.enabledCats.find(x => x.name === this.value) ||
+                        this.enabledCats.length === 0
+                    ) {
+                        val = this.value;
+                    } else {
+                        val = this.enabledCats[0];
+                    }
+                }
+                this.processInput(val, true);
             }
         },
     },
@@ -72,8 +84,8 @@ export default {
             return this.enabledCats[0].name;
         },
 
-        processInput(catName) {
-            if (catName !== this.value) {
+        processInput(catName, forceEmit) {
+            if (forceEmit || catName !== this.value) {
                 this.$router.replace(
                     Object.assign({}, this.$route, {
                         hash: `#${catName || this.default}`,

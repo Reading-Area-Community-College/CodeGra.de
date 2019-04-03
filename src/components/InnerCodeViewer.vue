@@ -33,6 +33,7 @@
             :total-amount-lines="computedEndLine"
             :file-id="fileId"
             :can-use-snippets="canUseSnippets"
+            :assignment="assignment"
             @editFeedback="editFeedback"
             @feedbackChange="feedbackChange"
             v-if="feedback[i - 1 + lineFeedbackOffset] && feedback[i - 1 + lineFeedbackOffset].msg !== null"/>

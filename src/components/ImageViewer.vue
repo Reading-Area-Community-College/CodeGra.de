@@ -10,6 +10,7 @@
         :line="0"
         :feedback="feedback"
         @set-feedback="feedback = $event"
+        :assignment="assignment"
         :editable="editable"
         :can-use-snippets="canUseSnippets"
         slot-description="image"
@@ -49,6 +50,10 @@ export default {
         fontSize: {
             type: Number,
             default: 12,
+        },
+        assignment: {
+            type: Object,
+            required: true,
         },
     },
 

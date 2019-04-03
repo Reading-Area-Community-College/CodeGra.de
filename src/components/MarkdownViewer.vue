@@ -15,6 +15,7 @@
         @set-feedback="feedback = $event"
         :editable="editable"
         :can-use-snippets="canUseSnippets"
+        :assignment="assignment"
         slot-description="file"
         snippet-field-above
         always-show-button>

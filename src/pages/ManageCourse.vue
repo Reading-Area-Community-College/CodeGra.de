@@ -23,15 +23,26 @@
     <div class="content" v-else>
         <users-manager :class="{ hidden: selectedCat !== 'Members'}"
                        class="cat-wrapper"
+                       v-if="membersEnabled"
                        :course="course"
                        :filter="filter"/>
         <permissions-manager :class="{ hidden: selectedCat !== 'Permissions' }"
+                             v-if="permissionsEnabled"
                              class="cat-wrapper"
                              :course-id="course.id"
                              :filter="filter"/>
         <span :class="{ hidden: selectedCat !== 'Groups' }"
+              v-if="groupsEnabled"
               class="cat-wrapper">
             <group-set-manager :course="course"/>
+        </span>
+
+        <span :class="{ hidden: selectedCat !== 'Snippets' }"
+              class="cat-wrapper">
+            <snippet-manager
+                v-if="snippetsEnabled"
+                :course="course"
+                :editable="course.permissions.can_manage_course_snippets"/>
         </span>
     </div>
 </div>
@@ -46,6 +57,7 @@ import LocalHeader from '@/components/LocalHeader';
 import Loader from '@/components/Loader';
 import CategorySelector from '@/components/CategorySelector';
 import GroupSetManager from '@/components/GroupSetManager';
+import SnippetManager from '@/components/SnippetManager';
 
 import { setPageTitle } from './title';
 
@@ -70,22 +82,47 @@ export default {
             return Number(this.$route.params.courseId);
         },
 
+        membersEnabled() {
+            return this.course && this.course.permissions.can_edit_course_users;
+        },
+
+        permissionsEnabled() {
+            return this.course && this.course.permissions.can_edit_course_roles;
+        },
+
+        groupsEnabled() {
+            return (
+                UserConfig.features.groups &&
+                this.course &&
+                this.course.permissions.can_edit_group_set
+            );
+        },
+
+        snippetsEnabled() {
+            return (
+                this.course &&
+                (this.course.permissions.can_manage_course_snippets ||
+                    this.course.permissions.can_view_course_snippets)
+            );
+        },
+
         categories() {
             return [
                 {
                     name: 'Members',
-                    enabled: this.course && this.course.permissions.can_edit_course_users,
+                    enabled: this.membersEnabled,
                 },
                 {
                     name: 'Permissions',
-                    enabled: this.course && this.course.permissions.can_edit_course_roles,
+                    enabled: this.permissionsEnabled,
                 },
                 {
                     name: 'Groups',
-                    enabled:
-                        UserConfig.features.groups &&
-                        this.course &&
-                        this.course.permissions.can_edit_group_set,
+                    enabled: this.groupsEnabled,
+                },
+                {
+                    name: 'Snippets',
+                    enabled: this.snippetsEnabled,
                 },
             ];
         },
@@ -112,6 +149,7 @@ export default {
         Loader,
         CategorySelector,
         GroupSetManager,
+        SnippetManager,
     },
 };
 </script>

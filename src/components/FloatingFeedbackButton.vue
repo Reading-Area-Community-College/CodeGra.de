@@ -22,6 +22,7 @@
         :total-amount-lines="line + 1000"
         :forceSnippetsAbove="snippetFieldAbove"
         :can-use-snippets="canUseSnippets"
+        :assignment="assignment"
         @editFeedback="editingFeedback = true"
         @feedbackChange="feedbackChange"
         v-if="hasFeedback"/>
@@ -82,6 +83,11 @@ export default {
         snippetFieldAbove: {
             type: Boolean,
             default: false,
+        },
+
+        assignment: {
+            type: Object,
+            required: true,
         },
     },
 

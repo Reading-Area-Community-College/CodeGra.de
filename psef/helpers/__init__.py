@@ -482,6 +482,12 @@ def ensure_keys_in_dict(
         )
 
 
+def get_json_dict_from_request(
+    replace_log: t.Optional[t.Callable[[str, object], object]] = None,
+) -> t.Dict[str, JSONType]:
+    return ensure_json_dict(request.get_json(), replace_log)
+
+
 def ensure_json_dict(
     json_value: JSONType,
     replace_log: t.Optional[t.Callable[[str, object], object]] = None

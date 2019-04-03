@@ -22,6 +22,45 @@ if t.TYPE_CHECKING:  # pragma: no cover
     from .group import GroupSet
 
 
+class CourseSnippet(Base):
+    """Describes a :class:`.User` specified mapping from a keyword to some
+    string.
+    """
+    if t.TYPE_CHECKING:  # pragma: no cover
+        query: t.ClassVar[_MyQuery['CourseSnippet']] = Base.query
+    __tablename__ = 'CourseSnippet'
+    id: int = db.Column('id', db.Integer, primary_key=True)
+    key: str = db.Column('key', db.Unicode, nullable=False)
+    value: str = db.Column('value', db.Unicode, nullable=False)
+    course_id: int = db.Column(
+        'course_id', db.Integer, db.ForeignKey('Course.id'), nullable=False
+    )
+    created_at: datetime.datetime = db.Column(
+        'created_at',
+        db.DateTime,
+        default=datetime.datetime.utcnow,
+        nullable=False,
+    )
+
+    course: 'Course' = db.relationship(
+        'Course',
+        foreign_keys=course_id,
+        back_populates='snippets',
+        innerjoin=True,
+    )
+
+    __table_args__ = (db.UniqueConstraint(course_id, key), )
+
+    def __to_json__(self) -> t.Mapping[str, t.Any]:
+        """Creates a JSON serializable representation of this object.
+        """
+        return {
+            'key': self.key,
+            'value': self.value,
+            'id': self.id,
+        }
+
+
 class Course(Base):
     """This class describes a course.
 
@@ -59,6 +98,15 @@ class Course(Base):
         cascade='all,delete',
         uselist=True,
         order_by='GroupSet.created_at'
+    )
+
+    snippets: t.MutableSequence['CourseSnippet'] = db.relationship(
+        'CourseSnippet',
+        back_populates='course',
+        cascade='all,delete',
+        uselist=True,
+        lazy='select',
+        order_by='CourseSnippet.created_at',
     )
 
     assignments = db.relationship(

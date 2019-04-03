@@ -191,7 +191,7 @@ if getattr(t, 'SPHINX', False) is True:  # pragma: no cover
     cache_within_request = lambda x: x  # type: ignore
 
 if True:  # pylint: disable=using-constant-test
-    from .course import Course
+    from .course import Course, CourseSnippet
     from .assignment import (
         Assignment, AssignmentLinter, AssignmentResult, AssignmentDoneType,
         AssignmentGraderDone, AssignmentAssignedGrader, _AssignmentStateEnum
@@ -208,7 +208,6 @@ if True:  # pylint: disable=using-constant-test
     from .comment import Comment
     from .role import AbstractRole, Role, CourseRole
     from .snippet import Snippet
-    from .course_snippet import CourseSnippet
     from .rubric import RubricItem, RubricRow
     from .group import GroupSet, Group
     from .link_tables import user_course

@@ -16,6 +16,7 @@
                 <th>Replacement text</th>
                 <th>
                     <b-button variant="primary"
+                              v-if="editable"
                               class="add-button"
                               @click="editSnippet(null)"
                               v-b-popover.hover.top="'New snippet'">
@@ -29,9 +30,10 @@
                 <td class="snippet-key">{{ snippet.key }}</td>
                 <td class="snippet-value">{{ snippet.value }}</td>
                 <td class="snippet-actions">
-                    <b-button-group>
+                    <b-button-group v-b-popover.top.hover="editable ? '' : 'You are not allowed to edit snippets.'">
                         <submit-button variant="danger"
                                        confirm="Are you sure you want to delete this snippet?"
+                                       :disabled="!editable"
                                        :submit="() => deleteSnippet(snippet)"
                                        @after-success="afterDeleteSnippet(snippet)"
                                        v-b-popover.hover.top="'Delete snippet'">
@@ -39,6 +41,7 @@
                         </submit-button>
 
                         <b-button variant="primary"
+                                  :disabled="!editable"
                                   @click="editSnippet(snippet)"
                                   v-b-popover.hover.top="'Edit snippet'">
                             <icon name="pencil"/>
@@ -119,6 +122,11 @@ export default {
             type: Object,
             default: null,
         },
+
+        editable: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     data() {
@@ -133,8 +141,16 @@ export default {
 
     computed: {
         ...mapGetters('user', {
-            storeSnippets: 'snippets',
+            userStoreSnippets: 'snippets',
         }),
+
+        storeSnippets() {
+            if (this.course) {
+                return this.course.snippets;
+            } else {
+                return this.userStoreSnippets;
+            }
+        },
 
         filteredSnippets() {
             if (!this.filter) {
@@ -167,10 +183,11 @@ export default {
 
     methods: {
         ...mapActions({
-            refreshSnippets: 'user/refreshSnippets',
+            refreshUserSnippets: 'user/refreshSnippets',
             addSnippetToStore: 'user/addSnippet',
             updateSnippetInStore: 'user/updateSnippet',
             deleteSnippetFromStore: 'user/deleteSnippet',
+            updateCourse: 'courses/updateCourse',
         }),
 
         editSnippet(snippet) {
@@ -262,28 +279,61 @@ export default {
         addSnippet(snippet) {
             return this.$http.put(this.getSnippetRoute('snippet'), snippet).then(response => {
                 snippet.id = response.data.id;
-                this.addSnippetToStore(snippet);
+                if (this.course) {
+                    this.updateCourse({
+                        courseId: this.course.id,
+                        courseProps: {
+                            snippets: [...this.course.snippets, snippet],
+                        },
+                    });
+                } else {
+                    this.addSnippetToStore(snippet);
+                }
                 this.snippets.push(snippet);
             });
         },
 
         updateSnippet(snippet) {
-            return this.$http.patch(this.getSnippetRoute(`snippets/${snippet.id}`), snippet).then(() => {
-                const idx = this.findSnippetIndex(snippet);
-                this.updateSnippetInStore(snippet);
-                this.snippets.splice(idx, 1, snippet);
-            });
+            return this.$http
+                .patch(this.getSnippetRoute(`snippets/${snippet.id}`), snippet)
+                .then(() => {
+                    const idx = this.findSnippetIndex(snippet);
+                    if (this.course) {
+                        this.updateCourse({
+                            courseId: this.course.id,
+                            courseProps: {
+                                snippets: this.course.snippets.map(
+                                    snip => (snip.id === snippet.id ? snippet : snip),
+                                ),
+                            },
+                        });
+                    } else {
+                        this.updateSnippetInStore(snippet);
+                    }
+                    this.snippets.splice(idx, 1, snippet);
+                });
         },
 
         deleteSnippet(snippet) {
-            return this.$http.delete(this.getSnippetRoute(`snippets/${snippet.id}`)).then(() => snippet);
+            return this.$http
+                .delete(this.getSnippetRoute(`snippets/${snippet.id}`))
+                .then(() => snippet);
         },
 
         afterDeleteSnippet(snippet) {
             const idx = this.findSnippetIndex(snippet);
 
             this.snippets.splice(idx, 1);
-            this.deleteSnippetFromStore(snippet);
+            if (this.course) {
+                this.updateCourse({
+                    courseId: this.course.id,
+                    courseProps: {
+                        snippets: this.course.snippets.filter(snip => snip.id !== snippet.id),
+                    },
+                });
+            } else {
+                this.deleteSnippetFromStore(snippet);
+            }
         },
 
         setSaveConfirmMessage() {
@@ -310,15 +360,36 @@ export default {
         },
 
         getSnippetRoute(routeEnd) {
-            return `/api/v1${this.baseUrl}${routeEnd}`;
+            return `${this.baseUrl}${routeEnd}`;
+        },
+
+        refreshSnippets() {
+            if (this.course) {
+                return this.$http.get(`/api/v1/courses/${this.course.id}/snippets/`, ({ data }) => {
+                    this.updateCourse({
+                        courseId: this.course.id,
+                        courseProps: data,
+                    });
+                    return data;
+                });
+            } else {
+                return this.refreshUserSnippets();
+            }
         },
     },
 
-    async mounted() {
-        await this.refreshSnippets();
-        this.loading = false;
+    watch: {
+        course: {
+            async handler() {
+                await this.refreshSnippets();
+                this.loading = false;
 
-        this.snippets = Object.values(this.storeSnippets).sort((a, b) => cmpNoCase(a.key, b.key));
+                this.snippets = Object.values(this.storeSnippets).sort((a, b) =>
+                    cmpNoCase(a.key, b.key),
+                );
+            },
+            immediate: true,
+        },
     },
 
     components: {

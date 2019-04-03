@@ -20,6 +20,8 @@ export const MANAGE_GENERAL_COURSE_PERMISSIONS = Object.freeze([
     'can_edit_course_users',
     'can_edit_course_roles',
     'can_edit_group_set',
+    'can_manage_course_snippets',
+    'can_view_course_snippets',
 ]);
 
 export const MANAGE_COURSE_PERMISSIONS = Object.freeze([

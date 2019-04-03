@@ -18,8 +18,8 @@ from psef import limiter, current_user
 from psef.errors import APICodes, APIException
 from psef.models import db
 from psef.helpers import (
-    JSONResponse, EmptyResponse, jsonify, ensure_json_dict,
-    ensure_keys_in_dict, make_empty_response
+    JSONResponse, EmptyResponse, jsonify, ensure_keys_in_dict,
+    make_empty_response, get_json_dict_from_request
 )
 
 from . import api
@@ -118,7 +118,7 @@ def add_role(course_id: int) -> EmptyResponse:
     """
     auth.ensure_permission(CPerm.can_edit_course_roles, course_id)
 
-    content = ensure_json_dict(request.get_json())
+    content = get_json_dict_from_request()
 
     ensure_keys_in_dict(content, [('name', str)])
     name = t.cast(str, content['name'])
@@ -170,7 +170,7 @@ def update_role(course_id: int, role_id: int) -> EmptyResponse:
     :raises PermissionException: If the user can not manage the course with the
                                  given id. (INCORRECT_PERMISSION)
     """
-    content = ensure_json_dict(request.get_json())
+    content = get_json_dict_from_request()
 
     auth.ensure_permission(CPerm.can_edit_course_roles, course_id)
 
@@ -282,7 +282,7 @@ def set_course_permission_user(
     """
     auth.ensure_permission(CPerm.can_edit_course_users, course_id)
 
-    content = ensure_json_dict(request.get_json())
+    content = get_json_dict_from_request()
     ensure_keys_in_dict(content, [('role_id', int)])
     role_id = t.cast(int, content['role_id'])
 
@@ -436,7 +436,7 @@ def create_new_assignment(course_id: int) -> JSONResponse[models.Assignment]:
     """
     auth.ensure_permission(CPerm.can_create_assignment, course_id)
 
-    content = ensure_json_dict(request.get_json())
+    content = get_json_dict_from_request()
     ensure_keys_in_dict(content, [('name', str)])
     name = t.cast(str, content['name'])
 
@@ -479,7 +479,7 @@ def add_course() -> JSONResponse[models.Course]:
     :raises APIException: If the parameter "name" is not in the request.
         (MISSING_REQUIRED_PARAM)
     """
-    content = ensure_json_dict(request.get_json())
+    content = get_json_dict_from_request()
     ensure_keys_in_dict(content, [('name', str)])
     name = t.cast(str, content['name'])
 
@@ -517,9 +517,16 @@ def get_courses() -> JSONResponse[t.Sequence[t.Mapping[str, t.Any]]]:
 
     def _get_rest(course: models.Course) -> t.Mapping[str, t.Any]:
         if helpers.extended_requested():
+            snippets: t.Sequence[models.CourseSnippet] = []
+            if current_user.has_permission(
+                CPerm.can_view_course_snippets, course_id=course.id
+            ):
+                snippets = course.snippets
+
             return {
                 'assignments': course.get_all_visible_assignments(),
                 'group_sets': course.group_sets,
+                'snippets': snippets,
                 **course.__to_json__(),
             }
         return course.__to_json__()
@@ -656,7 +663,7 @@ def create_group_set(course_id: int) -> JSONResponse[models.GroupSet]:
     auth.ensure_permission(CPerm.can_edit_group_set, course_id)
     course = helpers.get_or_404(models.Course, course_id)
 
-    content = ensure_json_dict(request.get_json())
+    content = get_json_dict_from_request()
     ensure_keys_in_dict(
         content, [
             ('minimum_size', int),
@@ -739,9 +746,9 @@ def get_course_snippets(course_id: int
         [CPerm.can_view_course_snippets, CPerm.can_manage_course_snippets],
         course_id,
     )
-    course = helpers.get_or_404(models.Course, course_id)
 
-    return jsonify(models.CourseSnippet.get_course_snippets(course))
+    course = helpers.get_or_404(models.Course, course_id)
+    return jsonify(course.snippets)
 
 
 @api.route('/courses/<int:course_id>/snippet', methods=['PUT'])
@@ -765,16 +772,15 @@ def create_course_snippet(course_id: int
         (INCORRECT_PERMISSION)
     """
     auth.ensure_permission(CPerm.can_manage_course_snippets, course_id)
-    content = ensure_json_dict(request.get_json())
+    content = get_json_dict_from_request()
     ensure_keys_in_dict(content, [('value', str), ('key', str)])
     key = t.cast(str, content['key'])
     value = t.cast(str, content['value'])
 
-    snippet: t.Optional[models.CourseSnippet
-                        ] = models.CourseSnippet.query.filter_by(
-                            course_id=course_id,
-                            key=key,
-                        ).first()
+    snippet = models.CourseSnippet.query.filter_by(
+        course_id=course_id,
+        key=key,
+    ).first()
 
     if snippet is None:
         snippet = models.CourseSnippet(
@@ -815,7 +821,7 @@ def patch_course_snippet(course_id: int, snippet_id: int) -> EmptyResponse:
         (INCORRECT_PERMISSION)
     """
     auth.ensure_permission(CPerm.can_manage_course_snippets, course_id)
-    content = ensure_json_dict(request.get_json())
+    content = get_json_dict_from_request()
 
     ensure_keys_in_dict(content, [('key', str), ('value', str)])
     key = t.cast(str, content['key'])
