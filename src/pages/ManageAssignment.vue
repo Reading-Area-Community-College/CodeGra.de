@@ -24,12 +24,11 @@
                           :editable="canEditState"
                           size="sm"/>
         <template slot="extra">
-            <category-selector
-                slot="extra"
-                class="cat-selector"
-                default="General"
-                v-model="selectedCat"
-                :categories="categories"/>
+            <category-selector slot="extra"
+                               class="cat-selector"
+                               default="General"
+                               v-model="selectedCat"
+                               :categories="categories"/>
         </template>
     </local-header>
 

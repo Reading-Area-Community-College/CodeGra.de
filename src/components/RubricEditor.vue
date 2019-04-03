@@ -134,6 +134,15 @@
                 </template>
             </b-input-group>
         </div>
+
+        <b-card class="extra-bar" v-if="!editable">
+            <span>
+                To get a full mark you need to score
+                {{ internalFixedMaxPoints || curMaxPoints }} points in this
+                rubric.
+            </span>
+            <slot/>
+        </b-card>
     </b-tabs>
 
     <b-modal id="modal_delete_rubric" title="Are you sure?" :hide-footer="true">
@@ -206,14 +215,6 @@
             </b-input-group>
         </div>
         <submit-button ref="submitButton" :submit="submit"/>
-    </b-card>
-    <b-card class="extra-bar" v-else>
-        <span>
-            To get a full mark you need to score
-            {{ internalFixedMaxPoints || curMaxPoints }} points in this
-            rubric.
-        </span>
-        <slot/>
     </b-card>
 </div>
 </template>
@@ -680,11 +681,6 @@ ${arrayToSentence(wrongCategories)}.`);
         border-left: 0 !important;
     }
 
-    .rubric {
-        flex: 1 1 0;
-        min-width: 100%;
-    }
-
     .rubric-editor {
         .card-header,
         .card-block {
@@ -698,8 +694,15 @@ ${arrayToSentence(wrongCategories)}.`);
     }
 
     .rubric {
+        flex: 1 1 0;
+        min-width: 100%;
+        background-color: white;
         padding: 1em;
         border: 1px solid transparent !important;
+
+        #app.dark & {
+            background-color: @color-primary;
+        }
 
         .item-description {
             background-color: @color-lightest-gray;
@@ -766,6 +769,10 @@ ${arrayToSentence(wrongCategories)}.`);
         }
     }
 
+    &:not(.editable) .rubric {
+        padding-bottom: 0;
+    }
+
     .item-delete-button,
     .item-info-button {
         color: @color-border-gray;
@@ -800,7 +807,8 @@ ${arrayToSentence(wrongCategories)}.`);
 }
 
 .button-bar {
-    margin-top: 2em;
+    margin-top: 1.25rem;
+
     .override-checkbox {
         justify-content: center;
         display: flex;
@@ -814,7 +822,7 @@ ${arrayToSentence(wrongCategories)}.`);
 }
 
 .card.extra-bar {
-    padding: 1em;
+    padding: 0 1rem 1rem 1.5rem;
 }
 
 .card-body {
@@ -850,8 +858,6 @@ ${arrayToSentence(wrongCategories)}.`);
 .rubric-editor {
     &:not(.editable) {
         .nav-tabs {
-            background: @color-lighter-gray;
-            padding-top: 15px;
             .nav-item:first-child {
                 margin-left: 15px;
             }

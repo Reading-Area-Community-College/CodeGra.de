@@ -8,66 +8,87 @@
                placeholder="Type to Search"
                v-on:keyup.enter="submit"/>
     </b-form-group>
-    <b-table striped
-             class="snippets-table"
-             :items="allSnippets"
-             :fields="fields"
-             :filter="filter"
-             response>
 
-        <template slot="key" slot-scope="item">
-            <b-form-group>
+    <table class="table table-striped snippets-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Replacement text</th>
+                <th>
+                    <b-button variant="primary"
+                              class="add-button"
+                              @click="editSnippet(null)"
+                              v-b-popover.hover.top="'New snippet'">
+                        <icon name="plus"/>
+                    </b-button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="snippet in filteredSnippets">
+                <td class="snippet-key">{{ snippet.key }}</td>
+                <td class="snippet-value">{{ snippet.value }}</td>
+                <td class="snippet-actions">
+                    <b-button-group>
+                        <submit-button variant="danger"
+                                       confirm="Are you sure you want to delete this snippet?"
+                                       :submit="() => deleteSnippet(snippet)"
+                                       @after-success="afterDeleteSnippet(snippet)"
+                                       v-b-popover.hover.top="'Delete snippet'">
+                            <icon name="times"/>
+                        </submit-button>
+
+                        <b-button variant="primary"
+                                  @click="editSnippet(snippet)"
+                                  v-b-popover.hover.top="'Edit snippet'">
+                            <icon name="pencil"/>
+                        </b-button>
+                    </b-button-group>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <b-modal :title="modalTitle"
+             ref="modal">
+        <b-form-group v-if="!!editingSnippet">
+            <b-input-group>
                 <input type="text"
                        class="form-control"
-                       placeholder="Key"
-                       :value="item.item.key"
-                       @input="snippetKeyChanged(item.item, $event.target.value)"
-                       @keyup.ctrl.enter="clickSaveSnippet(item.index)"/>
-            </b-form-group>
-        </template>
+                       placeholder="Name"
+                       @input="setSaveConfirmMessage"
+                       @keydown.ctrl.enter="clickSave"
+                       v-model="editingSnippet.key"/>
+            </b-input-group>
+        </b-form-group>
 
-        <template slot="text" slot-scope="item">
-            <b-form-group>
-                <input type="text"
-                       class="form-control"
-                       placeholder="Value"
-                       :value="item.item.value"
-                       @input="snippetValueChanged(item.item, $event.target.value)"
-                       @keyup.ctrl.enter="clickSaveSnippet(item.index)"/>
-            </b-form-group>
-        </template>
+        <b-form-group v-if="!!editingSnippet">
+            <b-input-group>
+                <textarea rows="10"
+                          class="form-control"
+                          placeholder="Replacement text"
+                          @keydown.ctrl.enter="clickSave"
+                          v-model="editingSnippet.value"/>
+            </b-input-group>
+        </b-form-group>
 
-        <template slot="actions" slot-scope="item">
-            <b-button-group class="button-wrapper">
-                <submit-button size="sm"
-                               :variant="hasSnippetChanged(item.item) ? 'warning' : 'primary'"
-                               :ref="`snippetSaveButton-${item.index}`"
-                               :disabled="!canUpdateSnippet(item.item)"
-                               :submit="() => saveSnippet(item.item)"
-                               v-b-popover.top.hover="saveButtonPopover(item.item)">
-                    <icon name="floppy-o"/>
+        <template slot="modal-footer">
+            <b-button-toolbar justify
+                              class="modal-buttons">
+                <b-button variant="danger"
+                          @click="cancelEditSnippet">
+                    Cancel
+                </b-button>
+
+                <submit-button ref="saveButton"
+                               :confirm="saveConfirmMessage"
+                               :submit="saveSnippet"
+                               @after-success="cancelEditSnippet">
+                    Save
                 </submit-button>
-
-                <b-btn v-if="hasSnippetChanged(item.item)"
-                       size="sm"
-                       variant="danger"
-                       @click="resetSnippet(item.item)"
-                       v-b-popover.top.hover="'Reset changes'">
-                    <icon name="reply"/>
-                </b-btn>
-
-                <submit-button v-else-if="item.item.id != null || item.index < allSnippets.length - 1"
-                               size="sm"
-                               variant="danger"
-                               confirm="Are you sure you want to delete this snippet?"
-                               :submit="() => deleteSnippet(item.item)"
-                               @after-success="afterDeleteSnippet(item.item, item.index)"
-                               v-b-popover.top.hover="'Delete snippet'">
-                    <icon name="times"/>
-                </submit-button>
-            </b-button-group>
+            </b-button-toolbar>
         </template>
-    </b-table>
+    </b-modal>
 </div>
 </template>
 
@@ -76,8 +97,8 @@ import { mapActions, mapGetters } from 'vuex';
 
 import Icon from 'vue-awesome/components/Icon';
 import 'vue-awesome/icons/times';
-import 'vue-awesome/icons/floppy-o';
-import 'vue-awesome/icons/reply';
+import 'vue-awesome/icons/pencil';
+import 'vue-awesome/icons/plus';
 
 import { cmpNoCase } from '@/utils';
 
@@ -90,60 +111,33 @@ export default {
     data() {
         return {
             loading: true,
-            filter: null,
-            newSnippets: [this.makeSnippet()],
-            fields: [
-                {
-                    key: 'key',
-                    label: 'Key',
-                },
-                {
-                    key: 'text',
-                    label: 'Text',
-                },
-                {
-                    key: 'actions',
-                    label: 'Actions',
-                },
-            ],
-            errorMessages: {
-                spacesInKey: 'No spaces allowed!',
-                emptyKey: 'Snippet key cannot be empty',
-                duplicateKey: 'Snippet key must be unique',
-                emptyValue: 'Snippet value cannot be empty',
-                unchangedSnippet: 'This snippet is unchanged.',
-                unsavedChanges: 'This snippet has unsaved changes!',
-            },
+            snippets: [],
+            filter: '',
+            editingSnippet: null,
+            saveConfirmMessage: '',
         };
     },
 
     computed: {
-        ...mapGetters('user', ['snippets']),
+        ...mapGetters('user', {
+            storeSnippets: 'snippets',
+        }),
 
-        storedSnippets() {
-            return Object.values(this.snippets)
-                .map(snip =>
-                    Object.assign({}, snip, {
-                        origKey: snip.key,
-                        origValue: snip.value,
-                        keyError: '',
-                        valueError: '',
-                    }),
-                )
-                .sort((a, b) => cmpNoCase(a.key, b.key));
-        },
-
-        allSnippets() {
-            return this.storedSnippets.concat(this.newSnippets);
-        },
-    },
-
-    watch: {
-        newSnippets(newSnippets) {
-            const len = newSnippets.length;
-            if (len === 0 || this.hasSnippetChanged(newSnippets[len - 1])) {
-                newSnippets.push(this.makeSnippet());
+        filteredSnippets() {
+            if (!this.filter) {
+                return this.snippets;
+            } else {
+                return this.snippets.filter(
+                    s => s.key.match(this.filter) || s.value.match(this.filter),
+                );
             }
+        },
+
+        modalTitle() {
+            if (!this.editingSnippet) {
+                return '';
+            }
+            return this.editingSnippet.id == null ? 'Add snippet' : 'Edit snippet';
         },
     },
 
@@ -155,139 +149,148 @@ export default {
             deleteSnippetFromStore: 'user/deleteSnippet',
         }),
 
-        makeSnippet() {
-            return {
-                id: null,
-                key: '',
-                origKey: '',
-                value: '',
-                origValue: '',
-                keyError: '',
-                valueError: '',
-            };
+        editSnippet(snippet) {
+            if (snippet == null) {
+                this.editingSnippet = {
+                    key: '',
+                    value: '',
+                };
+            } else {
+                this.editingSnippet = Object.assign({}, snippet);
+            }
+
+            this.$refs.modal.show();
         },
 
-        hasSnippetChanged(snippet) {
-            return snippet.key !== snippet.origKey || snippet.value !== snippet.origValue;
+        cancelEditSnippet() {
+            this.$refs.modal.hide();
         },
 
-        canUpdateSnippet(snippet) {
-            return (
-                this.hasSnippetChanged(snippet) &&
-                snippet.key &&
-                !snippet.keyError &&
-                snippet.value &&
-                !snippet.valueError
-            );
+        clickSave() {
+            this.$refs.saveButton.onClick();
         },
 
-        saveButtonPopover(snippet) {
-            if (snippet.keyError || snippet.valueError) {
-                const err = [];
-                if (snippet.keyError) {
-                    err.push(`This snippet has an invalid key: ${snippet.keyError}.`);
+        ensureValidSnippet(snippet) {
+            const { key, value } = snippet;
+
+            if (!key) {
+                throw new Error('The snippet name may not be empty.');
+            }
+
+            if (key.match(/\s/)) {
+                throw new Error(
+                    'Snippet names may not contain spaces. If you want to use ' +
+                        'a multiple words in a name you can separate them with a ' +
+                        'dash or an underscore.',
+                );
+            }
+
+            if (!value) {
+                throw new Error('The snippet replacement text may not be empty.');
+            }
+        },
+
+        getSnippetWithSameKey(snippet) {
+            const { id, key } = snippet;
+
+            return this.snippets.find(s => s.key === key && s.id !== id);
+        },
+
+        isSnippetUnchanged(snippet) {
+            const { id, key, value } = snippet;
+
+            const oldSnippet = this.snippets.find(s => s.id === id);
+
+            return oldSnippet && key === oldSnippet.key && value === oldSnippet.value;
+        },
+
+        findSnippetIndex(snippet) {
+            return this.snippets.findIndex(s => s.id === snippet.id);
+        },
+
+        saveSnippet() {
+            const snippet = this.editingSnippet;
+
+            this.ensureValidSnippet(snippet);
+
+            if (this.isSnippetUnchanged(snippet)) {
+                return Promise.resolve(snippet);
+            }
+
+            const dup = this.getSnippetWithSameKey(snippet);
+            if (dup) {
+                const oldSnippet = Object.assign({}, snippet);
+                snippet.id = dup.id;
+                let req = this.updateSnippet(snippet);
+                if (oldSnippet.id != null) {
+                    req = req
+                        .then(() => this.deleteSnippet(oldSnippet))
+                        .then(this.afterDeleteSnippet);
                 }
-                if (snippet.valueError) {
-                    err.push(`This snippet has an invalid value: ${snippet.valueError}.`);
-                }
-                return err.join('\n');
-            } else if (this.hasSnippetChanged(snippet)) {
-                return this.errorMessages.unsavedChanges;
+                return req;
+            } else if (snippet.id == null) {
+                return this.addSnippet(snippet);
             } else {
-                return this.errorMessages.unchangedSnippet;
+                return this.updateSnippet(snippet);
             }
         },
 
-        snippetKeyChanged(snippet, key) {
-            snippet.key = key;
-
-            const index = this.newSnippets.indexOf(snippet);
-            if (index > -1) {
-                this.$set(this.newSnippets, index, snippet);
-            }
-
-            if (snippet.key.match(/\s/)) {
-                snippet.keyError = this.errorMessages.spacesInKey;
-            } else if (snippet.key.length === 0) {
-                snippet.keyError = this.errorMessages.emptyKey;
-            } else if (
-                snippet.key !== snippet.origKey &&
-                this.allSnippets.some(snip => snip !== snippet && snip.key === snippet.key)
-            ) {
-                snippet.keyError = this.errorMessages.duplicateKey;
-            } else {
-                snippet.keyError = '';
-            }
+        addSnippet(snippet) {
+            return this.$http.put('/api/v1/snippet', snippet).then(response => {
+                snippet.id = response.data.id;
+                this.addSnippetToStore(snippet);
+                this.snippets.push(snippet);
+            });
         },
 
-        snippetValueChanged(snippet, value) {
-            snippet.value = value;
-
-            const index = this.newSnippets.indexOf(snippet);
-            if (index > -1) {
-                this.$set(this.newSnippets, index, snippet);
-            }
-
-            if (snippet.value.length === 0) {
-                snippet.valueError = this.errorMessages.emptyValue;
-            } else {
-                snippet.valueError = '';
-            }
-        },
-
-        clickSaveSnippet(index) {
-            this.$refs[`snippetSaveButton-${index}`].onClick();
-        },
-
-        saveSnippet(snippet) {
-            if (!this.canUpdateSnippet(snippet)) {
-                throw new Error(this.saveButtonPopover(snippet));
-            }
-
-            const data = { key: snippet.key, value: snippet.value };
-
-            if (snippet.id == null) {
-                return this.$http.put('/api/v1/snippet', data).then(response => {
-                    const index = this.newSnippets.indexOf(snippet);
-                    if (index > -1) {
-                        this.newSnippets.splice(index, 1);
-                    }
-                    this.addSnippetToStore(response.data);
-                });
-            } else {
-                return this.$http.patch(`/api/v1/snippets/${snippet.id}`, data).then(() => {
-                    this.updateSnippetInStore(snippet);
-                });
-            }
+        updateSnippet(snippet) {
+            return this.$http.patch(`/api/v1/snippets/${snippet.id}`, snippet).then(() => {
+                const idx = this.findSnippetIndex(snippet);
+                this.updateSnippetInStore(snippet);
+                this.snippets.splice(idx, 1, snippet);
+            });
         },
 
         deleteSnippet(snippet) {
-            if (snippet.id == null) {
-                return Promise.resolve();
-            } else {
-                return this.$http.delete(`/api/v1/snippets/${snippet.id}`);
-            }
+            return this.$http.delete(`/api/v1/snippets/${snippet.id}`).then(() => snippet);
         },
 
-        afterDeleteSnippet(snippet, index) {
-            if (snippet.id == null) {
-                this.newSnippets.splice(index - this.storedSnippets.length, 1);
-            } else {
-                this.deleteSnippetFromStore(snippet);
-            }
+        afterDeleteSnippet(snippet) {
+            const idx = this.findSnippetIndex(snippet);
+
+            this.snippets.splice(idx, 1);
+            this.deleteSnippetFromStore(snippet);
         },
 
-        resetSnippet(snippet) {
-            snippet.key = snippet.origKey;
-            snippet.value = snippet.origValue;
-            snippet.keyError = '';
-            snippet.valueError = '';
+        setSaveConfirmMessage() {
+            const snippet = this.editingSnippet;
+
+            if (snippet == null) {
+                this.saveConfirmMessage = '';
+            }
+
+            const dup = this.getSnippetWithSameKey(snippet);
+
+            if (dup) {
+                let replacement = dup.value;
+                if (replacement.length > 30) {
+                    replacement = `${replacement.slice(0, 100)}...`;
+                }
+
+                this.saveConfirmMessage =
+                    'There already exists a snippet with the same name and replacement text ' +
+                    `"${replacement}". Do you want to overwrite that snippet?`;
+            } else {
+                this.saveConfirmMessage = '';
+            }
         },
     },
 
     async mounted() {
         await this.refreshSnippets();
         this.loading = false;
+
+        this.snippets = Object.values(this.storeSnippets).sort((a, b) => cmpNoCase(a.key, b.key));
     },
 
     components: {
@@ -301,28 +304,50 @@ export default {
 <style lang="less" scoped>
 .filter-group {
     padding: 0.75rem;
+    margin-bottom: 0;
 }
 
 .snippets-table {
     margin-bottom: 0;
+
+    th,
+    td {
+        vertical-align: middle;
+    }
+
+    .snippet-key {
+        width: 25%;
+    }
+
+    .snippet-value {
+        width: 75%;
+        max-width: 0px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .snippet-actions {
+        width: 0px;
+        white-space: nowrap;
+    }
 }
 
-.form-group {
-    margin-bottom: 0;
+.modal-content {
+    .form-group:last-child {
+        margin-bottom: 0;
+    }
+
+    .modal-buttons {
+        flex: 1 1 auto;
+    }
 }
 
-.global {
-    text-align: right;
-    padding-right: 0.9rem;
-}
-</style>
+.add-button {
+    width: 100%;
 
-<style lang="less">
-table.snippets-table tr th:first-child {
-    width: 25%;
-}
-
-table.snippets-table tr th:nth-child(2) {
-    width: 60%;
+    .fa-icon {
+        transform: translateY(3px) !important;
+    }
 }
 </style>

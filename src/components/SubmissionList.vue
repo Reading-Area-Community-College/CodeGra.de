@@ -1,31 +1,65 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-only -->
 <template>
 <div class="submission-list">
-    <local-header>
-        <b-input-group class="search-wrapper">
-            <input v-model="filter"
-                   class="form-control"
-                   placeholder="Type to Search"
-                   @keyup.enter="submit"
-                   @keyup="submitDelayed"/>
+    <local-header always-show-extra-slot>
+        <template slot="title" v-if="assignment && Object.keys(assignment).length">
+            {{ assignment.name }}
 
-            <b-input-group-append is-text
-                                  v-if="latest.length !== submissions.length"
-                                  v-b-popover.bottom.hover="'Show only the latest submission of each student.'">
-                <b-form-checkbox v-model="latestOnly"
-                                 @change="submit">
-                    Latest only
-                </b-form-checkbox>
-            </b-input-group-append>
+            <small v-if="assignment.formatted_deadline">- due {{ assignment.formatted_deadline }}</small>
+            <small v-else class="text-muted"><i>- No deadline</i></small>
+        </template>
 
-            <b-input-group-append is-text
-                                  v-if="assigneeFilter"
-                                  v-b-popover.bottom.hover="'Show only subbmissions assigned to me.'">
-                <b-form-checkbox v-model="mineOnly" @change="submit">
-                    Assigned to me
-                </b-form-checkbox>
-            </b-input-group-append>
-        </b-input-group>
+        <template slot="extra">
+            <hr class="separator top-separator"/>
+
+            <category-selector slot="extra"
+                               :default="defaultCat"
+                               v-model="selectedCat"
+                               :categories="categories"/>
+
+            <hr class="separator bottom-separator"/>
+
+            <div class="cat-container">
+                <b-input-group v-if="selectedCat === 'Search'"
+                               class="search-wrapper">
+                    <input v-model="filter"
+                           class="form-control"
+                           placeholder="Type to Search"
+                           @keyup.enter="submit"
+                           @keyup="submitDelayed"/>
+
+                    <b-input-group-append is-text
+                                          v-b-popover.bottom.hover="'Show only the latest submission of each student.'">
+                        <b-form-checkbox v-model="latestOnly"
+                                         @change="submit">
+                            Latest only
+                        </b-form-checkbox>
+                    </b-input-group-append>
+
+                    <b-input-group-append is-text
+                                          v-b-popover.bottom.hover="'Show only subbmissions assigned to me.'">
+                        <b-form-checkbox v-model="mineOnly" @change="submit">
+                            Assigned to me
+                        </b-form-checkbox>
+                    </b-input-group-append>
+                </b-input-group>
+
+                <div v-if="selectedCat === 'Rubric'">
+                    <rubric-editor v-if="assignment.rubric != null"
+                                   :editable="false"
+                                   :defaultRubric="rubric"
+                                   :assignment="assignment"/>
+                    <div no-body class="no-rubric text-muted font-italic" v-else>
+                        There is no rubric for this assignment.
+                    </div>
+                </div>
+
+                <submissions-exporter v-if="selectedCat === 'Export'"
+                                      :get-submissions="filter => filter ? filteredSubmissions : submissions"
+                                      :assignment-id="assignment.id"
+                                      :filename="exportFilename"/>
+            </div>
+        </template>
 
         <b-input-group>
             <b-button-group>
@@ -43,46 +77,7 @@
                 </submit-button>
             </b-button-group>
         </b-input-group>
-
-        <div slot="extra" class="clearfix">
-            <div id="show-rubric-button-wrapper"
-                 style="float: right;">
-                <b-button variant="secondary"
-                          @click="showRubricModal = !showRubricModal"
-                          :disabled="!rubric">
-                    Show rubric
-                </b-button>
-            </div>
-            <b-popover target="show-rubric-button-wrapper"
-                       content="There is no rubric for this assignment"
-                       triggers="hover"
-                       placement="bottom"
-                       v-if="!rubric"/>
-            <submissions-exporter v-if="canDownload && submissions.length"
-                                  :get-submissions="filter => filter ? filteredSubmissions : submissions"
-                                  :assignment-id="assignment.id"
-                                  :filename="exportFilename">
-                Export feedback
-            </submissions-exporter>
-        </div>
     </local-header>
-
-    <b-modal v-if="rubric"
-             id="rubric-modal"
-             class="rubric-modal"
-             v-model="showRubricModal"
-             :hide-footer="true"
-             :hide-header="true">
-        <rubric-editor :editable="false"
-                       :defaultRubric="rubric"
-                       :assignment="assignment">
-            <b-button variant="primary"
-                      @click="$root.$emit('bv::hide::modal','rubric-modal')">
-                Close
-            </b-button>
-        </rubric-editor>
-    </b-modal>
-
 
     <b-table striped hover
              ref="table"
@@ -92,7 +87,6 @@
              :fields="fields"
              :current-page="currentPage"
              :sort-compare="sortSubmissions"
-             :show-empty="true"
              :sort-by="this.$route.query.sortBy || 'user'"
              :sort-desc="!parseBool(this.$route.query.sortAsc, true)"
              class="submissions-table">
@@ -103,9 +97,11 @@
            @click.prevent>
             <user :user="item.value"/>
         </a>
+
         <template slot="grade" slot-scope="item">
             {{formatGrade(item.value) || '-'}}
         </template>
+
         <template slot="formatted_created_at" slot-scope="item">
             {{item.value ? item.value : '-'}}
             <span v-if="item.item.created_at > assignment.deadline">
@@ -114,6 +110,7 @@
                       v-b-popover.hover.top="getHandedInLateText(item.item)"/>
             </span>
         </template>
+
         <template slot="assignee" slot-scope="item">
             <span v-if="!canAssignGrader || graders == null">
                 <user :user="item.value" v-if="item.value"/>
@@ -128,6 +125,12 @@
                            v-else/>
         </template>
     </b-table>
+
+    <div class="submission-count">
+        {{ filteredSubmissions.length }} of a total of {{ submissions.length }}
+        submissions by {{ numFilteredStudents }} out of {{ numStudents }}
+        students.
+    </div>
 </div>
 </template>
 
@@ -149,6 +152,7 @@ import SubmitButton from './SubmitButton';
 import RubricEditor from './RubricEditor';
 import LocalHeader from './LocalHeader';
 import User from './User';
+import CategorySelector from './CategorySelector';
 
 export default {
     name: 'submission-list',
@@ -181,20 +185,23 @@ export default {
             type: Boolean,
             required: false,
         },
+        canSeeOthersWork: {
+            type: Boolean,
+            required: false,
+        },
     },
 
     data() {
         return {
             parseBool,
-            showRubricModal: false,
             latestOnly: parseBool(this.$route.query.latest, true),
             mineOnly: parseBool(this.$route.query.mine, null),
             currentPage: 1,
             filter: this.$route.query.q || '',
             latest: this.getLatest(this.submissions),
-            assigneeFilter: false,
             assignees: [],
             assigneeUpdating: [],
+            selectedCat: '',
         };
     },
 
@@ -230,6 +237,31 @@ export default {
                 });
             }
             return fields;
+        },
+
+        categories() {
+            return [
+                {
+                    name: 'Search',
+                    enabled: true,
+                },
+                {
+                    name: 'Rubric',
+                    enabled: true,
+                },
+                {
+                    name: 'Export',
+                    enabled: this.canDownload,
+                },
+            ];
+        },
+
+        defaultCat() {
+            if (!this.canSeeOthersWork && this.assignment.rubric != null) {
+                return 'Rubric';
+            } else {
+                return 'Search';
+            }
         },
 
         exportFilename() {
@@ -277,6 +309,14 @@ export default {
                 },
             };
         },
+
+        numStudents() {
+            return new Set(this.submissions.map(sub => nameOfUser(sub.user))).size;
+        },
+
+        numFilteredStudents() {
+            return new Set(this.filteredSubmissions.map(sub => nameOfUser(sub.user))).size;
+        },
     },
 
     watch: {
@@ -292,7 +332,6 @@ export default {
     },
 
     mounted() {
-        this.updateAssigneeFilter();
         if (this.graders) {
             this.updateGraders(this.graders);
         }
@@ -311,10 +350,6 @@ export default {
 
         submitForceLoadSubmissions() {
             return this.forceLoadSubmissions(this.assignment.id);
-        },
-
-        updateAssigneeFilter() {
-            this.assigneeFilter = this.submissions.some(s => s.assignee);
         },
 
         updateGraders(graders) {
@@ -343,6 +378,7 @@ export default {
                     sortBy: context.sortBy,
                     sortAsc: !context.sortDesc,
                 }),
+                hash: this.$route.hash,
             });
         },
 
@@ -385,6 +421,7 @@ export default {
                     mine: this.mineOnly,
                     q: this.filter || undefined,
                 }),
+                hash: this.$route.hash,
             });
         },
 
@@ -416,7 +453,6 @@ export default {
                         }
                     }
                     this.$emit('assigneeUpdated', submission, newAssignee);
-                    this.updateAssigneeFilter();
                 },
                 ({ response }) => {
                     // TODO: visual feedback
@@ -446,11 +482,51 @@ export default {
         SubmissionsExporter,
         LocalHeader,
         User,
+        CategorySelector,
     },
 };
 </script>
 
 <style lang="less" scoped>
+@import '~mixins.less';
+
+.separator.top-separator {
+    margin: 0.5rem 0;
+}
+
+.separator.bottom-separator {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    margin-top: -1px;
+}
+
+.cat-container {
+    margin: -1rem;
+    padding: 1rem;
+    background-color: white;
+
+    #app.dark & {
+        background-color: @color-primary;
+    }
+}
+
+.no-rubric {
+    padding: 0.375rem 0.75rem;
+    border: 1px solid transparent;
+}
+
+.submission-count {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-right-width: 0;
+    border-left-width: 0;
+
+    #app.dark & {
+        border-color: @color-primary-darker;
+    }
+}
+
 .late-icon {
     text-decoration: bold;
     margin-bottom: -0.125em;
@@ -462,10 +538,12 @@ export default {
 @import '~mixins.less';
 
 .submissions-table {
-    padding-top: 5em;
-    content-sizing: content-box;
+    margin-bottom: 0;
+
     td,
     th {
+        vertical-align: middle;
+
         // student
         &:nth-child(1) {
             width: 30em;
@@ -480,14 +558,10 @@ export default {
             width: 1px;
             white-space: nowrap;
         }
-    }
-}
 
-.submissions-table td {
-    vertical-align: middle;
-
-    .loader {
-        padding: 0.33rem;
+        .loader {
+            padding: 0.33rem;
+        }
     }
 }
 
@@ -505,8 +579,6 @@ export default {
 }
 
 .submission-list .search-wrapper {
-    flex: 1;
-
     #app.dark & .input-group-append .input-group-text {
         background-color: @color-primary-darkest !important;
     }

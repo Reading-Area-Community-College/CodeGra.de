@@ -10,6 +10,7 @@
         :graders="graders"
         :can-see-assignee="canSeeAssignee"
         :can-assign-grader="canAssignGrader"
+        :can-see-others-work="canSeeOthersWork"
         @assigneeUpdated="updateAssignee"/>
 
     <div v-if="canUpload || !assignment.deadline">
@@ -86,6 +87,7 @@ export default {
             canListUsers: null,
             canSeeAssignee: false,
             canAssignGrader: false,
+            canSeeOthersWork: false,
             canEditDeadline: false,
             wrongFiles: [],
             ltiProviders,
@@ -254,6 +256,8 @@ export default {
                             (afterDeadline && this.assignment.state !== assignmentState.HIDDEN));
 
                     if (others) {
+                        this.canSeeOthersWork = true;
+
                         if (this.assignment.state === assignmentState.DONE) {
                             this.canDownload = true;
                         } else {

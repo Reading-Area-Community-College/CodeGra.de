@@ -78,6 +78,8 @@
         </div>
     </div>
 
+    <div class="shadow"/>
+
     <div class="submenu-container"
          :class="{ 'use-space': dimmingUseSpace, }"
          ref="subMenuContainer"
@@ -608,9 +610,11 @@ export default {
 }
 
 .main-menu {
+    @main-menu-width: 6rem;
+
     display: flex;
     flex-direction: column;
-    min-width: 6rem;
+    min-width: @main-menu-width;
     height: 100%;
     color: white;
     background-color: @color-primary;
@@ -622,7 +626,7 @@ export default {
     }
 
     @media @media-no-small {
-        width: 6em;
+        width: @main-menu-width;
     }
 
     @media @media-small {
@@ -633,9 +637,27 @@ export default {
         &.show {
             transform: translateX(100%);
         }
+    }
 
-        &:not(.show) {
-            box-shadow: none;
+    // Draw a box shadow around the main menu. This can't be done with the
+    // box-shadow property on .main-class, because the z-indices of
+    // .main-menu and .submenu must be equal, so that modals spawned in the
+    // latter can have a higher z-index than .main-menu.
+    & + .shadow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        z-index: 1;
+        pointer-events: none;
+
+        @media @media-no-small {
+            width: @main-menu-width;
+        }
+
+        @media @media-small {
+            right: 0;
         }
     }
 
@@ -702,7 +724,6 @@ export default {
 }
 
 .submenu-container {
-    z-index: -1;
     width: 16rem;
     height: 100%;
 
@@ -764,12 +785,27 @@ export default {
             color: white;
         }
 
-        &:last-child {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.75);
-        }
-
         &:not(:last-child) {
             display: none;
+        }
+
+        // Draw a box shadow around the submenu. This can't be done with the
+        // box-shadow property on .submenu, because the z-indices of
+        // .main-menu and .submenu must be equal, so that modals spawned in the
+        // latter can have a higher z-index than .main-menu.
+        &::after {
+            @shadow-size: 10px;
+
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            pointer-events: none;
+            box-shadow: 0 0 @shadow-size rgba(0, 0, 0, 0.75);
         }
     }
 }

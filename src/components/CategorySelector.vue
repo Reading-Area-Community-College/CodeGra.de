@@ -58,7 +58,7 @@ export default {
 
     methods: {
         getInitialValue() {
-            const hash = this.$route.hash && this.$route.hash && this.$route.hash.slice(1);
+            const hash = this.$route.hash && this.$route.hash.slice(1);
             if (hash) {
                 return hash;
             }
@@ -98,14 +98,17 @@ export default {
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-
-    margin-bottom: -1rem;
-    @media @media-small {
-        margin-bottom: -0.8rem;
-    }
     line-height: 1rem;
     padding: 0 1rem;
     cursor: pointer;
+
+    .categories:last-child & {
+        margin-bottom: -1rem;
+
+        @media @media-small {
+            margin-bottom: -0.8rem;
+        }
+    }
 
     .indicator {
         border-bottom: 2px solid transparent;
