@@ -46,6 +46,12 @@
                     </b-button-group>
                 </td>
             </tr>
+
+            <tr v-if="filteredSnippets.length === 0">
+                <td class="no-snippets-row text-muted" colspan="3">
+                    You have not created any snippets yet!
+                </td>
+            </tr>
         </tbody>
     </table>
 
@@ -108,6 +114,13 @@ import SubmitButton from './SubmitButton';
 export default {
     name: 'snippet-manager',
 
+    props: {
+        course: {
+            type: Object,
+            default: null,
+        },
+    },
+
     data() {
         return {
             loading: true,
@@ -136,8 +149,19 @@ export default {
         modalTitle() {
             if (!this.editingSnippet) {
                 return '';
+            } else if (this.editingSnippet.id == null) {
+                return 'Add snippet';
+            } else {
+                return 'Edit snippet';
             }
-            return this.editingSnippet.id == null ? 'Add snippet' : 'Edit snippet';
+        },
+
+        baseUrl() {
+            if (this.course == null) {
+                return '/api/v1/';
+            } else {
+                return `/api/v1/courses/${this.course.id}/`;
+            }
         },
     },
 
@@ -236,7 +260,7 @@ export default {
         },
 
         addSnippet(snippet) {
-            return this.$http.put('/api/v1/snippet', snippet).then(response => {
+            return this.$http.put(this.getSnippetRoute('snippet'), snippet).then(response => {
                 snippet.id = response.data.id;
                 this.addSnippetToStore(snippet);
                 this.snippets.push(snippet);
@@ -244,7 +268,7 @@ export default {
         },
 
         updateSnippet(snippet) {
-            return this.$http.patch(`/api/v1/snippets/${snippet.id}`, snippet).then(() => {
+            return this.$http.patch(this.getSnippetRoute(`snippets/${snippet.id}`), snippet).then(() => {
                 const idx = this.findSnippetIndex(snippet);
                 this.updateSnippetInStore(snippet);
                 this.snippets.splice(idx, 1, snippet);
@@ -252,7 +276,7 @@ export default {
         },
 
         deleteSnippet(snippet) {
-            return this.$http.delete(`/api/v1/snippets/${snippet.id}`).then(() => snippet);
+            return this.$http.delete(this.getSnippetRoute(`snippets/${snippet.id}`)).then(() => snippet);
         },
 
         afterDeleteSnippet(snippet) {
@@ -283,6 +307,10 @@ export default {
             } else {
                 this.saveConfirmMessage = '';
             }
+        },
+
+        getSnippetRoute(routeEnd) {
+            return `/api/v1${this.baseUrl}${routeEnd}`;
         },
     },
 
@@ -330,6 +358,11 @@ export default {
     .snippet-actions {
         width: 0px;
         white-space: nowrap;
+    }
+
+    .no-snippets-row {
+        padding: 1.5rem;
+        text-align: center;
     }
 }
 
