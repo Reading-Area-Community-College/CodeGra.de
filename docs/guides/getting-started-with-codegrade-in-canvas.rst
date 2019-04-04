@@ -198,6 +198,12 @@ in the future by **typing its short name** and pressing **TAB** to autocomplete.
 Full management of snippets can be done in the **“Profile Page"** (:fa:`user-circle-o`),
 snippets are personal and can be used over multiple assignments and courses.
 
+.. note::
+
+    Course wide snippets are available in CodeGrade too, these can be set up by
+    the teacher of the course on the **Course Management page** and can be used
+    by all graders of the course.
+
 Rubrics
 ~~~~~~~~
 
