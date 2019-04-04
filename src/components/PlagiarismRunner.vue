@@ -312,6 +312,7 @@ export default {
             const provider = this.providers.find(prov => prov.name === run.provider_name);
             return (
                 (run.state === 'parsing' || run.state === 'running' || run.state === 'comparing') &&
+                provider &&
                 provider.progress
             );
         },

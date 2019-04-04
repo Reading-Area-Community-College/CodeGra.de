@@ -109,6 +109,8 @@ import 'vue-awesome/icons/refresh';
 import 'vue-awesome/icons/check';
 import 'vue-awesome/icons/times';
 import 'vue-awesome/icons/plus';
+import 'vue-awesome/icons/user-circle-o';
+import 'vue-awesome/icons/book';
 
 import { mapActions, mapGetters } from 'vuex';
 
