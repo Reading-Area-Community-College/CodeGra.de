@@ -24,8 +24,8 @@ if t.TYPE_CHECKING:  # pragma: no cover
 
 
 class CourseSnippet(Base):
-    """Describes a :class:`.User` specified mapping from a keyword to some
-    string.
+    """Describes a mapping from a keyword to a replacement text that is shared
+    amongst the teachers and TAs of the course.
     """
     if t.TYPE_CHECKING:  # pragma: no cover
         query: t.ClassVar[_MyQuery['CourseSnippet']] = Base.query
