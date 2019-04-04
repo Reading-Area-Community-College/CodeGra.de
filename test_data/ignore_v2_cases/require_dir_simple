@@ -1,0 +1,10 @@
+policy: deny
+options: {}
+require /dir/
+require /a.py
+
+/a.py
+/dir/
+/dir/hello
+
+SAME

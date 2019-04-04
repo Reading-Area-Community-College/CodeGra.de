@@ -1,0 +1,11 @@
+policy: allow
+options: {}
+deny *.o
+deny /macosx/
+
+/dir/input.c
+/dir/sudoku.c
+/dir/input.o
+
+/input.c
+/sudoku.c

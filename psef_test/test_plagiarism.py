@@ -300,7 +300,7 @@ def test_jplag(
                               1] == 'python3', "Correct language is python3"
         if simil is None:
             assert call_arguments[call_arguments.index('-m') +
-                                  1] == '25%', "Given value differs"
+                                  1] == '50%', "Given value differs"
         else:
             assert call_arguments[call_arguments.index('-m') +
                                   1] == f'{simil}%', "Given value differs"
@@ -1038,7 +1038,7 @@ def test_get_plagiarism_providers(test_client):
                             'description': str,
                             'type': 'numbervalue',
                             'mandatory': bool,
-                            'placeholder': 'default: 25',
+                            'placeholder': 'default: 50',
                         }
                     ],
             },

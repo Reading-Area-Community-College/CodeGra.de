@@ -1,0 +1,9 @@
+policy: allow
+options: {}
+deny .cg-grade-USER_PROVIDED
+deny .cg-feedback
+
+/.cg-grade
+/.cg-feedback
+
+/.cg-feedback-USER_PROVIDED

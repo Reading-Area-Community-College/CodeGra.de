@@ -53,6 +53,7 @@ class APICodes(IntEnum):
     ASSIGNMENT_GROUP_FULL = 26
     UNSUPPORTED = 27
     ASSIGNMENT_DEADLINE_UNSET = 28
+    PARSING_FAILED = 29
 
 
 class InvalidAssignmentState(TypeError):

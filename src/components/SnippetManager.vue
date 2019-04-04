@@ -51,8 +51,13 @@
             </tr>
 
             <tr v-if="filteredSnippets.length === 0">
-                <td class="no-snippets-row text-muted" colspan="3">
-                    You have not created any snippets yet!
+                <td class="no-snippets text-muted" colspan="3">
+                    <template v-if="this.snippets.length === 0">
+                        You have not created any snippets yet!
+                    </template>
+                    <template v-else>
+                        No snippets found!
+                    </template>
                 </td>
             </tr>
         </tbody>
@@ -431,7 +436,7 @@ export default {
         white-space: nowrap;
     }
 
-    .no-snippets-row {
+    .no-snippets {
         padding: 1.5rem;
         text-align: center;
     }

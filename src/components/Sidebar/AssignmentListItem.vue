@@ -65,11 +65,6 @@ export default {
             default: null,
         },
 
-        now: {
-            type: Object,
-            default: null,
-        },
-
         sbloc: {
             default: undefined,
         },
@@ -89,7 +84,7 @@ export default {
         },
 
         readableDeadline() {
-            return moment(this.assignment.deadline).from(this.now);
+            return moment(this.assignment.deadline).from(this.$root.$now);
         },
     },
 

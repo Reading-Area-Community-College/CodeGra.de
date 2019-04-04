@@ -1,0 +1,8 @@
+policy: deny
+options: {"remove_leading_directories": false}
+allow *.py
+
+dir/dir2/a.py
+dir/dir2/b.py
+
+SAME

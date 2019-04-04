@@ -1,0 +1,19 @@
+policy: deny
+options: {}
+allow *.c
+require hello.c
+require /input/variables.txt
+require /input/hard.txt
+
+/input/variables.txt
+/input/hard.txt
+/input/easy.txt
+/hello.c
+/test.c
+/plagiarism.c
+
+/input/variables.txt
+/input/hard.txt
+/hello.c
+/test.c
+/plagiarism.c

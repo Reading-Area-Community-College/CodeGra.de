@@ -1,0 +1,13 @@
+policy: deny
+options: {}
+require /a.py
+require /b.py
+require /dir/c.py
+require /dir/q.py
+
+/a.py
+/b.py
+/dir/c.py
+/dir/q.py
+
+SAME

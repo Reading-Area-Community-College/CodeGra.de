@@ -36,7 +36,7 @@ class JPlag(plag.PlagiarismProvider):
     def __init__(self) -> None:
         self.lang: t.Optional[str] = None
         self.suffixes: t.Optional[str] = None
-        self.simil: int = 25
+        self.simil: int = 50
         self.has_base_code: bool = False
 
     @property
@@ -101,12 +101,12 @@ class JPlag(plag.PlagiarismProvider):
                     "considered plagiarism. If this is set to 100 both "
                     "assignments need to be completely the same, when set to"
                     " 50 both submissions need to be 50% the same, or one 25%"
-                    " and the other 75%. The default is 25"
+                    " and the other 75%. The default is 50."
                 ),
                 plag.OptionTypes.numbervalue,
                 False,
                 None,
-                placeholder='default: 25',
+                placeholder='default: 50',
             ),
         ]
 

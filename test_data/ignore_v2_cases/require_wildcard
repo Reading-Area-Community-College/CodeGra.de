@@ -1,0 +1,10 @@
+policy: deny
+options: {}
+require *.py
+
+/assignment.java
+/assignment1.py
+/assignment2.py
+
+/assignment1.py
+/assignment2.py

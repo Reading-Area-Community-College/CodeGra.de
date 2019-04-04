@@ -55,7 +55,7 @@ New personal snippets can be added through the :ref:`profile page <preferences-c
 and via the :fa:`plus` button in the line of line feedback dialog. The latter
 makes it possible to save existing line for line feedback comments. After
 clicking this button the snippet can be named and saved for future use. To use
-your saved snippet, simply type in the given name and press the TAB keyboard key
+your saved snippet, simply type in the given name and press the :kbd:`Tab` keyboard key
 to autocomplete it to the saved comment.
 
 New course snippets can be added by the teacher of a course on the

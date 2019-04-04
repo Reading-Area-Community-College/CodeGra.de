@@ -22,7 +22,6 @@ import psef
 import psef.files
 from psef import app as current_app
 from psef import current_user
-from psef.ignore import IgnoreFilterManager
 from psef.models import db
 from psef.helpers import (
     JSONType, JSONResponse, EmptyResponse, ExtendedJSONResponse, jsonify,
@@ -35,7 +34,7 @@ from psef.exceptions import (
 
 from . import api
 from .. import (
-    auth, tasks, models, archive, helpers, linters, parsers, features,
+    auth, tasks, ignore, models, archive, helpers, linters, parsers, features,
     plagiarism
 )
 from ..permissions import CoursePermission as CPerm
@@ -324,8 +323,18 @@ def update_assignment(assignment_id: int) -> JSONResponse[models.Assignment]:
 
     if 'ignore' in content:
         auth.ensure_permission(CPerm.can_edit_cgignore, assig.course_id)
-        ensure_keys_in_dict(content, [('ignore', str)])
-        assig.cgignore = t.cast(str, content['ignore'])
+        ignore_version = helpers.get_key_from_dict(
+            content, 'ignore_version', 'IgnoreFilterManager'
+        )
+        filter_type = ignore.filter_handlers.get(ignore_version)
+        if filter_type is None:
+            raise APIException(
+                'The given ignore version was not found.', (
+                    'The known values are:'
+                    f' {", ".join(ignore.filter_handlers.keys())}'
+                ), APICodes.OBJECT_NOT_FOUND, 404
+            )
+        assig.cgignore = filter_type.parse(t.cast(JSONType, content['ignore']))
 
     if 'max_grade' in content:
         if lti_class is not None and not lti_class.supports_max_points():
@@ -710,7 +719,7 @@ def upload_work(assignment_id: int) -> ExtendedJSONResponse[models.Work]:
     work.divide_new_work()
 
     try:
-        raise_or_delete = psef.files.IgnoreHandling[request.args.get(
+        raise_or_delete = psef.ignore.IgnoreHandling[request.args.get(
             'ignored_files',
             'keep',
         )]
@@ -729,7 +738,7 @@ def upload_work(assignment_id: int) -> ExtendedJSONResponse[models.Work]:
         files,
         max_size=current_app.max_file_size,
         force_txt=False,
-        ignore_filter=IgnoreFilterManager(assig.cgignore),
+        ignore_filter=assig.cgignore,
         handle_ignore=raise_or_delete,
     )
     work.add_file_tree(tree)
@@ -1591,9 +1600,8 @@ def start_plagiarism_check(
         base_code = helpers.get_files_from_request(
             max_size=current_app.max_large_file_size, keys=['base_code']
         )[0]
-        base_code_dir, _, __ = psef.files.extract_to_temp(
+        base_code_dir, _ = psef.files.extract_to_temp(
             base_code,
-            psef.files.IgnoreFilterManager(None),
             max_size=current_app.max_large_file_size,
             archive_name='base_code_archive',
             parent_result_dir=current_app.config['SHARED_TEMP_DIR'],

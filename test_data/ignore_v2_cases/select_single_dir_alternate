@@ -1,0 +1,13 @@
+policy: deny
+options: {}
+allow assig2/
+
+/assig1/hello.py
+/assig3.py
+/assig2/assig1/hello.c
+/assig2/compute.c
+/assig2/test_data/test1/csv/hello.csv
+
+/assig1/hello.c
+/compute.c
+/test_data/test1/csv/hello.csv

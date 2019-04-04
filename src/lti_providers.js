@@ -1,4 +1,7 @@
 const defaultLTIProvider = Object.create(null, {
+    addBorder: {
+        value: false,
+    },
     supportsDeadline: {
         value: false,
     },
@@ -15,6 +18,9 @@ const blackboardProvider = Object.create(defaultLTIProvider);
 const moodleProvider = Object.create(defaultLTIProvider);
 
 const canvasProvider = Object.create(defaultLTIProvider, {
+    addBorder: {
+        value: true,
+    },
     supportsDeadline: {
         value: true,
     },

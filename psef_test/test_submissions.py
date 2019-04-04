@@ -886,7 +886,7 @@ def test_get_dir_contents(
                     'name': 'test.py'
                 }],
                 'id': int,
-                'name': 'test_flake8'
+                'name': 'test_flake8.tar.gz'
             }
         )
         if not error:
@@ -978,11 +978,11 @@ def test_get_zip_file(
                 files = set(f.filename for f in files)
                 assert files == set(
                     [
-                        'multiple_dir_archive/',
-                        'multiple_dir_archive/dir/single_file_work',
-                        'multiple_dir_archive/dir/single_file_work_copy',
-                        'multiple_dir_archive/dir2/single_file_work',
-                        'multiple_dir_archive/dir2/single_file_work_copy',
+                        'multiple_dir_archive.zip/',
+                        'multiple_dir_archive.zip/dir/single_file_work',
+                        'multiple_dir_archive.zip/dir/single_file_work_copy',
+                        'multiple_dir_archive.zip/dir2/single_file_work',
+                        'multiple_dir_archive.zip/dir2/single_file_work_copy',
                     ]
                 )
 
@@ -1027,15 +1027,13 @@ def test_get_teacher_zip_file(
     assignment, work = assignment_real_works
     work_id = work['id']
 
-    assert get_files(ta_user, False) == set(
-        [
-            'multiple_dir_archive/',
-            'multiple_dir_archive/dir/single_file_work',
-            'multiple_dir_archive/dir/single_file_work_copy',
-            'multiple_dir_archive/dir2/single_file_work',
-            'multiple_dir_archive/dir2/single_file_work_copy',
-        ]
-    )
+    assert get_files(ta_user, False) == {
+        'multiple_dir_archive.zip/',
+        'multiple_dir_archive.zip/dir/single_file_work',
+        'multiple_dir_archive.zip/dir/single_file_work_copy',
+        'multiple_dir_archive.zip/dir2/single_file_work',
+        'multiple_dir_archive.zip/dir2/single_file_work_copy',
+    }
 
     get_files(student_user, 403)
     m.File.query.filter_by(
@@ -1044,13 +1042,11 @@ def test_get_teacher_zip_file(
     ).filter(
         m.File.parent != None,
     ).update({'fileowner': m.FileOwner.student})
-    assert get_files(ta_user, False) == set(
-        [
-            'multiple_dir_archive/',
-            'multiple_dir_archive/dir/single_file_work_copy',
-            'multiple_dir_archive/dir2/single_file_work_copy'
-        ]
-    )
+    assert get_files(ta_user, False) == {
+        'multiple_dir_archive.zip/',
+        'multiple_dir_archive.zip/dir/single_file_work_copy',
+        'multiple_dir_archive.zip/dir2/single_file_work_copy'
+    }
     m.Assignment.query.filter_by(
         id=m.Work.query.get(work_id).assignment_id,
     ).update(
@@ -1064,13 +1060,11 @@ def test_get_teacher_zip_file(
         'state': m._AssignmentStateEnum.done,
     }, )
 
-    assert get_files(student_user, False) == set(
-        [
-            'multiple_dir_archive/',
-            'multiple_dir_archive/dir/single_file_work_copy',
-            'multiple_dir_archive/dir2/single_file_work_copy'
-        ]
-    )
+    assert get_files(student_user, False) == {
+        'multiple_dir_archive.zip/',
+        'multiple_dir_archive.zip/dir/single_file_work_copy',
+        'multiple_dir_archive.zip/dir2/single_file_work_copy',
+    }
 
 
 @pytest.mark.parametrize(
@@ -1089,14 +1083,16 @@ def test_get_teacher_zip_file(
 )
 @pytest.mark.parametrize(
     'to_search', [
-        'multiple_dir_archive/dir/single_file_work',
-        '/multiple_dir_archive/dir/single_file_work',
-        data_error(error=404)('multiple_dir_archive/dir/single_file_work/'),
-        data_error(error=404)('/multiple_dir_archive/dir/single_file_work/'),
-        '/multiple_dir_archive/dir2/',
-        'multiple_dir_archive/dir2/',
-        data_error(error=404)('/multiple_dir_archive/dir2'),
-        data_error(error=404)('multiple_dir_archive/dir2'),
+        'multiple_dir_archive.zip/dir/single_file_work',
+        '/multiple_dir_archive.zip/dir/single_file_work',
+        data_error(error=404
+                   )('multiple_dir_archive.zip/dir/single_file_work/'),
+        data_error(error=404
+                   )('/multiple_dir_archive.zip/dir/single_file_work/'),
+        '/multiple_dir_archive.zip/dir2/',
+        'multiple_dir_archive.zip/dir2/',
+        data_error(error=404)('/multiple_dir_archive.zip/dir2'),
+        data_error(error=404)('multiple_dir_archive.zip/dir2'),
     ]
 )
 def test_search_file(
@@ -1149,6 +1145,26 @@ def test_add_file(
 
     with logged_in(student_user):
         test_client.req(
+            'get',
+            f'/api/v1/submissions/{work_id}/files/',
+            200,
+            result={
+                'entries':
+                    [
+                        {
+                            'id': int,
+                            'name': 'single_file_work'
+                        }, {
+                            'id': int,
+                            'name': 'single_file_work_copy'
+                        }
+                    ],
+                'id': int,
+                'name': 'single_dir_archive.zip'
+            }
+        )
+
+        test_client.req(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             404,
@@ -1169,36 +1185,39 @@ def test_add_file(
             f'/api/v1/submissions/{work_id}/files/',
             400,
             result=error_template,
-            query={'path': '/dir/dir2/.cg-grade'}
+            query={'path': '/single_dir_archive.zip/dir/dir2/.cg-grade'}
         )
         res = test_client.req(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             200,
-            query={'path': '/dir/dir2/wow/'},
+            query={'path': '/single_dir_archive.zip/dir/dir2/wow/'},
         )
-        assert res['is_directory'] == True
+        assert res['is_directory'] is True
         test_client.req(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             400,
-            query={'path': '/dir/dir2/wow/'},
+            query={'path': '/single_dir_archive.zip/dir/dir2/wow/'},
             result=error_template,
         )
         res = test_client.req(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             200,
-            query={'path': '/dir/dir2/wow/dit/'},
+            query={'path': '/single_dir_archive.zip/dir/dir2/wow/dit/'},
         )
-        assert res['is_directory'] == True
+        assert res['is_directory'] is True
 
         # Make sure you cannot upload to large strings
         res = test_client.req(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             400,
-            query={'path': '/dir/dir2/this/is/to/large/file'},
+            query={
+                'path':
+                    '/single_dir_archive.zip/dir/dir2/this/is/to/large/file'
+            },
             real_data=b'0' * 2 * 2 ** 20,
             result=error_template,
         )
@@ -1206,17 +1225,17 @@ def test_add_file(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             200,
-            query={'path': '/dir/dir2/file'},
+            query={'path': '/single_dir_archive.zip/dir/dir2/file'},
             real_data='NEW_FILE',
         )
         assert get_file_by_id(res['id']) == 'NEW_FILE'
         assert res['size'] == len('NEW_FILE')
-        assert res['is_directory'] == False
+        assert res['is_directory'] is False
         test_client.req(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             400,
-            query={'path': '/dir/dir2/file'},
+            query={'path': '/single_dir_archive.zip/dir/dir2/file'},
             real_data='NEWER_FILE',
         )
         assert get_file_by_id(res['id']) == 'NEW_FILE'
@@ -1224,7 +1243,7 @@ def test_add_file(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             200,
-            query={'path': '/dir/dir2/dir3/file'},
+            query={'path': '/single_dir_archive.zip/dir/dir2/dir3/file'},
             real_data='NEW_FILE',
         )
         assert get_file_by_id(res['id']) == 'NEW_FILE'
@@ -1236,7 +1255,7 @@ def test_add_file(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             403,
-            query={'path': '/dir/dir2/file'},
+            query={'path': '/single_dir_archive.zip/dir/dir2/file'},
             result=error_template,
             real_data='TEAER_FILE',
         )
@@ -1255,7 +1274,7 @@ def test_add_file(
             f'/api/v1/submissions/{work_id}/files/',
             400,
             query={
-                'path': '/dir/dir2/file',
+                'path': '/single_dir_archive.zip/dir/dir2/file',
                 'owner': 'auto'
             },
             real_data='TEAEST_FILE',
@@ -1265,19 +1284,19 @@ def test_add_file(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             200,
-            query={'path': '/dir/dir2/file2'},
+            query={'path': '/single_dir_archive.zip/dir/dir2/file2'},
             real_data='TEAEST_FILE',
         )
         assert get_file_by_id(res['id']) == 'TEAEST_FILE'
         assert res['size'] == len('TEAEST_FILE')
-        assert res['is_directory'] == False
+        assert res['is_directory'] is False
 
     with logged_in(student_user):
         test_client.req(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             403,
-            query={'path': '/dir/dir2/wow2/'},
+            query={'path': '/single_dir_archive.zip/dir/dir2/wow2/'},
             real_data='TEAEST_FILE',
             result=error_template,
         )
@@ -1297,8 +1316,14 @@ def test_add_file(
             'post',
             f'/api/v1/submissions/{work_id}/files/',
             200,
-            query={'path': '/dir/dir2/file2'},
+            query={'path': '/single_dir_archive.zip/dir/dir2/file2'},
             real_data='STUDENT_FILE',
+        )
+        from pprint import pprint
+        pprint(
+            test_client.req(
+                'get', f'/api/v1/submissions/{work_id}/files/', 200
+            )
         )
 
         res = test_client.req(
@@ -1307,46 +1332,58 @@ def test_add_file(
             200,
             result={
                 'name':
-                    'dir',
+                    'single_dir_archive.zip',
                 'id':
                     int,
                 'entries':
                     [
                         {
                             'name':
-                                'dir2',
+                                'dir',
                             'id':
                                 int,
                             'entries':
                                 [
                                     {
                                         'name':
-                                            'dir3',
-                                        'id':
-                                            int,
-                                        'entries':
-                                            [{
-                                                'name': 'file',
-                                                'id': int,
-                                            }],
-                                    }, {
-                                        'name': 'file',
-                                        'id': int,
-                                    }, {
-                                        'name': 'file2',
-                                        'id': int,
-                                    },
-                                    {
-                                        'name':
-                                            'wow',
+                                            'dir2',
                                         'id':
                                             int,
                                         'entries':
                                             [
                                                 {
-                                                    'name': 'dit',
+                                                    'name':
+                                                        'dir3',
+                                                    'id':
+                                                        int,
+                                                    'entries':
+                                                        [
+                                                            {
+                                                                'name': 'file',
+                                                                'id': int,
+                                                            }
+                                                        ],
+                                                }, {
+                                                    'name': 'file',
                                                     'id': int,
-                                                    'entries': [],
+                                                },
+                                                {
+                                                    'name': 'file2',
+                                                    'id': int,
+                                                },
+                                                {
+                                                    'name':
+                                                        'wow',
+                                                    'id':
+                                                        int,
+                                                    'entries':
+                                                        [
+                                                            {
+                                                                'name': 'dit',
+                                                                'id': int,
+                                                                'entries': [],
+                                                            }
+                                                        ],
                                                 }
                                             ],
                                     }
@@ -1358,7 +1395,7 @@ def test_add_file(
                             'name': 'single_file_work_copy',
                             'id': int,
                         }
-                    ],
+                    ]
             }
         )
 
@@ -1369,46 +1406,58 @@ def test_add_file(
             200,
             result={
                 'name':
-                    'dir',
+                    'single_dir_archive.zip',
                 'id':
                     int,
                 'entries':
                     [
                         {
                             'name':
-                                'dir2',
+                                'dir',
                             'id':
                                 int,
                             'entries':
                                 [
                                     {
                                         'name':
-                                            'dir3',
-                                        'id':
-                                            int,
-                                        'entries':
-                                            [{
-                                                'name': 'file',
-                                                'id': int,
-                                            }],
-                                    }, {
-                                        'name': 'file',
-                                        'id': int,
-                                    }, {
-                                        'name': 'file2',
-                                        'id': int,
-                                    },
-                                    {
-                                        'name':
-                                            'wow',
+                                            'dir2',
                                         'id':
                                             int,
                                         'entries':
                                             [
                                                 {
-                                                    'name': 'dit',
+                                                    'name':
+                                                        'dir3',
+                                                    'id':
+                                                        int,
+                                                    'entries':
+                                                        [
+                                                            {
+                                                                'name': 'file',
+                                                                'id': int,
+                                                            }
+                                                        ],
+                                                }, {
+                                                    'name': 'file',
                                                     'id': int,
-                                                    'entries': [],
+                                                },
+                                                {
+                                                    'name': 'file2',
+                                                    'id': int,
+                                                },
+                                                {
+                                                    'name':
+                                                        'wow',
+                                                    'id':
+                                                        int,
+                                                    'entries':
+                                                        [
+                                                            {
+                                                                'name': 'dit',
+                                                                'id': int,
+                                                                'entries': [],
+                                                            }
+                                                        ],
                                                 }
                                             ],
                                     }
@@ -1420,7 +1469,7 @@ def test_add_file(
                             'name': 'single_file_work_copy',
                             'id': int,
                         }
-                    ],
+                    ]
             }
         )
 

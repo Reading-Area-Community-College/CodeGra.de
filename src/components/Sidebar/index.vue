@@ -137,7 +137,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import moment from 'moment';
 
 import Icon from 'vue-awesome/components/Icon';
 import 'vue-awesome/icons/arrow-left';
@@ -332,12 +331,8 @@ export default {
             return (this.assignments || {})[this.assignmentId];
         },
 
-        now() {
-            return moment();
-        },
-
         isChristmas() {
-            return this.now.month() === 11 && this.now.date() <= 26;
+            return this.$root.$now.month() === 11 && this.$root.$now.date() <= 26;
         },
 
         floating() {

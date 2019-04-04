@@ -25,6 +25,15 @@ Source code documentation of ``psef``
     :undoc-members:
     :show-inheritance:
 
+``psef.extract_tree``
+--------------------------
+
+.. automodule:: psef.extract_tree
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
 ``psef.blackboard``
 ------------------------------
 

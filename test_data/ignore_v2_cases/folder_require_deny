@@ -1,0 +1,14 @@
+policy: deny
+options: {}
+require struct.py
+require helper.py
+require input.py
+require /library/
+
+/struct.py
+/helper.py
+/input.py
+/library/pydub.py
+/library/pycool.py
+
+SAME

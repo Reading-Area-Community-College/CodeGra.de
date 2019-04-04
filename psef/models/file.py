@@ -139,9 +139,12 @@ class File(Base):
         :returns: The absolute path.
         """
         assert not self.is_directory
-        return os.path.join(
-            current_app.config['UPLOAD_DIR'], t.cast(str, self.filename)
+        assert self.filename is not None
+        res = os.path.realpath(
+            os.path.join(current_app.config['UPLOAD_DIR'], self.filename)
         )
+        assert res.startswith(current_app.config['UPLOAD_DIR'])
+        return res
 
     def delete_from_disk(self) -> None:
         """Delete the file from disk if it is not a directory.

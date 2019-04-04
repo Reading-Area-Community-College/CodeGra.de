@@ -111,6 +111,12 @@ export function last(arr) {
 }
 
 export function range(start, end) {
+    if (end == null) {
+        // eslint-disable-next-line
+        end = start;
+        // eslint-disable-next-line
+        start = 0;
+    }
     const len = end - start;
     const res = Array(len);
     for (let i = 0; i < len; ++i) {
@@ -204,4 +210,15 @@ export function loadCodeAndFeedback(http, fileId) {
             throw message;
         },
     );
+}
+
+export function getProps(object, defaultValue, ...props) {
+    let res = object;
+    for (let i = 0; res !== undefined && i < props.length; ++i) {
+        res = res[props[i]];
+    }
+    if (res === undefined) {
+        res = defaultValue;
+    }
+    return res;
 }

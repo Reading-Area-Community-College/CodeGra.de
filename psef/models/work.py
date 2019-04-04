@@ -524,7 +524,7 @@ class Work(Base):
         new_top = File(
             work=self,
             is_directory=True,
-            name=psef.files.escape_logical_filename(tree.name),
+            name=tree.name,
             parent=top,
         )
 
@@ -534,7 +534,7 @@ class Work(Base):
             elif isinstance(child, psef.files.ExtractFileTreeFile):
                 File(
                     work=self,
-                    name=psef.files.escape_logical_filename(child.name),
+                    name=child.name,
                     filename=child.disk_name,
                     is_directory=False,
                     parent=new_top,

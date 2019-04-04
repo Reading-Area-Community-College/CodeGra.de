@@ -1,0 +1,7 @@
+policy: allow
+options: {"delete_empty_directories": true}
+
+dir2/hello.py
+dir1/
+
+hello.py

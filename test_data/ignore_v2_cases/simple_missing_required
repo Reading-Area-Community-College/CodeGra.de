@@ -1,0 +1,10 @@
+policy: deny
+options: {}
+require a.py
+require b.py
+
+/dir/b.py
+/dir2/b.py
+
+MISSING
+a.py

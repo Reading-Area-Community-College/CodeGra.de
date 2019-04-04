@@ -801,6 +801,7 @@ def create_course_snippet(course_id: int
     '/courses/<int:course_id>/snippets/<int:snippet_id>', methods=['PATCH']
 )
 @auth.permission_required(GPerm.can_use_snippets)
+@auth.login_required
 def patch_course_snippet(course_id: int, snippet_id: int) -> EmptyResponse:
     """Modify the :class:`.models.CourseSnippet` with the given id.
 
@@ -848,6 +849,7 @@ def patch_course_snippet(course_id: int, snippet_id: int) -> EmptyResponse:
     '/courses/<int:course_id>/snippets/<int:snippet_id>', methods=['DELETE']
 )
 @auth.permission_required(GPerm.can_use_snippets)
+@auth.login_required
 def delete_course_snippets(course_id: int, snippet_id: int) -> EmptyResponse:
     """Delete the :class:`.models.CourseSnippet` with the given id.
 

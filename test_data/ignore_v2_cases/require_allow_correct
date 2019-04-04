@@ -1,0 +1,12 @@
+policy: allow
+options: {}
+require ajax.py
+require juventus.py
+
+/dir/dir2/dir3/ajax.py
+/dir/dir2/dir4/juventus.py
+/dir/losers/realmadrid.py
+
+/dir2/dir3/ajax.py
+/dir2/dir4/juventus.py
+/losers/realmadrid.py

@@ -2,9 +2,13 @@
 import io
 import os
 import copy
+import json
 import uuid
 import random
+import tarfile
 import datetime
+import tempfile
+import dataclasses
 from collections import defaultdict
 
 import pytest
@@ -16,6 +20,7 @@ from helpers import (
     create_user_with_perms, get_newest_submissions
 )
 from psef.errors import APICodes, APIWarnings
+from psef.ignore import SubmissionValidator
 from psef.helpers import ensure_keys_in_dict
 from psef.permissions import CoursePermission as CPerm
 from psef.permissions import GlobalPermission as GPerm
@@ -145,6 +150,7 @@ def test_get_assignment(
                 'is_lti': False,
                 'lms_name': None,
                 'cgignore': None,
+                'cgignore_version': None,
                 'course': dict,
                 'whitespace_linter': False,
                 'done_type': None,
@@ -1105,7 +1111,7 @@ def test_upload_files(
                     result={
                         'entries': entries,
                         'id': int,
-                        'name': f'{dirname}'
+                        'name': f'{name}{ext}' if ext else 'top',
                     }
                 )
 
@@ -1888,7 +1894,7 @@ def test_get_all_submissions(
                                     'name': 'Single file',
                                     'id': int
                                 }, {
-                                    'name': 'tar_file',
+                                    'name': 'tar_file.tar.gz',
                                     'id': int,
                                     'entries': list,
                                 }, {
@@ -2508,7 +2514,8 @@ def test_ignored_upload_files(
                     'code': 'INVALID_FILE_IN_ARCHIVE',
                     'message': str,
                     'description': str,
-                    'invalid_files': list
+                    'invalid_files': list,
+                    '__allow_extra__': True,
                 }
             )
             assert set(ignored) == set(r[0] for r in res['invalid_files'])
@@ -2533,7 +2540,7 @@ def test_ignored_upload_files(
                 result={
                     'entries': entries,
                     'id': int,
-                    'name': f'{dirname}'
+                    'name': f'{dirname}{ext}'
                 }
             )
 
@@ -2554,7 +2561,10 @@ def test_ignored_upload_files(
                 'get',
                 f'/api/v1/submissions/{res["id"]}/files/',
                 200,
-                result=entries_delete
+                result={
+                    **entries_delete,
+                    'name': f'{name}{ext}',
+                }
             )
 
     with logged_in(teacher_user):
@@ -2601,7 +2611,7 @@ def test_ignored_upload_files(
             f'/api/v1/submissions/{res["id"]}/files/',
             200,
             result={
-                'name': 'dir',
+                'name': f'{name}{ext}',
                 'id': int,
                 'entries': list
             },
@@ -2633,7 +2643,8 @@ def test_ignored_upload_files(
                 'code': 'INVALID_FILE_IN_ARCHIVE',
                 'message': str,
                 'description': str,
-                'invalid_files': list
+                'invalid_files': list,
+                '__allow_extra__': True,
             }
         )
         # Make sure it works when not submitting an archive
@@ -2731,7 +2742,7 @@ def test_ignored_upload_files(
             result={
                 'entries': entries,
                 'id': int,
-                'name': f'{dirname}'
+                'name': f'{name}{ext}'
             }
         )
 
@@ -2770,6 +2781,7 @@ def test_ignoring_file(
                 'message': str,
                 'description': str,
                 'invalid_files': [[filename, '*.txt']],
+                '__allow_extra__': True,
             }
         )
 
@@ -2808,12 +2820,13 @@ def test_ignoring_dirs_tar_archives(
                 'code': 'INVALID_FILE_IN_ARCHIVE',
                 'message': str,
                 'description': str,
-                'invalid_files': list
+                'invalid_files': list,
+                '__allow_extra__': True,
             }
         )
         for f in res['invalid_files']:
             assert f[1] == 'dir/'
-        assert ['dir/', 'dir/'] in res['invalid_files']
+        assert ('dir/', 'dir/') in ((r[0], r[1]) for r in res['invalid_files'])
 
         res = test_client.req(
             'post',
@@ -2839,7 +2852,6 @@ def test_ignoring_dirs_tar_archives(
             }
         )
         for entry in res['entries']:
-            print(entry)
             assert entry['name'] != 'dir'
 
 
@@ -4069,4 +4081,247 @@ def test_prevent_submitting_to_assignment_without_deadline(
                     )
             },
             result=error_template,
+        )
+
+
+def parse_ignore_v2_test_files():
+    @dataclasses.dataclass
+    class IgnoreTestCase:
+        f: str
+        data: dict
+        in_format: list
+        out_format: list
+        missing_error: bool
+
+        def __str__(self) -> str:
+            return f'Ignore: {self.f}'
+
+        def get_expected(self, root_name):
+            def build_tree(tree, path):
+                if not path:
+                    return
+                splitted = [x for x in path.split('/') if x]
+                for idx, e in enumerate(tree['entries']):
+                    if e['name'] == splitted[0]:
+                        break
+                else:
+                    entry = {
+                        'name': splitted[0],
+                        'id': int,
+                    }
+                    if path[-1] == '/' or len(splitted) > 1:
+                        entry['entries'] = []
+                    tree['entries'].append(entry)
+                    tree['entries'].sort(key=lambda el: el['name'].lower())
+                    idx = -1
+                build_tree(tree['entries'][idx], '/'.join(splitted[1:]))
+
+            res = {
+                'name': root_name,
+                'id': int,
+                'entries': [],
+            }
+            for path in sorted(self.out_format, key=lambda el: el.lower()):
+                build_tree(res, path)
+            print('build tree', res)
+            return res
+
+    res = []
+
+    base_dir = f'{os.path.dirname(__file__)}/../test_data/ignore_v2_cases/'
+    for filename in sorted(os.listdir(base_dir)):
+        with open(os.path.join(base_dir, filename), 'r') as f:
+            content = f.read().strip()
+        data = {}
+
+        ignore, input_dir, expected = content.split('\n\n')
+        ignore = ignore.split('\n')
+        assert ignore[0].startswith('policy: ')
+        data['policy'] = (
+            'allow_all_files' if 'allow' in ignore[0] else 'deny_all_files'
+        )
+        assert ignore[1].startswith('options: ')
+        data['options'] = [
+            {
+                'key': k,
+                'value': v
+            } for k, v in {
+                'allow_override': False,
+                **json.loads(ignore[1][len('options: '):].strip()),
+            }.items()
+        ]
+        data['rules'] = [
+            {
+                'rule_type': typ.strip(':'),
+                'file_type': 'directory' if fname[-1] == '/' else 'file',
+                'name': fname,
+            } for typ, fname in (i.split(' ', 1) for i in ignore[2:])
+        ]
+        input_dir = [l.lstrip('/') for l in input_dir.split('\n')]
+        expected = expected.split('\n')
+
+        missing_error = False
+        if expected == ['SAME']:
+            expected = copy.deepcopy(input_dir)
+        elif expected[0] == 'MISSING':
+            expected.pop(0)
+            missing_error = True
+
+        res.append(
+            IgnoreTestCase(filename, data, input_dir, expected, missing_error)
+        )
+
+    return res
+
+
+@pytest.mark.parametrize('test_case', parse_ignore_v2_test_files())
+def test_ignore_v2(
+    test_client, logged_in, teacher_user, test_case, assignment, error_template
+):
+    with tempfile.TemporaryDirectory() as tmpdir, tempfile.NamedTemporaryFile(
+        suffix='.tar.gz'
+    ) as archive_file:
+        print(dataclasses.asdict(test_case), archive_file.name)
+        for f in test_case.in_format:
+            assert f
+            full_path = os.path.join(tmpdir, f)
+            assert full_path.startswith(tmpdir)
+            if full_path[-1] == '/':
+                os.makedirs(full_path)
+            else:
+                basedir = os.path.dirname(full_path)
+                os.makedirs(basedir, exist_ok=True)
+                with open(full_path, 'w') as f:
+                    pass
+        with tarfile.open(archive_file.name, mode='w:gz') as archive:
+            for f in os.listdir(tmpdir):
+                archive.add(os.path.join(tmpdir, f), f, recursive=True)
+
+        with logged_in(teacher_user):
+            test_client.req(
+                'patch',
+                f'/api/v1/assignments/{assignment.id}',
+                200,
+                data={
+                    'ignore': test_case.data,
+                    'ignore_version': 'SubmissionValidator',
+                },
+            )
+            assig = test_client.req(
+                'get', f'/api/v1/assignments/{assignment.id}', 200
+            )
+            assert assig['cgignore'] == test_case.data
+
+            if test_case.missing_error:
+                err = test_client.req(
+                    'post',
+                    f'/api/v1/assignments/{assignment.id}/submission?'
+                    'ignored_files=delete',
+                    400,
+                    real_data={'file': (archive_file.name, archive_file.name)},
+                    result={
+                        **error_template, '__allow_extra__': True
+                    },
+                )
+                assert set(r['name'] for r in err['missing_files']) == set(
+                    test_case.out_format
+                )
+                return
+
+            res = test_client.req(
+                'post',
+                f'/api/v1/assignments/{assignment.id}/submission?'
+                'ignored_files=delete',
+                201,
+                real_data={'file': (archive_file.name, archive_file.name)},
+            )
+
+            test_client.req(
+                'get',
+                f'/api/v1/submissions/{res["id"]}/files/',
+                200,
+                result=test_case.get_expected(
+                    archive_file.name.split('/')[-1]
+                )
+            )
+
+            # This is not allowed as override is set to False.
+            test_client.req(
+                'post',
+                f'/api/v1/assignments/{assignment.id}/submission?'
+                'ignored_files=keep',
+                400,
+                real_data={'file': (archive_file.name, archive_file.name)},
+            )
+
+
+def test_setting_cgignore(
+    test_client, logged_in, teacher_user, assignment, error_template
+):
+    with logged_in(teacher_user):
+        test_client.req(
+            'patch',
+            f'/api/v1/assignments/{assignment.id}',
+            400,
+            data={
+                'ignore': [],
+                'ignore_version': 'SubmissionValidator',
+            },
+            result=error_template
+        )
+        test_client.req(
+            'patch',
+            f'/api/v1/assignments/{assignment.id}',
+            400,
+            data={
+                'ignore': 'hello',
+                'ignore_version': ['Wrong Type'],
+            },
+            result=error_template
+        )
+        test_client.req(
+            'patch',
+            f'/api/v1/assignments/{assignment.id}',
+            400,
+            data={
+                'ignore': ['hello'],
+                'ignore_version': 'IgnoreFilterManager',
+            },
+            result=error_template
+        )
+
+        test_client.req(
+            'patch',
+            f'/api/v1/assignments/{assignment.id}',
+            404,
+            data={
+                'ignore': [],
+                'ignore_version': 'NotKnown',
+            },
+            result=error_template
+        )
+
+        test_client.req(
+            'patch',
+            f'/api/v1/assignments/{assignment.id}',
+            200,
+            data={
+                'ignore': '',
+                'ignore_version': 'EmptySubmissionFilter',
+            },
+        )
+        test_client.req(
+            'post',
+            (
+                f'/api/v1/assignments/{assignment.id}'
+                '/submission?ignored_files=delete'
+            ),
+            201,
+            real_data={
+                'file':
+                    (
+                        get_submission_archive('multiple_file_archive.tar.gz'),
+                        'test.tar.gz'
+                    )
+            },
         )
