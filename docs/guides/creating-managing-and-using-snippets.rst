@@ -100,7 +100,7 @@ icon next to a snippet to permanently delete this snippet.
 Use the :fa:`pencil` icon to edit the snippet.
 
 Using snippets
----------------
++++++++++++++++
 
 1. Click anywhere to add an inline feedback comment.
 
