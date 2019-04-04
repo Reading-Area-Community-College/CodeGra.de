@@ -950,6 +950,18 @@ def test_course_snippets(
             result=snips,
         )
 
+        # Check that duplicate keys raise an error
+        test_client.req(
+            'patch',
+            f'{url_base}/snippets/{snips[0]["id"]}',
+            400,
+            data={
+                'key': snips[1]['key'],
+                'value': snips[0]['value']
+            },
+            result=error_template,
+        )
+
         # Delete existing snippet
         test_client.req(
             'delete',

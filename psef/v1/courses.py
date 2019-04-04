@@ -781,14 +781,15 @@ def create_course_snippet(course_id: int
     key = t.cast(str, content['key'])
     value = t.cast(str, content['value'])
 
+    course = helpers.get_or_404(models.Course, course_id)
     snippet = models.CourseSnippet.query.filter_by(
-        course_id=course_id,
+        course=course,
         key=key,
     ).first()
 
     if snippet is None:
         snippet = models.CourseSnippet(
-            course_id=course_id,
+            course=course,
             key=key,
             value=value,
         )
@@ -824,6 +825,8 @@ def patch_course_snippet(course_id: int, snippet_id: int) -> EmptyResponse:
     :raises PermissionException: If there is no logged in user. (NOT_LOGGED_IN)
     :raises PermissionException: If the user can not use snippets.
         (INCORRECT_PERMISSION)
+    :raises APIException: If another snippet with the same key already exists.
+        (OBJECT_ALREADY_EXISTS)
     """
     auth.ensure_permission(CPerm.can_manage_course_snippets, course_id)
     content = get_json_dict_from_request()
@@ -832,6 +835,7 @@ def patch_course_snippet(course_id: int, snippet_id: int) -> EmptyResponse:
     key = t.cast(str, content['key'])
     value = t.cast(str, content['value'])
 
+    course = helpers.get_or_404(models.Course, course_id)
     snip = helpers.get_or_404(models.CourseSnippet, snippet_id)
 
     if snip.course_id != course_id:
@@ -840,6 +844,20 @@ def patch_course_snippet(course_id: int, snippet_id: int) -> EmptyResponse:
             'The snippet "{}" does not belong to course "{}"'.format(
                 snip.id, course_id
             ), APICodes.INCORRECT_PERMISSION, 403
+        )
+
+    other = models.CourseSnippet.query.filter_by(
+        course=course,
+        key=key,
+    ).first()
+    if other is not None and other.id != snippet_id:
+        raise APIException(
+            'A snippet with the same key already exists.',
+            'A snippet with key "{}" already exists for course "{}"'.format(
+                key, course_id
+            ),
+            APICodes.OBJECT_ALREADY_EXISTS,
+            400,
         )
 
     snip.key = key
@@ -872,9 +890,9 @@ def delete_course_snippets(course_id: int, snippet_id: int) -> EmptyResponse:
     """
     auth.ensure_permission(CPerm.can_manage_course_snippets, course_id)
 
+    course = helpers.get_or_404(models.Course, course_id)
     snip: t.Optional[models.CourseSnippet]
     snip = helpers.get_or_404(models.CourseSnippet, snippet_id)
-    snip = models.CourseSnippet.query.get(snippet_id)
     assert snip is not None
 
     if snip.course_id != course_id:
