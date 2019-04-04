@@ -836,15 +836,11 @@ def patch_course_snippet(course_id: int, snippet_id: int) -> EmptyResponse:
     value = t.cast(str, content['value'])
 
     course = helpers.get_or_404(models.Course, course_id)
-    snip = helpers.get_or_404(models.CourseSnippet, snippet_id)
-
-    if snip.course_id != course_id:
-        raise APIException(
-            'The given snippet does not belong to the given course',
-            'The snippet "{}" does not belong to course "{}"'.format(
-                snip.id, course_id
-            ), APICodes.INCORRECT_PERMISSION, 403
-        )
+    snip = helpers.get_or_404(
+        models.CourseSnippet,
+        snippet_id,
+        also_error=lambda snip: snip.course_id != course_id
+    )
 
     other = models.CourseSnippet.query.filter_by(
         course=course,
@@ -891,18 +887,12 @@ def delete_course_snippets(course_id: int, snippet_id: int) -> EmptyResponse:
     auth.ensure_permission(CPerm.can_manage_course_snippets, course_id)
 
     course = helpers.get_or_404(models.Course, course_id)
-    snip: t.Optional[models.CourseSnippet]
-    snip = helpers.get_or_404(models.CourseSnippet, snippet_id)
-    assert snip is not None
+    snip = helpers.get_or_404(
+        models.CourseSnippet,
+        snippet_id,
+        also_error=lambda snip: snip.course_id != course_id
+    )
 
-    if snip.course_id != course_id:
-        raise APIException(
-            'The given snippet does not belong to the given course',
-            'The snippet "{}" does not belong to course "{}"'.format(
-                snip.id, course_id
-            ), APICodes.INCORRECT_PERMISSION, 403
-        )
-    else:
-        db.session.delete(snip)
-        db.session.commit()
-        return make_empty_response()
+    db.session.delete(snip)
+    db.session.commit()
+    return make_empty_response()

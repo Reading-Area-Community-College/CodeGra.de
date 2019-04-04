@@ -976,22 +976,21 @@ def test_course_snippets(
         )
 
         # Shouldn't be able to change other course's snippets
+        # This should return a 404 to minimize leaking information
         res = test_client.req(
             'patch',
             f'/api/v1/courses/{prolog_course.id}/snippets/{snips[0]["id"]}',
-            403,
+            404,
             data=snips[0],
             result=error_template,
         )
-        assert 'not belong to the given course' in res['message']
 
         res = test_client.req(
             'delete',
             f'/api/v1/courses/{prolog_course.id}/snippets/{snips[0]["id"]}',
-            403,
+            404,
             result=error_template,
         )
-        assert 'not belong to the given course' in res['message']
 
     with logged_in(ta_user):
         # TA user should only be able to view snippets
