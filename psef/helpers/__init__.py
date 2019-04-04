@@ -522,6 +522,14 @@ def ensure_keys_in_dict(
 def get_json_dict_from_request(
     replace_log: t.Optional[t.Callable[[str, object], object]] = None,
 ) -> t.Dict[str, JSONType]:
+    """Get the JSON dict from this request.
+
+    :param replace_log: A function that replaces options in the log.
+    :returns: The JSON found in the request if it is a dictionary.
+
+    :raises psef.errors.APIException: If the found JSON is not a dictionary.
+        (INVALID_PARAM)
+    """
     return ensure_json_dict(request.get_json(), replace_log)
 
 
@@ -532,6 +540,7 @@ def ensure_json_dict(
     """Make sure that the given json is a JSON dictionary
 
     :param json_value: The input json that should be checked.
+    :param replace_log: A function that replaces options in the log.
     :returns: Exactly the same JSON if it is in fact a dictionary.
 
     :raises psef.errors.APIException: If the given JSON is not a dictionary.

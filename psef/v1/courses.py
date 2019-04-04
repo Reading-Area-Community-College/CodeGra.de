@@ -549,7 +549,7 @@ def get_courses() -> JSONResponse[t.Sequence[t.Mapping[str, t.Any]]]:
             selectinload(
                 models.User.courses,
             ).selectinload(
-                models.CourseRole._permissions,
+                models.CourseRole._permissions,  # pylint: disable=protected-access
             ),
         ]
     ).first()
@@ -839,7 +839,7 @@ def patch_course_snippet(course_id: int, snippet_id: int) -> EmptyResponse:
     snip = helpers.get_or_404(
         models.CourseSnippet,
         snippet_id,
-        also_error=lambda snip: snip.course_id != course_id
+        also_error=lambda snip: snip.course_id != course.id
     )
 
     other = models.CourseSnippet.query.filter_by(
@@ -890,7 +890,7 @@ def delete_course_snippets(course_id: int, snippet_id: int) -> EmptyResponse:
     snip = helpers.get_or_404(
         models.CourseSnippet,
         snippet_id,
-        also_error=lambda snip: snip.course_id != course_id
+        also_error=lambda snip: snip.course_id != course.id
     )
 
     db.session.delete(snip)
