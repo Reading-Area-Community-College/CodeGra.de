@@ -20,11 +20,11 @@ CodeGrade can be personalised.  Two CodeGrade and :ref:`Codeviewer
 In addition, font size of the :ref:`Codeviewer <codeviewer-settings>` can be
 adjusted here.
 
-.. warning:: Site preferences are saved in the browser and not in the user account. (Snippets are however saved in the user account!)
+.. warning:: Site preferences are saved in the browser and not in the user account.
 
 Account Information Settings
 ------------------------------
-Personal account information can also be modified in the *user* menu. Additionally your snippets can be managed here too.
+Personal account information can also be modified in the *user* menu. Additionally your personal snippets can be managed here too.
 
 Personal Information
 ~~~~~~~~~~~~~~~~~~~~~
@@ -53,12 +53,12 @@ Snippet Management
 ~~~~~~~~~~~~~~~~~~~
 Snippets are line feedback shortcuts. A line feedback comment can be saved as
 snippet and given a short name, which can then be used to autocomplete this full
-line feedback comment in future uses. Snippets are personal and saved to your
-CodeGrade account to be used over all courses and assignments. More information
+line feedback comment in future uses. Personal snippets are saved to your
+CodeGrade account to be used by you over all courses and assignments. More information
 on the usage of snippets in the Codeviewer can be found :ref:`here
 <codeviewer-snippets>`.
 
-The snippet manager allows you to edit (using the :fa:`pencil` button), delete
+The personal snippet manager allows you to edit (using the :fa:`pencil` button), delete
 (using the red :fa:`times` button) and add snippets. When in edit mode, be
 sure to save your snippet using the :fa:`save` button to apply your changes or
 cancel your edit using the :fa:`ban` button.

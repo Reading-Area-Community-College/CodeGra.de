@@ -35,6 +35,11 @@ delete and can edit the minimum and maximum size of group sets. Group sets are a
 key concept for group assignments in CodeGrade, more information about them can
 be found in the :ref:`groups chapter <groups-chapter>`.
 
+The fourth tab, *Snippets*, shows all course-wide snippets in this course. These
+course snippets can be set up by the teacher and can be used by all graders
+grading in the course. These snippets are always in addition to the graders'
+personal snippets and are indicated with the :fa:`books` icon.
+
 Creating a new Course
 ~~~~~~~~~~~~~~~~~~~~~~
 Specific :ref:`site permissions <site-permissions>` are required to create a
