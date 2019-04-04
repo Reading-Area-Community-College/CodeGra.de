@@ -4,14 +4,12 @@
 <div class="users-manager" v-else>
     <b-table striped
              ref="table"
+             v-if="canListUsers"
              class="users-table"
-             :items="users"
+             :items="filteredUsers"
              :fields="fields"
-             :filter="filter"
              :sort-compare="sortTable"
-             sort-by="User"
-             :response="true"
-             v-if="canListUsers">
+             sort-by="User">
 
         <template slot="User" slot-scope="item">
             <span class="username">{{item.value.name}} ({{item.value.username}})</span>
@@ -37,8 +35,9 @@
             </b-dropdown>
         </template>
     </b-table>
+
     <b-alert show variant="danger" v-else>
-        You can only acutally manage users when you also have the 'list course
+        You can only actually manage users when you also have the 'list course
         users' ('can_list_course_users') permission
     </b-alert>
 
@@ -119,10 +118,12 @@ export default {
                 User: {
                     label: 'Name',
                     sortable: true,
+                    key: 'User',
                 },
                 CourseRole: {
                     label: 'role',
                     sortable: true,
+                    key: 'CourseRole',
                 },
             },
         };
@@ -135,6 +136,10 @@ export default {
 
         courseId() {
             return this.course.id;
+        },
+
+        filteredUsers() {
+            return this.users.filter(this.filterFunction);
         },
     },
 
@@ -151,6 +156,18 @@ export default {
     },
 
     methods: {
+        filterFunction(item) {
+            if (!this.filter) {
+                return true;
+            }
+
+            const terms = [item.User.name, item.User.username, item.CourseRole.name];
+            return (this.filter || '')
+                .toLowerCase()
+                .split(' ')
+                .every(word => terms.some(t => t.toLowerCase().indexOf(word) >= 0));
+        },
+
         async loadData() {
             this.loading = true;
 

@@ -37,7 +37,7 @@ Code Viewer
 
 4. In the field that will appear above the inline feedback field, type your **snippet shortcut**.
 
-5. Press the :fa:`check` icon or press **CTRL+Enter** to save your snippet.
+5. Press the :fa:`check` icon or press :kbd:`Ctrl+Enter` to save your snippet.
 
 6. Your snippet is now ready to use anywhere.
 
@@ -50,9 +50,9 @@ Profile page
 
 3. Press the :fa:`plus` icon to add a new snippet.
 
-4. Type your **snippet shortcut** and **snippet contents**.
+4. In the dialog, type your **snippet name** (*shortcut*) and **snippet replacement text** (*content of feedback*).
 
-5. Press the :fa:`check` icon or press **CTRL+Enter** to save your snippet.
+5. Press the **Save** button or press :kbd:`Ctrl+Enter` to save your snippet.
 
 6. Your snippet is now ready to use anywhere.
 

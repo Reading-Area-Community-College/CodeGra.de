@@ -1,0 +1,7 @@
+policy: deny
+options: {}
+require *.java
+
+/assignment.java
+
+SAME

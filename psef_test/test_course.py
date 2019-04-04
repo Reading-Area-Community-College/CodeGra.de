@@ -794,6 +794,7 @@ def test_add_assignment(
                 'description': str,
                 'whitespace_linter': False,
                 'cgignore': None,
+                'cgignore_version': None,
                 'done_type': None,
                 'done_email': None,
                 'reminder_time': None,

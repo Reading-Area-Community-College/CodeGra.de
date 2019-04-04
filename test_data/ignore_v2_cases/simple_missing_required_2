@@ -1,0 +1,11 @@
+policy: allow
+options: {}
+require helloworld.java
+require assignment2.java
+
+/java.java
+/test.java
+/helloworld.java
+
+MISSING
+assignment2.java

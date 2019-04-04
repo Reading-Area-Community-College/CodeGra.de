@@ -49,7 +49,7 @@ export default {
         },
 
         $route(newVal) {
-            let val = (newVal.hash && newVal.hash.slice(1)) || this.default;
+            const val = decodeURI(newVal.hash && newVal.hash.slice(1)) || this.default;
             if (val !== this.value) {
                 // Selected value is not available
                 if (!this.enabledCats.find(x => x.name === val)) {
@@ -70,7 +70,7 @@ export default {
 
     methods: {
         getInitialValue() {
-            const hash = this.$route.hash && this.$route.hash.slice(1);
+            const hash = decodeURI(this.$route.hash && this.$route.hash.slice(1));
             if (hash) {
                 return hash;
             }

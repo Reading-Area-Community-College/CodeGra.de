@@ -95,23 +95,26 @@
             </div>
 
             <div class="col-lg-12">
-                <b-card v-if="canEditIgnoreFile">
+                <b-card v-if="canEditIgnoreFile"
+                        class="ignore-card">
                     <span slot="header">
-                        CGIgnore
+                        Hand-in requirements
                         <description-popover
-                            description="This file enables you to filter files
-                                         from submissions. Its format is the
-                                         same as `.gitignore`. If a file should
-                                         be excluded according to this list a
-                                         user will get a warning popup when
-                                         submitting."/>
+                            description="This allows you to set hand-in
+                                         requirement for students, making sure
+                                         their submission follows a certain file
+                                         and directory structure. Students will
+                                         be able to see these requirements
+                                         before submitting and will get a
+                                         warning if their submission does not
+                                         follow the hand-in requirements."/>
                     </span>
                     <c-g-ignore-file :assignment-id="assignmentId"/>
                 </b-card>
 
                 <b-card v-if="canEditGroups" no-body>
                     <span slot="header">
-                        Group Assignment
+                        Group assignment
                         <description-popover>
                             <span slot="description">
                                 Determine if this assignment should be a group
@@ -129,7 +132,7 @@
             </div>
 
             <div :class="canSubmitBbZip ? 'col-xl-6' : 'col-xl-12'">
-                <b-card v-if="canSubmitWork">
+                <b-card v-if="canSubmitWork" no-body>
                     <span slot="header">
                         Upload submission
                         <description-popover
@@ -137,7 +140,9 @@
                                          author field you can select who should be the author. This
                                          function can be used to submit work for a student."/>
                     </span>
-                    <submission-uploader :assignment="assignment" for-others
+                    <submission-uploader :assignment="assignment"
+                                         for-others
+                                         no-border
                                          :can-list-users="permissions.can_list_course_users"/>
                 </b-card>
             </div>
@@ -621,5 +626,9 @@ export default {
 
 .finished-grading-card .loader {
     padding: 1rem;
+}
+
+.ignore-card .card-body {
+    padding-top: 0.75rem;
 }
 </style>

@@ -9,6 +9,7 @@ from collections import OrderedDict
 
 T = t.TypeVar('T')  # pylint: disable=invalid-name
 V = t.TypeVar('V')  # pylint: disable=invalid-name
+TT = t.TypeVar('TT')  # pylint: disable=invalid-name
 
 
 class Register(t.Generic[T, V]):  # pylint: disable=unsubscriptable-object
@@ -74,3 +75,30 @@ class Register(t.Generic[T, V]):  # pylint: disable=unsubscriptable-object
 
     def get_all(self) -> t.Iterable[t.Tuple[T, V]]:
         return self.__map.items()
+
+    def keys(self) -> t.Iterable[T]:
+        return self.__map.keys()
+
+    def find(self, needle: V, default: TT) -> t.Union[T, TT]:
+        """Find the key for a given value.
+
+        >>> reg = Register()
+        >>> @reg.register('hello')
+        ... def test_func(): pass
+        >>> @reg.register_all(['world', 'bye'])
+        ... def test_func2(): pass
+        >>> reg.find(test_func, None)
+        'hello'
+        >>> missing = object()
+        >>> reg.find(object(), missing) is missing
+        True
+
+        :param needle: The value to search for.
+        :param default: The default value to return if no value can be found.
+        :returns: The key for this value, or the given default of none can be
+            found.
+        """
+        for key, val in self.__map.items():
+            if val == needle:
+                return key
+        return default

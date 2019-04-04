@@ -104,6 +104,7 @@
             <p>You can also import a rubric from a different assignment:</p>
             <b-alert v-if="loadAssignmentsFailed"
                      variant="danger"
+                     class="assignment-alert"
                      show>
                 Loading assignments failed.
             </b-alert>
@@ -164,6 +165,40 @@
         </b-button-toolbar>
     </b-modal>
 
+    <div class="button-bar justify-content-center" v-if="editable">
+        <b-alert v-if="showMaxPointsWarning"
+                 variant="warning"
+                 show>
+            {{ maximumPointsWarningText }}
+        </b-alert>
+        <div class="override-checkbox">
+            <b-input-group class="max-points-input-group">
+                <b-input-group-prepend is-text>
+                    Points needed for a 10:
+                </b-input-group-prepend>
+                <input type="number"
+                       min="0"
+                       step="1"
+                       v-model="internalFixedMaxPoints"
+                       class="form-control"
+                       :placeholder="curMaxPoints"/>
+                <b-input-group-append is-text>
+                    out of {{ curMaxPoints }}
+                    <description-popover
+                        placement="top"
+                        hug-text
+                        description="The maximum amount of points a user can get
+                                     for this rubric. You can set this to a
+                                     higher or lower value manually, by default
+                                     it is the sum of the max value in each
+                                     category."/>
+                </b-input-group-append>
+            </b-input-group>
+        </div>
+    </div>
+
+    <hr v-if="editable"/>
+
     <b-card class="button-bar" v-if="editable">
         <b-button-group class="danger-buttons">
             <b-button variant="danger"
@@ -182,38 +217,6 @@
             </submit-button>
         </b-button-group>
 
-        <div class="override-checkbox">
-            <b-input-group>
-                <b-input-group-prepend is-text>
-                    Max points<description-popover
-                                  placement="top"
-                                  description="The maximum amount of
-                                               points a user can get for
-                                               this rubric. You can set
-                                               this to a higher or lower
-                                               value manually, by
-                                               default it is the sum of
-                                               the max value in each
-                                               category."/>
-                </b-input-group-prepend>
-                <input type="number"
-                       min="0"
-                       step="1"
-                       v-model="internalFixedMaxPoints"
-                       class="form-control"
-                       :placeholder="curMaxPoints"/>
-                <b-input-group-append>
-                    <submit-button :submit="resetFixedMaxPoints"
-                                   @success="afterResetFixedMaxPoints"
-                                   class="round"
-                                   :disabled="internalFixedMaxPoints == null"
-                                   v-b-popover.top.hover="internalFixedMaxPoints == null ? '' : 'Reset to the default value.'"
-                                   variant="warning">
-                        <icon name="reply"/>
-                    </submit-button>
-                </b-input-group-append>
-            </b-input-group>
-        </div>
         <submit-button ref="submitButton" :submit="submit"/>
     </b-card>
 </div>
@@ -229,6 +232,8 @@ import 'vue-awesome/icons/times';
 import 'vue-awesome/icons/info';
 import 'vue-awesome/icons/reply';
 import arrayToSentence from 'array-to-sentence';
+
+import { formatGrade } from '@/utils';
 
 import SubmitButton from './SubmitButton';
 import Loader from './Loader';
@@ -303,6 +308,27 @@ export default {
     },
 
     computed: {
+        maximumPointsWarningText() {
+            const num = Number(this.internalFixedMaxPoints);
+            if (num < this.curMaxPoints) {
+                return `This means that a 10 will already be achieved with ${num} out of ${
+                    this.curMaxPoints
+                } rubric points.`;
+            } else {
+                return `This means that it will not be possible to achieve a 10, but a ${formatGrade(
+                    this.curMaxPoints / num * 10,
+                )} will be the maximum achievable grade.`;
+            }
+        },
+
+        showMaxPointsWarning() {
+            return (
+                this.internalFixedMaxPoints !== '' &&
+                this.internalFixedMaxPoints != null &&
+                Number(this.internalFixedMaxPoints) !== this.curMaxPoints
+            );
+        },
+
         curMaxPoints() {
             return this.rubrics.reduce((cur, row) => {
                 const extra = Math.max(
@@ -812,8 +838,13 @@ ${arrayToSentence(wrongCategories)}.`);
     .override-checkbox {
         justify-content: center;
         display: flex;
+        flex: 0 1 auto;
         flex-direction: column;
         align-items: center;
+
+        .max-points-input-group {
+            width: auto;
+        }
     }
 
     input {
@@ -847,7 +878,7 @@ ${arrayToSentence(wrongCategories)}.`);
     }
 }
 
-.alert {
+.assignment-alert.alert {
     margin-bottom: 0;
 }
 </style>

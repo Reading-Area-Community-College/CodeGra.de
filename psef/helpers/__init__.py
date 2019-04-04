@@ -34,6 +34,7 @@ logger = structlog.get_logger()
 
 #: Type vars
 T = t.TypeVar('T')
+TT = t.TypeVar('TT')
 Z = t.TypeVar('Z', bound='Comparable')
 Y = t.TypeVar('Y', bound='Base')
 T_Type = t.TypeVar('T_Type', bound=t.Type)  # pylint: disable=invalid-name
@@ -434,6 +435,37 @@ def coerce_json_value_to_typeddict(
     return t.cast(T_TypedDict, mapping)
 
 
+def _get_type_name(typ: t.Union[t.Type, t.Tuple[t.Type, ...]]) -> str:
+    if isinstance(typ, tuple):
+        return ', '.join(ty.__name__ for ty in typ)
+    else:
+        return typ.__name__
+
+
+def get_key_from_dict(
+    mapping: t.Mapping[T, object], key: T, default: TT
+) -> TT:
+    """Get a key from a mapping of a specific type.
+
+    :param mapping: The mapping to get the key from.
+    :param key: The key in the mapping.
+    :param default: The default value used if the key is not in the dict.
+    :returns: The found value of the given default.
+    :raises APIException: If the found value is of a different type than the
+        given default.
+    """
+    val = mapping.get(key, default)
+    if not isinstance(val, type(default)):
+        raise psef.errors.APIException(
+            f'The given object contains the wrong type for the key "{key}"', (
+                f'A value of type "{_get_type_name(type(default))} is'
+                f' required, but "{val}" was given, which is a'
+                f' "{_get_type_name(type(val))}"'
+            ), psef.errors.APICodes.MISSING_REQUIRED_PARAM, 400
+        )
+    return val
+
+
 def ensure_keys_in_dict(
     mapping: t.Mapping[T, object], keys: t.Sequence[t.Tuple[T, IsInstanceType]]
 ) -> None:
@@ -449,12 +481,6 @@ def ensure_keys_in_dict(
         ``mapping`` (MISSING_REQUIRED_PARAM)
     """
 
-    def __get_type_name(typ: t.Union[t.Type, t.Tuple[t.Type, ...]]) -> str:
-        if isinstance(typ, tuple):
-            return ', '.join(ty.__name__ for ty in typ)
-        else:
-            return typ.__name__
-
     missing: t.List[t.Union[T, str]] = []
     type_wrong = False
     for key, check_type in keys:
@@ -464,14 +490,14 @@ def ensure_keys_in_dict(
               ) or (check_type == int and isinstance(mapping[key], bool)):
             missing.append(
                 f'{str(key)} was of wrong type'
-                f' (should be a "{__get_type_name(check_type)}"'
+                f' (should be a "{_get_type_name(check_type)}"'
                 f', was a "{type(mapping[key]).__name__}")'
             )
             type_wrong = True
     if missing:
         msg = 'The given object does not contain all required keys'
         key_type = ', '.join(
-            f"\'{k[0]}\': {__get_type_name(k[1])}" for k in keys
+            f"\'{k[0]}\': {_get_type_name(k[1])}" for k in keys
         )
         raise psef.errors.APIException(
             msg + (' or the type was wrong' if type_wrong else ''),
@@ -841,3 +867,66 @@ def get_files_from_request(
     assert all(f.filename for f in res)
 
     return res
+
+
+def is_sublist(needle: t.Sequence[T], hay: t.Sequence[T]) -> bool:
+    """Check if a needle is present in the given hay.
+
+    This is semi efficient, it uses Boyer-Moore however it doesn't cache the
+    lookup tables.
+
+    >>> is_sublist(list(range(10)), list(range(20)))
+    True
+    >>> is_sublist(list(range(5, 10)), list(range(20)))
+    True
+    >>> is_sublist(list(range(5, 21)), list(range(20)))
+    False
+    >>> is_sublist(list(range(20)), list(range(20)))
+    True
+    >>> is_sublist(list(range(21)), list(range(20)))
+    False
+    >>> is_sublist('thomas', 'hallo thom, ik as dit heel goed thomas, mooi he')
+    True
+    >>> is_sublist('saab', 'baas neem een racecar, neem een saab')
+    True
+    >>> is_sublist('aaaa', 'aa aaa aaba aaaa')
+    True
+    >>> is_sublist('aaaa', 'aa aaa aaba aaaba')
+    False
+    >>> is_sublist(['assig2'], ['assig2'])
+    True
+    >>> is_sublist(['assig2'], ['assig1'])
+    False
+    >>> is_sublist(['assig2'], ['assig1', 'assig2'])
+    True
+
+    :param needle: The thing you are searching for.
+    :param hay: The thing you are searching in.
+    :returns: A boolean indicating if ``needle`` was found in ``hay``.
+    """
+    if len(needle) > len(hay):
+        return False
+    elif len(needle) == len(hay):
+        return needle == hay
+
+    table: t.Dict[T, int] = {}
+    index = len(needle) - 1
+    needle_index = len(needle) - 1
+
+    for i, element in enumerate(needle):
+        if i == len(needle) - 1 and element not in table:
+            table[element] = len(needle)
+        else:
+            table[element] = len(needle) - i - 1
+
+    while index < len(hay):
+        if needle[needle_index] == hay[index]:
+            if needle_index == 0:
+                return True
+            else:
+                needle_index -= 1
+                index -= 1
+        else:
+            index += table.get(hay[index], len(needle))
+            needle_index = len(needle) - 1
+    return False

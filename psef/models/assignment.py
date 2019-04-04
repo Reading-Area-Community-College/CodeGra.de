@@ -3,6 +3,7 @@
 SPDX-License-Identifier: AGPL-3.0-only
 """
 import enum
+import json
 import math
 import uuid
 import typing as t
@@ -25,7 +26,7 @@ from . import work as work_models
 from . import group as group_models
 from . import linter as linter_models
 from . import _MyQuery
-from .. import auth, helpers
+from .. import auth, ignore, helpers
 from .role import CourseRole
 from .rubric import RubricRow, RubricItem
 from .permission import Permission
@@ -311,7 +312,10 @@ class Assignment(Base):  # pylint: disable=too-many-public-methods
     __tablename__ = "Assignment"
     id: int = db.Column('id', db.Integer, primary_key=True)
     name: str = db.Column('name', db.Unicode)
-    cgignore: t.Optional[str] = db.Column('cgignore', db.Unicode)
+    _cgignore: t.Optional[str] = db.Column('cgignore', db.Unicode)
+    _cgignore_version: t.Optional[str] = db.Column(
+        'cgignore_version', db.Unicode
+    )
     state: _AssignmentStateEnum = db.Column(
         'state',
         db.Enum(_AssignmentStateEnum),
@@ -463,6 +467,26 @@ class Assignment(Base):  # pylint: disable=too-many-public-methods
         :returns: The maximum a grade for a submission.
         """
         return 10 if self._max_grade is None else self._max_grade
+
+    @property
+    def cgignore(self) -> t.Optional[ignore.SubmissionFilter]:
+        """The submission filter of this assignment.
+        """
+        if self._cgignore is None:
+            return None
+        elif self._cgignore_version is None:  # pragma: no cover
+            # This branch is needed for backwards compatibility, but it is not
+            # possible to test as it is not possible to insert this old data
+            # using the api.
+            return ignore.IgnoreFilterManager.parse(self._cgignore)
+        else:
+            filter_type = ignore.filter_handlers[self._cgignore_version]
+            return filter_type.parse(json.loads(self._cgignore))
+
+    @cgignore.setter
+    def cgignore(self, val: ignore.SubmissionFilter) -> None:
+        self._cgignore_version = ignore.filter_handlers.find(type(val), None)
+        self._cgignore = json.dumps(val.export())
 
     # We don't use property.setter because in that case `new_val` could only be
     # a `float` because of https://github.com/python/mypy/issues/220
@@ -787,6 +811,10 @@ class Assignment(Base):  # pylint: disable=too-many-public-methods
 
         .. todo:: Remove 'description' field from Assignment model.
         """
+        # This property getter is quite expensive, and we evaluate it at most 3
+        # times so caching it in a local variable is a good idea.
+        cgignore = self.cgignore
+
         res = {
             'id': self.id,
             'state': self.state_name,
@@ -796,7 +824,8 @@ class Assignment(Base):  # pylint: disable=too-many-public-methods
             'name': self.name,
             'is_lti': self.is_lti,
             'course': self.course,
-            'cgignore': self.cgignore,
+            'cgignore': None if cgignore is None else cgignore.export(),
+            'cgignore_version': self._cgignore_version,
             'whitespace_linter': self.whitespace_linter,
             'done_type': None,
             'done_email': None,

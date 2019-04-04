@@ -1,0 +1,10 @@
+policy: deny
+options: {}
+allow /hello\*.c
+
+/hellso.py
+/hellos.c
+/hello.c
+/hello*.c
+
+/hello*.c

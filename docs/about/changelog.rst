@@ -522,7 +522,7 @@ Version 0.21.4 (FlipFloppedWhiteSocked)
 * Split can manage course permission `(#319) <https://github.com/CodeGra-de/CodeGra.de/pull/319>`_
 * Add autocomplete for adding students to a course `(#330) <https://github.com/CodeGra-de/CodeGra.de/pull/330>`_
 * Add the first implementation of TA communication tools `(#313) <https://github.com/CodeGra-de/CodeGra.de/pull/313>`_
-* Add the Ctrl-Enter keybinding on the .cg-ignore field `(#329) <https://github.com/CodeGra-de/CodeGra.de/pull/329>`_
+* Add the :kbd:`Ctrl+Enter` keybinding on the .cg-ignore field `(#329) <https://github.com/CodeGra-de/CodeGra.de/pull/329>`_
 * Make it possible to reset password even if old password was NULL. `(#323) <https://github.com/CodeGra-de/CodeGra.de/pull/323>`_
 * Add permission descriptions `(#312) <https://github.com/CodeGra-de/CodeGra.de/pull/312>`_
 
@@ -665,7 +665,7 @@ Version 0.3.2 (Belhamel)
 * Fix graders list of an assignment being loaded without correct permissions `(#157) <https://github.com/CodeGra-de/CodeGra.de/pull/157>`_
 * Fix bug where only the second LTI launch would work `(#151) <https://github.com/CodeGra-de/CodeGra.de/pull/151>`_
 * Fix front-end feature usage `(#144) <https://github.com/CodeGra-de/CodeGra.de/pull/144>`_
-* Clear vuex cache on CTRL-F5 `(#134) <https://github.com/CodeGra-de/CodeGra.de/pull/134>`_
+* Clear vuex cache on :kbd:`Ctrl+F5` `(#134) <https://github.com/CodeGra-de/CodeGra.de/pull/134>`_
 * Fix timezone issues on a LTI launch with deadline info `(#127) <https://github.com/CodeGra-de/CodeGra.de/pull/127>`_
 * Make sure all test files are directories `(#132) <https://github.com/CodeGra-de/CodeGra.de/pull/132>`_
 * Fix course link on assignment page `(#126) <https://github.com/CodeGra-de/CodeGra.de/pull/126>`_

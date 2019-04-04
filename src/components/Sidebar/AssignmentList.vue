@@ -20,7 +20,6 @@
                               :key="`top-assignment-${assignment.id}`"
                               v-if="showTopAssignments"
                               :current-id="currentAssignment && currentAssignment.id"
-                              :now="now"
                               :sbloc="sbloc"
                               :assignment="assignment"/>
 
@@ -32,7 +31,6 @@
                               :key="`sorted-assignment-${assignment.id}`"
                               :assignment="assignment"
                               :current-id="currentAssignment && currentAssignment.id"
-                              :now="now"
                               :sbloc="sbloc"/>
     </ul>
     <span v-else class="sidebar-list no-items-text">
@@ -140,8 +138,8 @@ export default {
 
         topAssignments() {
             const lookup = this.assignments.reduce((res, cur) => {
-                const deadline = cur.deadline || this.now;
-                res[cur.id] = Math.abs(moment(deadline).diff(this.now));
+                const deadline = cur.deadline || this.$root.$now;
+                res[cur.id] = Math.abs(moment(deadline).diff(this.$root.$now));
                 return res;
             }, {});
 
@@ -179,10 +177,6 @@ export default {
     async mounted() {
         this.$root.$on('sidebar::reload', this.reloadAssignments);
 
-        this.nowInterval = setInterval(() => {
-            this.now = moment();
-        }, 60000);
-
         const res = this.loadCourses();
         if (res != null) {
             this.$emit('loading');
@@ -205,14 +199,11 @@ export default {
         return {
             filter: '',
             addButtonId: `assignment-add-btn-${idNum++}`,
-            now: moment(),
-            nowInterval: null,
         };
     },
 
     destroyed() {
         this.$root.$off('sidebar::reload', this.reloadAssignments);
-        clearInterval(this.nowInterval);
     },
 
     methods: {

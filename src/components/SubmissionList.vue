@@ -49,8 +49,18 @@
                                    :editable="false"
                                    :defaultRubric="rubric"
                                    :assignment="assignment"/>
-                    <div no-body class="no-rubric text-muted font-italic" v-else>
+                    <div no-body class="empty-text text-muted font-italic" v-else>
                         There is no rubric for this assignment.
+                    </div>
+                </div>
+
+                <div v-if="selectedCat === 'Hand-in instructions'">
+                    <c-g-ignore-file v-if="assignment.cgignore"
+                                     :assignmentId="assignment.id"
+                                     :editable="false"
+                                     summary-mode/>
+                    <div no-body class="empty-text text-muted font-italic" v-else>
+                        There are no hand-in instructions for this assignment.
                     </div>
                 </div>
 
@@ -127,7 +137,7 @@
     </b-table>
 
     <div class="submission-count">
-        {{ filteredSubmissions.length }} of a total of {{ submissions.length }}
+        Showing {{ filteredSubmissions.length }} of a total of {{ submissions.length }}
         submissions by {{ numFilteredStudents }} out of {{ numStudents }}
         students.
     </div>
@@ -153,6 +163,7 @@ import RubricEditor from './RubricEditor';
 import LocalHeader from './LocalHeader';
 import User from './User';
 import CategorySelector from './CategorySelector';
+import CGIgnoreFile from './CGIgnoreFile';
 
 export default {
     name: 'submission-list',
@@ -250,6 +261,10 @@ export default {
                     enabled: true,
                 },
                 {
+                    name: 'Hand-in instructions',
+                    enabled: true,
+                },
+                {
                     name: 'Export',
                     enabled: this.canDownload,
                 },
@@ -259,6 +274,8 @@ export default {
         defaultCat() {
             if (!this.canSeeOthersWork && this.assignment.rubric != null) {
                 return 'Rubric';
+            } else if (!this.canSeeOthersWork && this.assignment.cgignore) {
+                return 'Hand-in requirements';
             } else {
                 return 'Search';
             }
@@ -483,6 +500,7 @@ export default {
         LocalHeader,
         User,
         CategorySelector,
+        CGIgnoreFile,
     },
 };
 </script>
@@ -510,7 +528,7 @@ export default {
     }
 }
 
-.no-rubric {
+.empty-text {
     padding: 0.375rem 0.75rem;
     border: 1px solid transparent;
 }
@@ -562,19 +580,6 @@ export default {
         .loader {
             padding: 0.33rem;
         }
-    }
-}
-
-.submission-list .modal-dialog.modal-md {
-    max-width: 1550px;
-    width: 100%;
-}
-
-.rubric-modal .modal-body {
-    padding: 0;
-
-    #app.dark & .nav-tabs {
-        background-color: @color-primary-darker;
     }
 }
 

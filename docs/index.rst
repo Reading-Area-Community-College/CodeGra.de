@@ -34,6 +34,7 @@ details on `the CodeGrade website <https://codegrade.com>`_.
    guides/using-shortcuts
    guides/dividing-submissions
    guides/cannot-find-feature-in-codegrade
+   guides/setting-up-hand-in-requirements.rst
 
 .. _user-docs:
 

@@ -1,0 +1,12 @@
+policy: allow
+options: {}
+require blorb.py
+require zorb.py
+deny *.py
+
+/blorb.py
+/zorb.py
+/worp.py
+
+/blorb.py
+/zorb.py

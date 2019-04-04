@@ -24,10 +24,12 @@
 
 @text-color: #292b2c;
 @text-color-dark: #d2d4d5;
+@text-color-muted: #6c757d;
 
 @background-color: #fff;
 @footer-color: #f5f5f5;
 
+@color-danger: #dc3545;
 @color-danger-dark: lighten(#d9534f, 10%);
 
 @color-diff-added-light: #ddffdd;
@@ -48,6 +50,7 @@
 
 @color-warning: #ffd65d;
 @color-warning-dark: #b59320;
+@color-success: #28a745;
 
 @transition-duration: 300ms;
 
@@ -259,6 +262,13 @@
 }
 
 .tab-colors {
+    li.nav-item > .nav-link.disabled {
+        color: @text-color-muted !important;
+        &:hover {
+            color: @text-color-muted !important;
+        }
+    }
+
     #app.dark & {
         border-color: @color-primary-darker;
 
@@ -270,7 +280,7 @@
                 border-color: @color-primary-darker;
             }
 
-            &:hover {
+            &:hover:not(.disabled) {
                 border-color: @color-primary-darker;
             }
         }
