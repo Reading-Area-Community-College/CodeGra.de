@@ -83,7 +83,7 @@ Creating snippets
 
 2. Navigate to the **Snippets** tab to find an overview of existing course snippets and options to add them.
 
-3. To create a new course snippet, this snippet will be available to all graders grading in this course, press the  :fa:`plus` icon.
+3. To create a new course snippet, that will be available to all graders grading in this course, press the  :fa:`plus` icon.
 
 4. In the dialog, type your **snippet name** (*shortcut*) and **snippet replacement text** (*content of feedback*).
 
