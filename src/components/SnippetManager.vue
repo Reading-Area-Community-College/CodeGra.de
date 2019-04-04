@@ -64,7 +64,8 @@
     </table>
 
     <b-modal :title="modalTitle"
-             ref="modal">
+             ref="modal"
+             @shown="focusInput">
         <b-form-group v-if="!!editingSnippet">
             <b-input-group>
                 <input type="text"
@@ -72,7 +73,8 @@
                        placeholder="Name"
                        @input="setSaveConfirmMessage"
                        @keydown.ctrl.enter="clickSave"
-                       v-model="editingSnippet.key"/>
+                       v-model="editingSnippet.key"
+                       ref="keyInput"/>
             </b-input-group>
         </b-form-group>
 
@@ -82,7 +84,8 @@
                           class="form-control"
                           placeholder="Replacement text"
                           @keydown.ctrl.enter="clickSave"
-                          v-model="editingSnippet.value"/>
+                          v-model="editingSnippet.value"
+                          ref="valueInput"/>
             </b-input-group>
         </b-form-group>
 
@@ -379,6 +382,16 @@ export default {
                 });
             } else {
                 return this.refreshUserSnippets();
+            }
+        },
+
+        focusInput() {
+            if (this.editingSnippet.id == null) {
+                if (this.$refs.keyInput) {
+                    this.$refs.keyInput.focus();
+                }
+            } else if (this.$refs.valueInput) {
+                this.$refs.valueInput.focus();
             }
         },
     },
