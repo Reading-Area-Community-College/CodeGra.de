@@ -250,7 +250,9 @@ class EmptyResponse:
 
 
 def get_in_or_error(
-    model: t.Type[Y], in_column: models.DbColumn[T], in_values: t.List[T],
+    model: t.Type[Y],
+    in_column: models.DbColumn[T],
+    in_values: t.List[T],
     options: t.Optional[t.List[t.Any]] = None,
 ) -> t.List[Y]:
     """Get object by doing an ``IN`` query.
