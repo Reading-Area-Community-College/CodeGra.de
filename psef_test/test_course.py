@@ -868,29 +868,38 @@ def test_course_snippets(
     error_template, logged_in, test_client, session, prog_course, prolog_course
 ):
     url_base = f'/api/v1/courses/{prog_course.id}'
-    teacher_user = create_user_with_perms(session, [
-        CPerm.can_manage_course_snippets,
-        CPerm.can_view_course_snippets,
-    ], prog_course)
-    ta_user = create_user_with_perms(session, [
-        CPerm.can_view_course_snippets,
-    ], prog_course)
+    teacher_user = create_user_with_perms(
+        session, [
+            CPerm.can_manage_course_snippets,
+            CPerm.can_view_course_snippets,
+        ], prog_course
+    )
+    ta_user = create_user_with_perms(
+        session, [
+            CPerm.can_view_course_snippets,
+        ], prog_course
+    )
     student_user = create_user_with_perms(session, [], prog_course)
 
     snips = []
     with logged_in(teacher_user):
         # Create snippets
         for i in range(2):
-            snips.append({
-                'key': f'snippet_key{i}',
-                'value': f'snippet_value{i}',
-            })
+            snips.append(
+                {
+                    'key': f'snippet_key{i}',
+                    'value': f'snippet_value{i}',
+                }
+            )
             test_client.req(
                 'put',
                 f'{url_base}/snippet',
                 201,
                 data=snips[-1],
-                result={'id': int, **snips[-1]},
+                result={
+                    'id': int,
+                    **snips[-1]
+                },
             )
         snips = test_client.req(
             'get',
@@ -908,7 +917,10 @@ def test_course_snippets(
             'put',
             f'{url_base}/snippet',
             201,
-            data={'key': snips[0]['key'], 'value': snips[0]['value']},
+            data={
+                'key': snips[0]['key'],
+                'value': snips[0]['value']
+            },
             result=snips[0],
         )
         test_client.req(
@@ -924,7 +936,10 @@ def test_course_snippets(
             'patch',
             f'{url_base}/snippets/{snips[0]["id"]}',
             204,
-            data={'key': snips[0]['key'], 'value': snips[0]['value']},
+            data={
+                'key': snips[0]['key'],
+                'value': snips[0]['value']
+            },
         )
         test_client.req(
             'get',
@@ -938,7 +953,10 @@ def test_course_snippets(
             'patch',
             f'{url_base}/snippets/{snips[0]["id"]}',
             400,
-            data={'key': snips[1]['key'], 'value': snips[0]['value']},
+            data={
+                'key': snips[1]['key'],
+                'value': snips[0]['value']
+            },
             result=error_template,
         )
 
@@ -989,7 +1007,10 @@ def test_course_snippets(
             'patch',
             f'{url_base}/snippets/{snips[0]["id"]}',
             403,
-            data={'key': snips[0]['key'], 'value': 'new value'},
+            data={
+                'key': snips[0]['key'],
+                'value': 'new value'
+            },
             result=error_template,
         )
         test_client.req(
@@ -1017,7 +1038,10 @@ def test_course_snippets(
             'patch',
             f'{url_base}/snippets/{snips[0]["id"]}',
             403,
-            data={'key': snips[0]['key'], 'value': 'new value'},
+            data={
+                'key': snips[0]['key'],
+                'value': 'new value'
+            },
             result=error_template,
         )
         test_client.req(
