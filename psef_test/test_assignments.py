@@ -4325,3 +4325,107 @@ def test_setting_cgignore(
                     )
             },
         )
+
+
+def test_upload_files_with_duplicate_filenames(
+    test_client, logged_in, assignment, error_template, teacher_user
+):
+    with logged_in(teacher_user):
+        res = test_client.req(
+            'post',
+            f'/api/v1/assignments/{assignment.id}/submission',
+            201,
+            real_data={
+                'file1':
+                    (
+                        get_submission_archive('single_file_archive.zip'),
+                        f'duplicate_name.zip',
+                    ),
+                'file2':
+                    (
+                        get_submission_archive('multiple_file_archive.zip'),
+                        f'duplicate_name.zip',
+                    ),
+                'file3':
+                    (
+                        get_submission_archive('single_file_archive.zip'),
+                        'other_name',
+                    ),
+                'file4':
+                    (
+                        get_submission_archive('single_file_archive.zip'),
+                        f'duplicate_name.zip (2)',
+                    ),
+                'file5':
+                    (
+                        get_submission_archive('single_file_archive.zip'),
+                        f'duplicate_name.zip',
+                    ),
+            },
+            result={
+                'id': int,
+                'user': teacher_user.__to_json__(),
+                'created_at': str,
+                'assignee': None,
+                'grade': None,
+                'comment': None,
+                'comment_author': None,
+            }
+        )
+
+        test_client.req(
+            'get',
+            f'/api/v1/submissions/{res["id"]}/files/',
+            200,
+            result={
+                'entries':
+                    [
+                        {
+                            'name': 'duplicate_name.zip',
+                            'entries':
+                                [{
+                                    'id': int,
+                                    'name': 'single_file_work'
+                                }],
+                            'id': int,
+                        },
+                        {
+                            'name': 'duplicate_name.zip (1)',
+                            'entries':
+                                [
+                                    {
+                                        'id': int,
+                                        'name': 'single_file_work'
+                                    },
+                                    {
+                                        'id': int,
+                                        'name': 'single_file_work_copy'
+                                    }
+                                ],
+                            'id': int,
+                        },
+                        {
+                            'name': 'duplicate_name.zip (2)',
+                            # This has no entries as its original name was
+                            # `duplicate_name.zip (2)` so it is not detected as
+                            # .zip file.
+                            'id': int,
+                        },
+                        {
+                            'name': 'duplicate_name.zip (3)',
+                            'entries':
+                                [{
+                                    'id': int,
+                                    'name': 'single_file_work'
+                                }],
+                            'id': int,
+                        },
+                        {
+                            'name': 'other_name',
+                            'id': int,
+                        }
+                    ],
+                'id': int,
+                'name': 'top',
+            }
+        )

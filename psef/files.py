@@ -679,15 +679,17 @@ def process_files(
             400,
         )
 
+    tree.fix_duplicate_filenames()
     original_tree = copy.deepcopy(tree)
     tree, total_changes, missing_files = ignore_filter.process_submission(
         tree, handle_ignore
     )
+    actual_file_changes = any(
+        c.deletion_type != DeletionType.leading_directory
+        for c in total_changes
+    )
     if missing_files or (
-        handle_ignore == IgnoreHandling.error and any(
-            c.deletion_type != DeletionType.leading_directory
-            for c in total_changes
-        )
+        handle_ignore == IgnoreHandling.error and actual_file_changes
     ):
         raise IgnoredFilesException(
             total_changes,
@@ -695,7 +697,13 @@ def process_files(
             original_tree=original_tree,
             missing_files=missing_files,
         )
+
     logger.info('Removing files', removed_files=total_changes)
+
+    if actual_file_changes:
+        # We need to do this again as moving files might have caused duplicate
+        # filenames
+        tree.fix_duplicate_filenames()
 
     # It did contain files before deleting, so the deletion caused the tree to
     # be empty.

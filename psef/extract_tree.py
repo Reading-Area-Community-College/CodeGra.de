@@ -6,6 +6,7 @@ import os
 import abc
 import typing as t
 import dataclasses
+from collections import defaultdict
 
 import psef
 
@@ -162,6 +163,39 @@ class ExtractFileTreeDirectory(ExtractFileTreeBase):
             'name': self.name,
             'entries': sorted(self.values, key=lambda x: x.name.lower()),
         }
+
+    def fix_duplicate_filenames(self) -> None:
+        """Fix duplicate filenames in this directory and all its sub
+        directories.
+
+        This will rename files when duplicates are detected by adding a ``
+        ($number)`` suffix to the file.
+        """
+        file_occurrence_lookup: t.Dict[str, t.Dict[str, int]] = defaultdict(
+            lambda: {
+                'amount': 0,
+                'fixed': 0
+            },
+        )
+
+        for child in self.values:
+            file_occurrence_lookup[child.name]['amount'] += 1
+            if isinstance(child, ExtractFileTreeDirectory):
+                child.fix_duplicate_filenames()
+
+        if any(v['amount'] > 1 for v in file_occurrence_lookup.values()):
+            for child in self.values:
+                if file_occurrence_lookup[child.name]['fixed'] > 0:
+                    num = file_occurrence_lookup[child.name]['fixed']
+                    while f'{child.name} ({num})' in file_occurrence_lookup:
+                        num += 1
+                    file_occurrence_lookup[child.name]['fixed'] = num
+                    child.name = f'{child.name} ({num})'
+                    # This isn't really needed (as num always is incremented
+                    # after this block). However, this is simply an extra
+                    # safety check.
+                    file_occurrence_lookup[child.name]['amount'] += 1
+                file_occurrence_lookup[child.name]['fixed'] += 1
 
 
 @dataclasses.dataclass
