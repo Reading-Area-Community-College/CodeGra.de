@@ -98,16 +98,19 @@ class AbstractRole(t.Generic[_T]):
         else:
             assert isinstance(permission, GlobalPermission)
 
+        revert = False
         if permission in self._permissions:
-            return not self._permissions[permission].default_value
-        else:
-            if current_app.do_sanity_checks:
-                found_perm = Permission.get_permission(permission)
-                assert (
-                    found_perm.default_value == permission.value.default_value
-                ), "Wrong permission in database"
+            revert = True
+        if current_app.do_sanity_checks:
+            found_perm = Permission.get_permission(permission)
+            assert (
+                found_perm.default_value == permission.value.default_value
+            ), "Wrong permission in database"
 
-            return permission.value.default_value
+        res = permission.value.default_value
+        if revert:
+            res = not res
+        return res
 
     def get_all_permissions(self) -> t.Mapping['_T', bool]:
         """Get all course :class:`.Permissions` for this course role.

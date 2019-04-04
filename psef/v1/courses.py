@@ -518,8 +518,11 @@ def get_courses() -> JSONResponse[t.Sequence[t.Mapping[str, t.Any]]]:
     def _get_rest(course: models.Course) -> t.Mapping[str, t.Any]:
         if helpers.extended_requested():
             snippets: t.Sequence[models.CourseSnippet] = []
-            if current_user.has_permission(
-                CPerm.can_view_course_snippets, course_id=course.id
+            if (
+                current_user.has_permission(GPerm.can_use_snippets) and
+                current_user.has_permission(
+                    CPerm.can_view_course_snippets, course_id=course.id
+                )
             ):
                 snippets = course.snippets
 
@@ -531,37 +534,38 @@ def get_courses() -> JSONResponse[t.Sequence[t.Mapping[str, t.Any]]]:
             }
         return course.__to_json__()
 
-    extra_loads = [
-        selectinload(
-            models.User.courses,
-        ).selectinload(
-            models.CourseRole.course,
-        )
-    ]
+    extra_loads: t.Optional[t.List[t.Any]] = None
     if helpers.extended_requested():
         extra_loads = [
-            extra_loads[0].selectinload(
-                models.Course.assignments,
-            ),
+            selectinload(models.Course.assignments),
+            selectinload(models.Course.snippets),
+            selectinload(models.Course.group_sets)
+        ]
+
+    # We don't use `helpers.get_or_404` here as preloading doesn't seem to work
+    # when we do.
+    user = models.User.query.filter_by(id=current_user.id).options(
+        [
             selectinload(
                 models.User.courses,
             ).selectinload(
-                models.CourseRole._permissions,  # pylint: disable=protected-access
-            )
+                models.CourseRole._permissions,
+            ),
         ]
-
-    user = helpers.get_or_404(
-        models.User,
-        current_user.id,
-        options=extra_loads,
-    )
+    ).first()
+    assert user is not None
 
     return jsonify(
         [
             {
-                'role': c.name,
-                **_get_rest(c.course),
-            } for c in user.courses.values()
+                'role': user.courses[c.id].name,
+                **_get_rest(c),
+            } for c in helpers.get_in_or_error(
+                models.Course,
+                t.cast(models.DbColumn[int], models.Course.id),
+                [cr.course_id for cr in user.courses.values()],
+                extra_loads,
+            )
         ]
     )
 

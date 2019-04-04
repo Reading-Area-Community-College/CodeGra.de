@@ -250,7 +250,8 @@ class EmptyResponse:
 
 
 def get_in_or_error(
-    model: t.Type[Y], in_column: models.DbColumn[T], in_values: t.List[T]
+    model: t.Type[Y], in_column: models.DbColumn[T], in_values: t.List[T],
+    options: t.Optional[t.List[t.Any]] = None,
 ) -> t.List[Y]:
     """Get object by doing an ``IN`` query.
 
@@ -260,7 +261,10 @@ def get_in_or_error(
 
     :param model: The objects to get.
     :param in_column: The column of the object to perform the in on.
-    :param in_values: The values used for the ``IN`` clause.
+    :param in_values: The values used for the ``IN`` clause. This may be an
+        empty sequence, which is handled without doing a query.
+    :param options: A list of options to give to the executed query. This can
+        be used to undefer or eagerly load some columns or relations.
     :returns: A list of objects with the same length as ``in_values``.
 
     :raises APIException: If on of the items in ``in_values`` was not found.
@@ -268,7 +272,12 @@ def get_in_or_error(
     if not in_values:
         return []
 
-    res = models.db.session.query(model).filter(in_column.in_(in_values)).all()
+    query = models.db.session.query(model).filter(in_column.in_(in_values))
+
+    if options is not None:
+        query = query.options(*options)
+
+    res = query.all()
     if len(res) != len(in_values):
         raise psef.errors.APIException(
             f'Not all requested {model.__name__.lower()} could be found', (
