@@ -2,8 +2,8 @@
 import pytest
 
 import psef.models as m
-from helpers import create_marker
-from psef.permissions import CoursePermission
+from helpers import create_marker, create_user_with_perms
+from psef.permissions import CoursePermission as CPerm
 
 perm_error = create_marker(pytest.mark.perm_error)
 data_error = create_marker(pytest.mark.data_error)
@@ -538,7 +538,7 @@ def test_add_courseroles(
                     )
                     for perm_n, value in role['perms'].items():
                         perm = session.query(m.Permission).filter_by(
-                            value=CoursePermission.get_by_name(perm_n),
+                            value=CPerm.get_by_name(perm_n),
                         ).one()
                         assert perm.default_value == value
                         assert perm.course_permission
@@ -861,3 +861,158 @@ def test_searching_user_in_course(
         )
         if code < 400:
             assert [i['username'] for i in res] == sorted(users)
+
+
+def test_course_snippets(
+    error_template, logged_in, test_client, session, prog_course, prolog_course
+):
+    url_base = f'/api/v1/courses/{prog_course.id}'
+    teacher_user = create_user_with_perms(session, [
+        CPerm.can_manage_course_snippets,
+        CPerm.can_view_course_snippets,
+    ], prog_course)
+    ta_user = create_user_with_perms(session, [
+        CPerm.can_view_course_snippets,
+    ], prog_course)
+    student_user = create_user_with_perms(session, [], prog_course)
+
+    snips = []
+    with logged_in(teacher_user):
+        # Create snippets
+        for i in range(2):
+            snips.append({
+                'key': f'snippet_key{i}',
+                'value': f'snippet_value{i}',
+            })
+            test_client.req(
+                'put',
+                f'{url_base}/snippet',
+                201,
+                data=snips[-1],
+                result={'id': int, **snips[-1]},
+            )
+        snips = test_client.req(
+            'get',
+            f'{url_base}/snippets/',
+            200,
+            result=[{
+                'id': int,
+                **snip
+            } for snip in snips],
+        )
+
+        # Change value by putting snippet with existing key
+        snips[0]['value'] = 'newvalue'
+        test_client.req(
+            'put',
+            f'{url_base}/snippet',
+            201,
+            data={'key': snips[0]['key'], 'value': snips[0]['value']},
+            result=snips[0],
+        )
+        test_client.req(
+            'get',
+            f'{url_base}/snippets/',
+            200,
+            result=snips,
+        )
+
+        # Change key, patch by id
+        snips[0]['key'] = 'newkey'
+        test_client.req(
+            'patch',
+            f'{url_base}/snippets/{snips[0]["id"]}',
+            204,
+            data={'key': snips[0]['key'], 'value': snips[0]['value']},
+        )
+        test_client.req(
+            'get',
+            f'{url_base}/snippets/',
+            200,
+            result=snips,
+        )
+
+        # Delete existing snippet
+        test_client.req(
+            'delete',
+            f'{url_base}/snippets/{snips[0]["id"]}',
+            204,
+        )
+        snips = test_client.req(
+            'get',
+            f'{url_base}/snippets/',
+            200,
+            result=snips[1:],
+        )
+
+        # Shouldn't be able to change other course's snippets
+        test_client.req(
+            'patch',
+            f'/api/v1/courses/{prolog_course.id}/snippets/{snips[0]["id"]}',
+            403,
+            data=snips[0],
+            result=error_template,
+        )
+        test_client.req(
+            'delete',
+            f'/api/v1/courses/{prolog_course.id}/snippets/{snips[0]["id"]}',
+            403,
+            result=error_template,
+        )
+
+    with logged_in(ta_user):
+        # TA user should only be able to view snippets
+        test_client.req(
+            'get',
+            f'{url_base}/snippets/',
+            200,
+            result=snips,
+        )
+
+        test_client.req(
+            'put',
+            f'{url_base}/snippet',
+            403,
+            result=error_template,
+        )
+        test_client.req(
+            'patch',
+            f'{url_base}/snippets/{snips[0]["id"]}',
+            403,
+            data={'key': snips[0]['key'], 'value': 'new value'},
+            result=error_template,
+        )
+        test_client.req(
+            'delete',
+            f'{url_base}/snippets/{snips[0]["id"]}',
+            403,
+            result=error_template,
+        )
+
+    with logged_in(student_user):
+        # Student users may not use course snippets
+        test_client.req(
+            'get',
+            f'{url_base}/snippets/',
+            403,
+            result=error_template,
+        )
+        test_client.req(
+            'put',
+            f'{url_base}/snippet',
+            403,
+            result=error_template,
+        )
+        test_client.req(
+            'patch',
+            f'{url_base}/snippets/{snips[0]["id"]}',
+            403,
+            data={'key': snips[0]['key'], 'value': 'new value'},
+            result=error_template,
+        )
+        test_client.req(
+            'delete',
+            f'{url_base}/snippets/{snips[0]["id"]}',
+            403,
+            result=error_template,
+        )
