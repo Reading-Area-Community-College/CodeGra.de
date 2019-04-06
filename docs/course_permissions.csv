@@ -34,3 +34,5 @@ Name,Description
 **Edit group assignment**,"Users with this permission can change an assignment into a group assignment, and change the minimum and maximum required group size."
 **Edit group set**,"Users with this permissions can create, delete and edit group sets."
 **Create groups** \*,Users with this permission can create new groups in group assignments.
+**View course snippets**,"Users with this permission can see the snippets of this course, and use them while writing feedback."
+**Manage course snippets**,"Users with this permission can create, edit, and delete snippets for this course."

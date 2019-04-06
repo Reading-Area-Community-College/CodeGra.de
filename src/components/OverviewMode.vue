@@ -471,6 +471,10 @@ export default {
         word-wrap: break-word;
         word-break: break-word;
         hyphens: auto;
+
+        #app.dark & {
+            color: @text-color-dark;
+        }
     }
 }
 

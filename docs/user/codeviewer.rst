@@ -49,14 +49,17 @@ Snippets
 It is not unusual that identical line feedback comments apply to multiple cases or students. Snippets can be used
 to efficiently but thoroughly cover all these reoccurring comments. Snippets are named saved comments that can be quickly added in the reviewing process.
 
-.. note:: Snippets are saved to your personal profile and are not limited to courses or assignments.
+.. note:: Personal (:fa:`user-circle-o`) snippets are saved to your CodeGrade account and can be used on any assignment in any course you grade. Course (:fa:`book`) snippets are set up for a specific course and are shared by all graders in that course.
 
-New snippets can be added through the :ref:`profile page <preferences-chapter>`
+New personal snippets can be added through the :ref:`profile page <preferences-chapter>`
 and via the :fa:`plus` button in the line of line feedback dialog. The latter
 makes it possible to save existing line for line feedback comments. After
 clicking this button the snippet can be named and saved for future use. To use
-your saved snippet, simply type in the given name and press the TAB keyboard key
+your saved snippet, simply type in the given name and press the :kbd:`Tab` keyboard key
 to autocomplete it to the saved comment.
+
+New course snippets can be added by the teacher of a course on the
+:ref:`course management page <course-management>`.
 
 .. note:: It is in most cases recommended to use a short keyword for the snippet.
 

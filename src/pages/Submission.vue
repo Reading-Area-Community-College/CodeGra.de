@@ -186,7 +186,7 @@
                        :show-whitespace="showWhitespace"
                        :is-diff="diffMode"
                        :file="currentFile"
-                       :editable="editable"
+                       :editable="canGiveLineFeedback"
                        @new-lang="languageChanged"
                        :language="selectedLanguage"
                        :can-use-snippets="canUseSnippets"/>
@@ -402,6 +402,10 @@ export default {
             }
 
             return file;
+        },
+
+        canGiveLineFeedback() {
+            return this.editable && this.selectedRevision === 'student';
         },
     },
 

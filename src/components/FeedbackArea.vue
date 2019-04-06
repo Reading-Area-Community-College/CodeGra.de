@@ -47,11 +47,14 @@
                 <ul :class="{ 'snippet-list': true, inline: line + 6 >= totalAmountLines, }">
                     <li class="snippet-item"
                         v-for="snippet, i in possibleSnippets"
-                        :class="{ selected: snippetSelected === i }"
+                        :class="{ selected: snippetIndexSelected === i }"
                         ref="snippets"
-                        :key="`snippet-key:${snippet.key}`"
-                        @click="snippetSelected = i">
-                        {{ snippet.key }} - {{ snippet.value }}
+                        :key="`snippet-key:${snippet.key}:${snippet.course}`"
+                        @click="snippetIndexSelected = i">
+                        <span v-if="snippet.course" class="snippet-icon"><icon :scale="0.9" name="book"/></span>
+                        <span v-else class="snippet-icon"><icon :scale="0.9" name="user-circle-o"/></span>
+                        <span>{{ snippet.key }}</span>
+                        <span>- {{ snippet.value }}</span>
                     </li>
                 </ul>
             </b-card>
@@ -106,6 +109,8 @@ import 'vue-awesome/icons/refresh';
 import 'vue-awesome/icons/check';
 import 'vue-awesome/icons/times';
 import 'vue-awesome/icons/plus';
+import 'vue-awesome/icons/user-circle-o';
+import 'vue-awesome/icons/book';
 
 import { mapActions, mapGetters } from 'vuex';
 
@@ -161,6 +166,11 @@ export default {
             type: Boolean,
             default: false,
         },
+
+        assignment: {
+            type: Object,
+            required: true,
+        },
     },
 
     data() {
@@ -169,8 +179,8 @@ export default {
             serverFeedback: this.feedback,
             snippetKey: '',
             loadedSnippets: null,
-            snippetSelected: null,
-            snippetKeySelected: null,
+            snippetIndexSelected: null,
+            selectedSnippet: null,
             snippetOldKey: null,
             snippetDisabled: false,
             possibleSnippets: [],
@@ -201,16 +211,16 @@ export default {
             this.loadedSnippets = true;
         },
 
-        snippetSelected(_, oldVal) {
+        snippetIndexSelected(_, oldVal) {
             // eslint-disable-next-line
             let [start, end] = this.snippetBound;
             let value;
 
-            if (this.snippetSelected === null) {
-                if (this.snippetKeySelected === null) {
+            if (this.snippetIndexSelected === null) {
+                if (this.selectedSnippet === null) {
                     return;
                 }
-                this.snippetKeySelected = null;
+                this.selectedSnippet = null;
                 value = this.snippetOldKey;
                 const oldSnip = this.possibleSnippets[oldVal];
                 if (oldSnip != null) {
@@ -221,13 +231,18 @@ export default {
                     el.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
                 }
             } else {
-                const newSnip = this.possibleSnippets[this.snippetSelected];
-                if (!newSnip || newSnip.key === this.snippetKeySelected) {
+                const newSnip = this.possibleSnippets[this.snippetIndexSelected];
+                if (
+                    !newSnip ||
+                    (this.selectedSnippet != null &&
+                        newSnip.key === this.selectedSnippet.key &&
+                        newSnip.course === this.selectedSnippet.course)
+                ) {
                     return;
                 }
 
                 [1, 0].forEach(i => {
-                    const el = this.$refs.snippets[this.snippetSelected + i];
+                    const el = this.$refs.snippets[this.snippetIndexSelected + i];
                     if (el && el.scrollIntoView && !(this.$root.isEdge || this.$root.isSafari)) {
                         el.scrollIntoView({
                             block: 'nearest',
@@ -237,7 +252,7 @@ export default {
                     }
                 });
 
-                this.snippetKeySelected = newSnip.key;
+                this.selectedSnippet = newSnip;
                 if (oldVal === null) {
                     this.snippetOldKey = this.internalFeedback.slice(start, end) || '';
                 } else {
@@ -255,7 +270,7 @@ export default {
         ...mapGetters({
             snippets: 'user/snippets',
             nameCurrentUser: 'user/name',
-            findSnippetsByPrefix: 'user/findSnippetsByPrefix',
+            findUserSnippetsByPrefix: 'user/findSnippetsByPrefix',
         }),
 
         snippetBound() {
@@ -307,15 +322,15 @@ export default {
                 (event.key === 'Backspace' ||
                     event.keyIdentifier === 'Backspace' ||
                     event.keyCode === 8) &&
-                (event.selectionStart !== event.selectionEnd || this.snippetSelected !== null)
+                (event.selectionStart !== event.selectionEnd || this.snippetIndexSelected !== null)
             ) {
                 event.preventDefault();
-                this.snippetSelected = null;
+                this.snippetIndexSelected = null;
             } else if (
                 (event.key === 'Enter' ||
                     event.keyIdentifier === 'Enter' ||
                     event.keyCode === 13) &&
-                this.snippetSelected !== null
+                this.snippetIndexSelected !== null
             ) {
                 event.preventDefault();
                 this.confirmSnippet();
@@ -330,7 +345,7 @@ export default {
             event.preventDefault();
             event.stopPropagation();
             event.stopImmediatePropagation();
-            this.snippetSelected = null;
+            this.snippetIndexSelected = null;
             this.$nextTick().then(() => {
                 [this.ignoreSnippets] = this.snippetBound;
                 this.possibleSnippets = [];
@@ -363,7 +378,7 @@ export default {
                 event.keyIdentifier !== 'Delete' &&
                 event.keyCode !== 46
             ) {
-                this.snippetKeySelected = null;
+                this.selectedSnippet = null;
             }
             if (!this.editing || !this.loadedSnippets || !this.internalFeedback) {
                 this.possibleSnippets = [];
@@ -374,13 +389,23 @@ export default {
 
         getPossibleSnippets(force = false) {
             const [start, end] = this.snippetBound;
-            this.snippetSelected = null;
+            this.snippetIndexSelected = null;
             if (start === this.ignoreSnippets || (!force && end - start < 3)) {
                 this.possibleSnippets = [];
                 return;
             }
             const word = this.internalFeedback.slice(start, end) || '';
             this.possibleSnippets = this.findSnippetsByPrefix(word);
+        },
+
+        findSnippetsByPrefix(word) {
+            return [
+                ...(this.assignment ? this.assignment.course.snippets : [])
+                    .filter(snip => snip.key.startsWith(word))
+                    .sort((a, b) => a.key.localeCompare(b.key))
+                    .map(snip => Object.assign({}, snip, { course: true })),
+                ...this.findUserSnippetsByPrefix(word),
+            ];
         },
 
         async changeFeedback(e) {
@@ -484,8 +509,8 @@ export default {
         },
 
         confirmSnippet() {
-            this.snippetSelected = null;
-            this.snippetKeySelected = null;
+            this.snippetIndexSelected = null;
+            this.selectedSnippet = null;
             this.getPossibleSnippets();
         },
 
@@ -507,16 +532,16 @@ export default {
                 return;
             }
 
-            if (this.snippetSelected === null) {
-                this.snippetSelected = reverse ? len - 1 : 0;
-            } else if (reverse && this.snippetSelected === 0) {
-                this.snippetSelected = null;
+            if (this.snippetIndexSelected === null) {
+                this.snippetIndexSelected = reverse ? len - 1 : 0;
+            } else if (reverse && this.snippetIndexSelected === 0) {
+                this.snippetIndexSelected = null;
             } else if (reverse) {
-                this.snippetSelected -= 1;
-            } else if (this.snippetSelected + 1 < len) {
-                this.snippetSelected += 1;
+                this.snippetIndexSelected -= 1;
+            } else if (this.snippetIndexSelected + 1 < len) {
+                this.snippetIndexSelected += 1;
             } else {
-                this.snippetSelected = null;
+                this.snippetIndexSelected = null;
             }
         },
 
@@ -804,6 +829,15 @@ textarea {
     position: relative;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+}
+
+.snippet-icon {
+    display: inline-block;
+    width: 1rem;
+    .fa-icon {
+        vertical-align: middle;
+        margin-top: -3px;
+    }
 }
 </style>
 

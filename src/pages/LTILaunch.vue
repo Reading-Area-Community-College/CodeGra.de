@@ -15,6 +15,7 @@
 import 'vue-awesome/icons/times';
 import { Loader } from '@/components';
 import { mapActions } from 'vuex';
+import ltiProviders from '@/lti_providers';
 
 import { setPageTitle } from './title';
 
@@ -52,6 +53,8 @@ export default {
                         } else {
                             this.clearPlagiarismCases();
                         }
+
+                        this.$ltiProvider = ltiProviders[data.custom_lms_name];
 
                         this.$LTIAssignmentId = data.assignment.id;
                         if (data.new_role_created) {

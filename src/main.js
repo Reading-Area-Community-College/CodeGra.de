@@ -12,6 +12,7 @@ import Toasted from 'vue-toasted';
 import localforage from 'localforage';
 import memoryStorageDriver from 'localforage-memoryStorageDriver';
 import VueMasonry from 'vue-masonry-css';
+import moment from 'moment';
 
 import '@/polyfills';
 import App from '@/App';
@@ -110,25 +111,41 @@ const DRIVERS = [
 ];
 
 let inLTI = false;
-Object.defineProperty(Vue.prototype, '$inLTI', {
-    get() {
-        return inLTI;
-    },
-    set(val) {
+Vue.util.defineReactive(
+    Vue.prototype,
+    '$inLTI',
+    inLTI,
+    val => {
         if (val === true) {
             inLTI = val;
         } else {
-            throw new TypeError('You can only set this to true');
+            throw new TypeError('You can only set $inLTI to true');
         }
     },
-});
+    true,
+);
+
+let ltiProvider = null;
+Vue.util.defineReactive(
+    Vue.prototype,
+    '$ltiProvider',
+    ltiProvider,
+    val => {
+        if (ltiProvider === null) {
+            ltiProvider = val;
+        } else {
+            throw new TypeError('You can only set $ltiProvider once');
+        }
+    },
+    true,
+);
 
 let LTIAssignmentId = null;
-Object.defineProperty(Vue.prototype, '$LTIAssignmentId', {
-    get() {
-        return LTIAssignmentId;
-    },
-    set(val) {
+Vue.util.defineReactive(
+    Vue.prototype,
+    '$LTIAssignmentId',
+    LTIAssignmentId,
+    val => {
         if (val == null) {
             throw new TypeError('You cannot set this to null or undefined');
         }
@@ -138,7 +155,8 @@ Object.defineProperty(Vue.prototype, '$LTIAssignmentId', {
             throw new TypeError('You cannot change this property once it is set');
         }
     },
-});
+    true,
+);
 
 Vue.prototype.$userConfig = UserConfig;
 
@@ -189,6 +207,7 @@ localforage.defineDriver(memoryStorageDriver).then(() => {
                 smallWidth: 628,
                 mediumWidth: 768,
                 largeWidth: 992,
+                now: moment(),
             };
         },
 
@@ -196,6 +215,10 @@ localforage.defineDriver(memoryStorageDriver).then(() => {
             window.addEventListener('resize', () => {
                 this.screenWidth = window.innerWidth;
             });
+
+            setTimeout(() => {
+                this.now = moment();
+            }, 60000);
         },
 
         computed: {
@@ -236,6 +259,10 @@ localforage.defineDriver(memoryStorageDriver).then(() => {
                 // ua = 'Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko';
 
                 return ua.indexOf('MSIE ') > -1 || ua.indexOf('Trident/') > -1;
+            },
+
+            $now() {
+                return this.now;
             },
         },
     });

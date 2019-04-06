@@ -65,16 +65,16 @@ def add_snippet() -> JSONResponse[models.Snippet]:
 @api.route('/snippets/', methods=['GET'])
 @auth.permission_required(GPerm.can_use_snippets)
 def get_snippets() -> JSONResponse[t.Sequence[models.Snippet]]:
-    """Get all snippets (:class:`.models.Snippet`) of the curren
+    """Get all snippets (:class:`.models.Snippet`) of the current
     :class:`.models.User`.
 
     .. :quickref: Snippet; Get all snippets for the currently logged in user.
 
-    :returns: The an array containing all snippets for the currently logged in
+    :returns: An array containing all snippets for the currently logged in
         user.
 
     :raises PermissionException: If there is no logged in user. (NOT_LOGGED_IN)
-    :raises PermissionException: If the user can not user snippets.
+    :raises PermissionException: If the user can not use snippets.
         (INCORRECT_PERMISSION)
     """
     return jsonify(models.Snippet.get_all_snippets(current_user))

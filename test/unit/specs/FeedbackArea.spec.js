@@ -49,6 +49,12 @@ describe('FeedbackArea.vue', () => {
                 fileId: 0,
                 editing: true,
                 totalAmountLines: 100,
+                assignment: {
+                    course: {
+                        id: 10,
+                        snippets: [],
+                    },
+                },
             }, propsData),
         });
         wrapper.vm.$refs.field = {
@@ -187,7 +193,7 @@ describe('FeedbackArea.vue', () => {
 
                 updateSelection();
                 comp.maybeSelectNextSnippet();
-                expect(comp.snippetSelected).toBe(null);
+                expect(comp.snippetIndexSelected).toBe(null);
                 await comp.$nextTick();
                 await comp.$nextTick();
                 expect(comp.internalFeedback).toBe(value);
@@ -219,7 +225,7 @@ describe('FeedbackArea.vue', () => {
             comp.updatePossibleSnippets({ event: { key: 's' } });
             expect(comp.possibleSnippets.length).toBe(2);
             expect(comp.possibleSnippets.map(a => a.key)).toEqual(['snippets2', 'snippets3']);
-            expect(comp.snippetSelected).toBe(null);
+            expect(comp.snippetIndexSelected).toBe(null);
         });
     });
 

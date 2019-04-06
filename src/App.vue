@@ -18,6 +18,7 @@
             <footer-bar v-if="showFooter"/>
         </main>
     </div>
+    <div v-if="showFrameBorder" class="frame-border"/>
 </div>
 </template>
 
@@ -46,6 +47,10 @@ export default {
                 this.$route.name !== 'submission_file' &&
                 this.$route.name !== 'plagiarism_detail'
             );
+        },
+
+        showFrameBorder() {
+            return window !== window.top && this.$ltiProvider && this.$ltiProvider.addBorder;
         },
     },
 
@@ -172,5 +177,19 @@ export default {
     left: 1rem;
     right: 1rem;
     z-index: 100;
+}
+
+.frame-border {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border: 1px solid @color-border-gray-lighter;
+    z-index: 1000;
+    #app.dark & {
+        display: none;
+    }
 }
 </style>

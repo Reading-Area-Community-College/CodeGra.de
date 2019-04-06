@@ -11,11 +11,14 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(BootstrapVue);
 
-const snippets = {
-    duplicate: { id: 0, key: 'duplicate', value: 'duplicate' },
-};
+const snippets = [
+    { id: 1, key: 'key_abc', value: 'value_abc' },
+    { id: 2, key: 'key_def', value: 'value_def' },
+    { id: 3, key: 'duplicate', value: 'duplicate' },
+];
 
 describe('SnippetManager.vue', () => {
+    let allSnippets;
     let store;
     let wrapper;
     let comp;
@@ -27,27 +30,45 @@ describe('SnippetManager.vue', () => {
     let mockPatch;
     let mockDelete;
 
-    function snippetIndex(snippet) {
-        return comp.allSnippets.indexOf(snippet);
+    function cloneSnippets() {
+        const ret = {};
+        for (let snippet of snippets) {
+            ret[snippet.key] = Object.assign({}, snippet);
+        }
+        return ret;
+    }
+
+    function newSnippetId() {
+        const ids = Object.values(allSnippets).map(s => s.id);
+        return Math.max(...ids) + 1;
     }
 
     beforeEach(() => {
+        allSnippets = cloneSnippets();
         mockRefresh = jest.fn(() => Promise.resolve(true));
         mockAdd = jest.fn();
         mockUpdate = jest.fn();
         mockRemove = jest.fn();
-        mockPut = jest.fn(() => Promise.resolve(true));
-        mockPatch = jest.fn(() => Promise.resolve(true));
-        mockDelete = jest.fn(() => Promise.resolve(true));
+        mockPut = jest.fn(
+            snip => Promise.resolve({
+                data: Object.assign({}, snip, {
+                    id: newSnippetId(),
+                }),
+            }),
+        );
+        mockPatch = jest.fn(
+            snip => Promise.resolve({ data: {} }),
+        );
+        mockDelete = jest.fn(() => Promise.resolve({ data: {} }));
 
         store = new Vuex.Store({
             modules: {
                 user: {
                     state: {
-                        snippets,
+                        snippets: allSnippets,
                     },
                     getters: {
-                        snippets: () => snippets,
+                        snippets: () => allSnippets,
                     },
                     actions: {
                         refreshSnippets: mockRefresh,
@@ -79,321 +100,117 @@ describe('SnippetManager.vue', () => {
         expect(comp).not.toBe(null);
     });
 
-    describe('the newSnippets array', () => {
-        it('should be an array with a single item after mount', () => {
-            expect(comp.newSnippets).toBeInstanceOf(Array);
-            expect(comp.newSnippets.length).toBe(1);
-        });
+    describe('saveSnippets', () => {
+        it('should add the snippet to the store snippets and to the end of filteredSnippets', async () => {
+            const new_snip = {
+                key: 'aaa',
+                value: 'aaa',
+            };
 
-        it('should have all its items appear in allSnippets', () => {
-            comp.newSnippets.concat([
-                comp.makeSnippet(),
-                comp.makeSnippet(),
-                comp.makeSnippet(),
-            ]);
+            const num_snips = comp.filteredSnippets.length;
 
-            for (let snippet of comp.newSnippets) {
-                expect(snippetIndex(snippet)).toBeGreaterThan(-1);
-            }
-        });
+            comp.editingSnippet = new_snip;
+            await comp.saveSnippet();
 
-        it('should add a new snippet when the last empty snippet changes', () => {
-            comp.snippetKeyChanged(comp.newSnippets[0], 'key');
-            expect(comp.newSnippets.length).toBe(2);
-            comp.snippetValueChanged(comp.newSnippets[0], 'value');
-            expect(comp.newSnippets.length).toBe(2);
-        });
-
-        it('should add a new snippet when the last item is removed', () => {
-            comp.newSnippets.splice(0, comp.newSnippets.length);
-            expect(comp.newSnippets.length).toBe(1);
-        });
-    });
-
-    describe('saveButtonPopover', () => {
-        it('should return the correct message if the snippet key is invalid', () => {
-            const snippet = comp.newSnippets[0];
-            comp.snippetKeyChanged(snippet, '');
-            comp.snippetValueChanged(snippet, 'value');
-            expect(comp.saveButtonPopover(snippet)).toMatch(comp.errorMessages.emptyKey);
-        });
-
-        it('should return the correct message if the snippet value is invalid', () => {
-            const snippet = comp.newSnippets[0];
-            comp.snippetKeyChanged(snippet, 'key');
-            comp.snippetValueChanged(snippet, '');
-            expect(comp.saveButtonPopover(snippet)).toMatch(comp.errorMessages.emptyValue);
-        });
-
-        it('should return the correct message if both the snippet value and key are invalid', () => {
-            const snippet = comp.newSnippets[0];
-            comp.snippetKeyChanged(snippet, '');
-            comp.snippetValueChanged(snippet, '');
-            expect(comp.saveButtonPopover(snippet)).toMatch(comp.errorMessages.emptyKey);
-            expect(comp.saveButtonPopover(snippet)).toMatch(comp.errorMessages.emptyValue);
-        });
-
-        it('should return the correct message the snippet is unchanged', () => {
-            const snippet = comp.newSnippets[0];
-            snippet.origKey = 'key';
-            snippet.origValue = 'value';
-            comp.resetSnippet(snippet);
-            expect(comp.hasSnippetChanged(snippet)).toBe(false);
-            expect(comp.saveButtonPopover(snippet)).toMatch(comp.errorMessages.unchangedSnippet);
-        });
-
-        it('should return the correct message the snippet has unsaved changes', () => {
-            const snippet = comp.newSnippets[0];
-            comp.snippetKeyChanged(snippet, 'key');
-            comp.snippetValueChanged(snippet, 'value');
-            expect(comp.hasSnippetChanged(snippet)).toBe(true);
-            expect(comp.saveButtonPopover(snippet)).toMatch(comp.errorMessages.unsavedChanges);
-        });
-    });
-
-    describe('snippetKeyChanged', () => {
-        const validKeys = [
-            'validkey',
-            'validKey',
-            'valid_key',
-            'valid-key',
-            'validkey?',
-            '#validkey',
-        ];
-        const invalidSpaces = [
-            'key with spaces',
-            'key\twith\ttabs',
-        ];
-        const invalidEmpty = [''];
-        const invalidDuplicate = ['duplicate'];
-
-        it('should be a function', () => {
-            expect(typeof comp.snippetKeyChanged).toBe('function');
-        });
-
-        it('should always change the key attribute', () => {
-            const snippet = comp.newSnippets[0];
-            const keys = validKeys.concat(invalidSpaces, invalidEmpty, invalidDuplicate);
-
-            for (let key of keys) {
-                comp.snippetKeyChanged(snippet, key);
-                expect(snippet.key).toBe(key);
-            }
-        });
-
-        it('should not reject valid keys', () => {
-            const snippet = comp.newSnippets[0];
-
-            for (let key of validKeys) {
-                comp.snippetKeyChanged(snippet, key);
-                expect(snippet.keyError).toBe('');
-            }
-        });
-
-        it('should reject a key with spaces', () => {
-            const snippet = comp.newSnippets[0];
-
-            for (let key of invalidSpaces) {
-                comp.snippetKeyChanged(snippet, key);
-                expect(snippet.keyError).toBe(comp.errorMessages.spacesInKey);
-            }
-        });
-
-        it('should reject an empty key', () => {
-            const snippet = comp.newSnippets[0];
-
-            for (let key of invalidEmpty) {
-                comp.snippetKeyChanged(snippet, key);
-                expect(snippet.keyError).toBe(comp.errorMessages.emptyKey);
-            }
-        });
-
-        it('should reject a duplicate key', () => {
-            const snippet = comp.newSnippets[0];
-
-            for (let key of invalidDuplicate) {
-                comp.snippetKeyChanged(snippet, key);
-                expect(snippet.keyError).toBe(comp.errorMessages.duplicateKey);
-            }
-        });
-    });
-
-    describe('snippetValueChanged', () => {
-        const validValues = [
-            'value',
-            'value with spaces',
-            'value\twith\ttabs',
-            'duplicate',
-        ];
-        const invalidValues = [''];
-
-        it('should be a function', () => {
-            expect(typeof comp.snippetValueChanged).toBe('function');
-        });
-
-        it('should always change the value attribute', () => {
-            const snippet = comp.newSnippets[0];
-            const values = validValues.concat(invalidValues);
-            for (let value of values) {
-                comp.snippetValueChanged(snippet, value);
-                expect(snippet.value).toBe(value);
-            }
-        });
-
-        it('should not reject valid values', () => {
-            const snippet = comp.newSnippets[0];
-            for (let value of validValues) {
-                comp.snippetValueChanged(snippet, value);
-                expect(snippet.valueError).toBe('');
-            }
-        });
-
-        it('should reject an empty value', () => {
-            const snippet = comp.newSnippets[0];
-            for (let value of invalidValues) {
-                comp.snippetValueChanged(snippet, value);
-                expect(snippet.valueError).toBe(comp.errorMessages.emptyValue);
-            }
-        });
-    });
-
-    describe('saveSnippet', () => {
-        it('should be a function', () => {
-            expect(typeof comp.snippetValueChanged).toBe('function');
-        });
-
-        it('should not save if the snippet hasn\'t changed', async () => {
-            let caught = 0;
-
-            for (let i = 0; i < comp.allSnippets.length; i++) {
-                const snippet = comp.allSnippets[i];
-                comp.snippetKeyChanged(snippet, snippet.origKey);
-                comp.snippetValueChanged(snippet, snippet.origValue);
-                try {
-                    await comp.saveSnippet(snippet, i);
-                } catch (e) {
-                    caught += 1;
-                }
-            }
-
-            expect(caught).toBe(comp.allSnippets.length);
-            expect(mockAdd).toBeCalledTimes(0);
-            expect(mockUpdate).toBeCalledTimes(0);
-            expect(mockPut).toBeCalledTimes(0);
-            expect(mockPatch).toBeCalledTimes(0);
-        });
-
-        it('should not save if the snippet has an invalid key or value', async () => {
-            let caught = 0;
-
-            const snippet = comp.newSnippets[0];
-            const index = snippetIndex(snippet);
-            comp.snippetKeyChanged(snippet, '');
-            comp.snippetValueChanged(snippet, 'value');
-            try {
-                await comp.saveSnippet(snippet, index);
-            } catch (e) {
-                caught += 1;
-            }
-
-            comp.snippetKeyChanged(snippet, 'key');
-            comp.snippetValueChanged(snippet, '');
-            try {
-                await comp.saveSnippet(snippet, index);
-            } catch (e) {
-                caught += 1;
-            }
-
-            expect(caught).toBe(2);
-            expect(mockAdd).toBeCalledTimes(0);
-            expect(mockUpdate).toBeCalledTimes(0);
-            expect(mockPut).toBeCalledTimes(0);
-            expect(mockPatch).toBeCalledTimes(0);
-        });
-
-        it('should add a new snippet if the snippet has no id', async () => {
-            const snippet = comp.newSnippets[0];
-            const index = snippetIndex(snippet);
-            snippet.id = null;
-            comp.snippetKeyChanged(snippet, 'key');
-            comp.snippetValueChanged(snippet, 'value');
-            await comp.saveSnippet(snippet, index);
-
-            expect(mockAdd).toBeCalledTimes(1);
-            expect(mockUpdate).toBeCalledTimes(0);
             expect(mockPut).toBeCalledTimes(1);
             expect(mockPatch).toBeCalledTimes(0);
 
-            const newSnippet = comp.newSnippets[0];
-            expect(newSnippet.key).toBe('');
-            expect(newSnippet.value).toBe('');
+            const snips = comp.filteredSnippets;
+            expect(snips.length).toBe(num_snips + 1);
+            expect(snips[num_snips].key).toBe(new_snip.key);
+            expect(snips[num_snips].value).toBe(new_snip.value);
         });
 
-        it('should update a snippet if the snippet has an id', async () => {
-            const snippet = comp.allSnippets[0];
-            comp.snippetKeyChanged(snippet, 'key');
-            comp.snippetValueChanged(snippet, 'value');
-            await comp.saveSnippet(snippet, 0);
+        it('should not do a request if the snippet has not changed', async () => {
+            comp.editingSnippet = comp.snippets[0];
 
-            expect(mockAdd).toBeCalledTimes(0);
-            expect(mockUpdate).toBeCalledTimes(1);
+            await comp.saveSnippet();
+
             expect(mockPut).toBeCalledTimes(0);
-            expect(mockPatch).toBeCalledTimes(1);
+            expect(mockPatch).toBeCalledTimes(0);
+        });
+
+        async function expectFail(snippet) {
+            comp.editingSnippet = snippet;
+
+            let caught = 0;
+            try {
+                await comp.saveSnippet();
+            } catch (e) {
+                caught = 1;
+            }
+
+            expect(caught).toBe(1);
+            expect(mockPut).toBeCalledTimes(0);
+            expect(mockPatch).toBeCalledTimes(0);
+        }
+
+        it('should fail when the key is empty', () => {
+            expectFail({ key: '', value: 'not empty' });
+        });
+
+        it('should fail when the key contains whitespace', () => {
+            expectFail({ key: 'key with spaces', value: 'not empty' });
+        });
+
+        it('should fail when the key already exists', () => {
+            expectFail({ key: 'duplicate', value: 'not empty' });
+        });
+
+        it('should fail when the value is empty', () => {
+            expectFail({ key: 'key', value: '' });
         });
     });
 
     describe('deleteSnippet', () => {
-        it('should be a function', () => {
-            expect(typeof comp.snippetKeyChanged).toBe('function');
-        });
+        it('it should remove the snippet from the store and from filteredSnippets', async () => {
+            const snip = comp.snippets[0];
+            const num_snips = comp.snippets.length;
 
-        it('should not delete the last empty snippet', async () => {
-            let snippet = comp.newSnippets[0];
-            await comp.deleteSnippet(snippet, snippetIndex(snippet));
-            expect(comp.newSnippets[0]).toBe(snippet);
+            await comp.deleteSnippet(snip).then(
+                comp.afterDeleteSnippet,
+            );
 
-            comp.snippetKeyChanged(snippet, 'key');
-            snippet = comp.newSnippets[1];
-            comp.deleteSnippet(snippet, snippetIndex(snippet));
-            expect(comp.newSnippets[1]).toBe(snippet);
-        });
-
-        it('should delete an unsaved snippet if it is not the last one', async () => {
-            const snippet = comp.newSnippets[0];
-            comp.snippetKeyChanged(snippet, 'key');
-            comp.snippetKeyChanged(snippet, '');
-            await comp.deleteSnippet(snippet).then(() => {
-                comp.afterDeleteSnippet(snippet, snippetIndex(snippet));
-            });
-            expect(comp.newSnippets.length).toBe(1);
-        });
-
-        it('should delete a snippet with an id from the store', async () => {
-            const snippet = comp.allSnippets[0];
-            comp.snippetKeyChanged(snippet, 'key');
-            await comp.deleteSnippet(snippet).then(() => {
-                comp.afterDeleteSnippet(snippet, snippetIndex(snippet));
-            });
-            expect(mockRemove).toBeCalledTimes(1);
             expect(mockDelete).toBeCalledTimes(1);
+            expect(comp.snippets.length).toBe(num_snips - 1);
         });
     });
 
-    describe('resetSnippet', () => {
-        it('should be a function', () => {
-            expect(typeof comp.snippetKeyChanged).toBe('function');
+    describe('filteredSnippets', () => {
+        it('should be sorted and contain all snippets in the store', () => {
+            const snips = comp.filteredSnippets;
+            const keys = Object.keys(allSnippets).sort();
+
+            expect(snips.length).toBe(keys.length);
+            for (let i = 0; i < keys.length; i++) {
+                expect(snips[i].key).toBe(keys[i]);
+            }
+        });
+    });
+
+    describe('filter', () => {
+        it('should filter by key', async () => {
+            comp.filter = 'key_abc';
+
+            await comp.$nextTick();
+            await comp.$nextTick();
+
+            const snips = comp.filteredSnippets;
+
+            expect(snips.length).toBe(1);
+            expect(snips[0].key).toBe('key_abc');
         });
 
-        it('should reset the snippet\'s key, value, keyError and valueError', () => {
-            let snippet = comp.newSnippets[0];
-            comp.snippetKeyChanged(snippet, 'key');
-            comp.snippetValueChanged(snippet, 'value');
-            expect(snippet.key).not.toBe(snippet.origKey);
-            expect(snippet.value).not.toBe(snippet.origValue);
+        it('should filter by key', async () => {
+            comp.filter = 'value_abc';
 
-            comp.resetSnippet(snippet);
-            expect(snippet.key).toBe(snippet.origKey);
-            expect(snippet.value).toBe(snippet.origValue);
+            await comp.$nextTick();
+            await comp.$nextTick();
+
+            const snips = comp.filteredSnippets;
+
+            expect(snips.length).toBe(1);
+            expect(snips[0].key).toBe('key_abc');
         });
     });
 });

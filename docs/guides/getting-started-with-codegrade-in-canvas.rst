@@ -169,7 +169,8 @@ submissions from within our website and allows students to intuitively see
 their feedback displayed in their code.
 
 *Submissions* handed in as archives are *automatically* extracted and displayed
-in the file-tree next to the *Code Viewer*. The Code Viewer supports over **175
+in the file-tree next to the *Code Viewer*. Of course, multiple individual files
+can also be uploaded in CodeGrade. The Code Viewer supports over **175
 programming languages**, **Jupyter Notebooks**, **PDF-files** and **images**.
 
 Inline feedback
@@ -184,7 +185,7 @@ typing your feedback, click the :fa:`check` button to save the feedback or press
 :fa:`cross` button to delete.
 
 .. note::
-    Pro tip: press **CTRL+Enter** to save feedback efficiently.
+    Pro tip: press :kbd:`Ctrl+Enter` to save feedback efficiently.
 
 Snippets
 ~~~~~~~~~
@@ -193,10 +194,16 @@ Experience tells us that the same lines of feedback are oftentimes given
 multiple times to multiple students. We introduced **snippets** to make grading
 with inline feedback **more efficient**. Click the :fa:`plus` icon when entering line
 feedback to save the comment as a snippet. This snippet can now be re-used
-in the future by **typing its short name** and pressing **TAB** to autocomplete.
+in the future by **typing its short name** and pressing :kbd:`Tab` to autocomplete.
 
 Full management of snippets can be done in the **“Profile Page"** (:fa:`user-circle-o`),
 snippets are personal and can be used over multiple assignments and courses.
+
+.. note::
+
+    Course wide snippets are available in CodeGrade too, these can be set up by
+    the teacher of the course on the **Course Management page** and can be used
+    by all graders of the course.
 
 Rubrics
 ~~~~~~~~

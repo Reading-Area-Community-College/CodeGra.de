@@ -10,6 +10,8 @@
 import flatPickr from 'vue-flatpickr-component';
 import confirmDatePlugin from 'flatpickr/dist/plugins/confirmDate/confirmDate';
 
+import moment from 'moment';
+
 export default {
     name: 'datetime-picker',
     props: {
@@ -50,11 +52,12 @@ export default {
             if (!selectedDates.length) {
                 return;
             }
+            const dateToString = date => moment(date).format();
 
             if (this.internalConfig.mode === 'multiple') {
-                this.$emit('input', selectedDates.map(el => el.toISOString()));
+                this.$emit('input', selectedDates.map(dateToString));
             } else {
-                this.$emit('input', selectedDates[0].toISOString());
+                this.$emit('input', dateToString(selectedDates[0]));
             }
         },
     },

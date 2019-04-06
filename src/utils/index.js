@@ -111,6 +111,12 @@ export function last(arr) {
 }
 
 export function range(start, end) {
+    if (end == null) {
+        // eslint-disable-next-line
+        end = start;
+        // eslint-disable-next-line
+        start = 0;
+    }
     const len = end - start;
     const res = Array(len);
     for (let i = 0; i < len; ++i) {
@@ -215,4 +221,15 @@ export function enumerateItems(list) {
         const butLast = list.slice(0, -1);
         return `${butLast.join(',')}, and ${list[list.length - 1]}`;
     }
+}
+
+export function getProps(object, defaultValue, ...props) {
+    let res = object;
+    for (let i = 0; res !== undefined && i < props.length; ++i) {
+        res = res[props[i]];
+    }
+    if (res === undefined) {
+        res = defaultValue;
+    }
+    return res;
 }

@@ -35,6 +35,11 @@ delete and can edit the minimum and maximum size of group sets. Group sets are a
 key concept for group assignments in CodeGrade, more information about them can
 be found in the :ref:`groups chapter <groups-chapter>`.
 
+The fourth tab, *Snippets*, shows all course-wide snippets in this course. These
+course snippets can be set up by the teacher and can be used by all graders
+grading in the course. These snippets are always in addition to the graders'
+personal snippets and are indicated with the :fa:`books` icon.
+
 Creating a new Course
 ~~~~~~~~~~~~~~~~~~~~~~
 Specific :ref:`site permissions <site-permissions>` are required to create a
@@ -67,28 +72,43 @@ General
 In this tab you can edit basic settings, as the assignment name and
 deadline, but also some more advanced settings.
 
-CGIgnore File
-++++++++++++++
-The CGIgnore file acts as a *filter* to all submissions. It is formatted exactly
-like the common ``.gitignore`` files.  All files noted in the CGIgnore are ought
-to be excluded from submissions (e.g. no ``.tex`` LaTeX source files but only
-the PDF file).  Students that try to hand in a submission with excluded files
-get a warning and are given the option to cancel the submission, continue the
-submission but delete the excluded file or continue the submission and include
-the excluded file.
+Hand-in Requirements
+++++++++++++++++++++++
+The hand-in requirements make it possible to set up strict rules to the
+structure requested for submissions to a specific assignment. Hand-in
+requirements consist of three different parts that specify the behaviour of
+your requirements.
 
-.. warning::
+First, a default policy should be selected: **by default deny all files** or
+**by default allow all files**. Exceptions to these rules can be given in the
+third part of the specifications.
 
-    Ignored files **can** be submitted if a student chooses to do so, however a
-    warning is always shown.
+Secondly, numerous options can be selected to further specify the behaviour of
+your requirements. These options are:
 
-Files to be excluded are pattern matched with the entries in the CGIgnore
-file. Literal filenames can be given or an ``*`` (asterisk) can be used as
-wildcard (e.g. ``*.tex`` will exclude all files with the ``.tex`` extension). A
-more strict wildcard is the ``?`` (question mark) which can be used to match
-exactly one character (e.g. ``assignment?.py`` will exclude all Python files
-that start with assignment and are followed by one character like
-``assignment1.py``). All entries in the CGIgnore file should be on new lines.
+- **Delete empty directories**: If enabled, automatically delete empty directories in submissions.
+- **Delete leading directories**: If enabled, automatically delete superfluous leading directories (i.e. top-level directories in which all files / subdirectories are located).
+- **Allow overrides by students**: If enabled, the student can, after being shown a warning, still force hand in the submission even if it violates the hand-in requirements.
+
+Thirdly, rules can be given that consist of exceptions to the default rule and
+requiring certain files. These rules can apply to files anywhere in the
+submission or files that have to be in an given path relative to the top level
+directory.
+
+.. note::
+
+    Use ``/`` or ``\`` as a directory separator to specify that certain files are
+    required, allowed or denied in a directory. Start the rule with a directory
+    separator (``/`` or ``\``) to specify that a file is required, allowed or denied in
+    the top level directory.
+
+    To match more than one file, you can use a single wildcard for the name of
+    the file, by using a ``*``. For example ``/src/*.py`` matches any file ending with
+    ``.py`` in the directory src that is directly in the top level directory of the
+    submission.
+
+More information on setting up hand-in requirements can be found in the
+:ref:`step-by-step guide <guide_hand_in_requirements>`.
 
 Group assignment
 ++++++++++++++++++
@@ -101,6 +121,7 @@ Uploading Submissions
 +++++++++++++++++++++++
 Submissions can be uploaded via the assignment management page too. Using the *Upload submission* tool submissions can be uploaded as
 any requested user: hand in submissions for students or hand in as administrator by selecting a user via the search bar.
+Submissions can be uploaded as an archive, which is automatically extracted by CodeGrade, or as multiple individual files.
 
 .. _upload-blackboard-zip:
 

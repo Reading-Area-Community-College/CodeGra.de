@@ -1,0 +1,14 @@
+policy: deny
+options: {}
+require /codegrade.py
+require /dir/codegrade_helper.py
+require /dir/codegrade_lib.py
+allow /lib/
+
+/codegrade.py
+/dir/codegrade_helper.py
+/dir/codegrade_lib.py
+/lib/pytest.py
+/lib/librosa.py
+
+SAME

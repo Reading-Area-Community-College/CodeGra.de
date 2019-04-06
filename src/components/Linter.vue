@@ -381,6 +381,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import '~mixins';
+
 .margin {
     margin-bottom: 15px;
 }
@@ -420,6 +422,9 @@ export default {
     display: block;
     border: 1px solid #dee2e6;
     border-radius: 0.25rem;
+    #app.dark & {
+        border-color: @color-primary-darker;
+    }
     .table {
         margin-bottom: 0;
     }

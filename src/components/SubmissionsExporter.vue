@@ -1,44 +1,46 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-only -->
 <template>
-    <div class="exporter">
-        <b-button-group>
-            <b-button variant="secondary" @click="createCSV">
-                <span>Export as CSV</span>
-            </b-button>
-            <b-button v-b-toggle.settings>
-                <icon name="cog"/>
-            </b-button>
-        </b-button-group>
-        <b-collapse id="settings">
-            <b-form-fieldset label="Filename:">
-                <input v-model="userFilename"
-                       class="form-control"
-                       type="text"
-                       :placeholder="filename"/>
-            </b-form-fieldset>
-            <b-form-fieldset
-                label="Columns:"
-                description="Checked columns will be included in the exported file.">
-                <b-form-checkbox
-                    v-for="(col, key) in columns"
-                    :key="key"
-                    v-model="col.enabled">
-                    {{ col.name }}
-                </b-form-checkbox>
-            </b-form-fieldset>
-            <b-form-fieldset
-                label="Rows:"
-                description="When <i>All</i> is selected all submissions of this
-                             assignment will be exported.<br>The <i>Current</i> option only
-                             exports the submissions that are shown by the current filter that
-                             is applied to the list.">
-                <b-form-radio-group v-model="exportSetting">
-                    <b-form-radio value="All">All</b-form-radio>
-                    <b-form-radio value="Current">Current</b-form-radio>
-                </b-form-radio-group>
-            </b-form-fieldset>
-        </b-collapse>
-    </div>
+<div class="submissions-exporter clearfix">
+    <b-form-fieldset>
+        <b-input-group>
+            <b-input-group-prepend is-text>
+                Filename
+            </b-input-group-prepend>
+            <input v-model="userFilename"
+                   class="form-control"
+                   type="text"
+                   :placeholder="filename"/>
+        </b-input-group>
+    </b-form-fieldset>
+
+    <b-form-fieldset
+        label="Columns:"
+        description="Checked columns will be included in the exported file.">
+        <b-form-checkbox v-for="(col, key) in columns"
+                            :key="key"
+                            v-model="col.enabled">
+            {{ col.name }}
+        </b-form-checkbox>
+    </b-form-fieldset>
+
+    <b-form-fieldset
+        label="Rows:"
+        description="When <i>All</i> is selected all submissions of this
+            assignment will be exported.<br>The <i>Current</i> option only
+            exports the submissions that are shown by the current filter that
+            is applied to the list.">
+        <b-form-radio-group v-model="exportSetting">
+            <b-form-radio value="All">All</b-form-radio>
+            <b-form-radio value="Current">Current</b-form-radio>
+        </b-form-radio-group>
+    </b-form-fieldset>
+
+    <b-button variant="primary"
+              class="export-button"
+              @click="createCSV">
+        Export as CSV
+    </b-button>
+</div>
 </template>
 
 <script>
@@ -53,7 +55,6 @@ export default {
     name: 'submissions-exporter',
 
     components: {
-        Baby,
         Icon,
     },
 
@@ -147,7 +148,6 @@ export default {
 
     computed: {
         items() {
-            // eslint-disable-next-line no-underscore-dangle
             return this.exportSetting === 'All'
                 ? this.getSubmissions(false)
                 : this.getSubmissions(true);
@@ -213,10 +213,8 @@ export default {
 };
 </script>
 
-<style lang="less">
-@import '~mixins.less';
-
-.exporter .text-muted {
-    color: @color-light-gray !important;
+<style lang="less" scoped>
+.export-button {
+    float: right;
 }
 </style>

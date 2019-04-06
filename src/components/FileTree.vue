@@ -32,14 +32,17 @@
     <div class="directory" :class="{ faded: depth > 0 && diffMode && !hasRevision(tree) }" @click.stop="toggle()">
         <span class="label"
               :title="tree.name">
-            <icon name="caret-right" class="caret-icon" v-if="isCollapsed"/><!--
-            --><icon name="caret-down" class="caret-icon" v-else/><!--
-            --><icon name="folder" class="dir-icon" v-if="isCollapsed"/><!--
-            --><icon name="folder-open" class="dir-icon" v-else/><!--
-            --><span>{{ tree.name }}</span>
+            <icon name="caret-right" class="caret-icon" v-if="isCollapsed"
+                  /><icon name="caret-down" class="caret-icon" v-else
+                          /><icon name="folder" class="dir-icon" v-if="isCollapsed"
+                                  /><icon name="folder-open" class="dir-icon" v-else
+                                          /><slot name="dir-slot"
+                                                  :depth="depth + 1"
+                                                  :filename="tree.name"
+                                                  :full-filename="`${fullName}/`"><span>{{ tree.name }}</span></slot>
             <sup v-if="depth > 0 && hasRevision(tree)"
-                    v-b-popover.hover.top.window="'This directory has a file with a teacher\'s revision'"
-                    class="rev-popover">
+                 v-b-popover.hover.top.window="'This directory has a file with a teacher\'s revision'"
+                 class="rev-popover">
                 modified
             </sup>
         </span>
@@ -49,13 +52,29 @@
             class="file"
             :class="{ faded: diffMode && !fileHasRevision(f), active: fileIsSelected(f) }">
             <file-tree :tree="f"
-                       :collapsed="!fileInTree($route.params.fileId, f)"
+                       :collapsed="!fileInTree($route.params.fileId, f) && (collapseFunction && collapseFunction(`${fullName}/${f.name}/`))"
+                       :collapse-function="collapseFunction"
                        :revision-cache="internalRevisionCache"
+                       :no-links="noLinks"
                        :depth="depth + 1"
-                        v-if="f.entries"/>
+                       :parent-dir="fullName"
+                        v-if="f.entries">
+                <template v-for="slot in Object.keys($scopedSlots)" :slot="slot" slot-scope="scope">
+                    <slot :name="slot" v-bind="scope"/>
+                </template>
+            </file-tree>
             <div v-else
                  class="label">
+                <template v-if="noLinks">
+                    <icon name="file" class="file-icon"/><slot name="file-slot"
+                                                               :full-filename="`${fullName}/${f.name}`"
+                                                               :filename="f.name"
+                                                               :dir="tree"
+                                                               :depth="depth"
+                                                               >{{ f.name }}</slot>
+                </template>
                 <router-link :to="getFileRoute(f)"
+                             v-else
                              :title="f.name">
                     <icon name="file" class="file-icon"/>{{ f.name }}
                 </router-link>
@@ -96,6 +115,10 @@ export default {
             type: Boolean,
             default: true,
         },
+        collapseFunction: {
+            type: Function,
+            default: () => true,
+        },
         depth: {
             type: Number,
             default: 0,
@@ -108,10 +131,17 @@ export default {
             type: String,
             default: 'student',
         },
-
         revisionCache: {
             type: Object,
             default: () => ({}),
+        },
+        noLinks: {
+            type: Boolean,
+            default: false,
+        },
+        parentDir: {
+            type: String,
+            default: '',
         },
     },
 
@@ -146,6 +176,10 @@ export default {
             return this.$route.params.courseId;
         },
 
+        fullName() {
+            return `${this.parentDir}/${this.tree.name}`;
+        },
+
         assignmentId() {
             return this.$route.params.assignmentId;
         },
@@ -155,7 +189,7 @@ export default {
         },
 
         diffMode() {
-            return this.$route.query.revision === 'diff';
+            return !this.noLinks && this.$route.query.revision === 'diff';
         },
 
         selectedRevision() {
@@ -170,6 +204,7 @@ export default {
 
         showRevisions() {
             return (
+                !this.noLinks &&
                 this.depth === 0 &&
                 this.canSeeRevision &&
                 (!this.tree.isStudent || this.hasRevision(this.tree))
@@ -242,7 +277,7 @@ export default {
         },
 
         fileHasRevision(f) {
-            if (f.entries) return false;
+            if (this.noLinks && f.entries) return false;
 
             return f.revision !== undefined || (f.ids && f.ids[0] !== f.ids[1]);
         },
@@ -355,7 +390,7 @@ export default {
         list-style: none;
         margin: 0;
         padding: 0;
-        padding-left: 1.5em;
+        padding-left: 1.2rem;
         overflow: hidden;
     }
 

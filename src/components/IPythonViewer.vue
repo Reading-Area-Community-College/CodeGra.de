@@ -22,6 +22,7 @@
                     :fileId="fileId"
                     :line="cell.feedback_offset"
                     :feedback="feedback[cell.feedback_offset]"
+                    :assignment="assignment"
                     @set-feedback="$set(feedback, $event.line, $event)"
                     :editable="editable"
                     :can-use-snippets="canUseSnippets">
@@ -53,6 +54,7 @@
                     </span>
                     <floating-feedback-button
                         :class="{'feedback-editable-output': editable}"
+                        :assignment="assignment"
                         :fileId="fileId"
                         :line="out.feedback_offset"
                         :feedback="feedback[out.feedback_offset]"

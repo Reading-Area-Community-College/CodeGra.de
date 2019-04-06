@@ -86,7 +86,8 @@ export default {
         ...mapGetters('courses', ['courses']),
 
         topCourses() {
-            const now = moment();
+            const now = this.$root.$now;
+
             function closestDeadline(course) {
                 return Math.min(
                     ...course.assignments.map(assig => Math.abs(moment(assig.deadline).diff(now))),

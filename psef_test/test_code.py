@@ -49,7 +49,7 @@ def test_get_code_metadata(
                     'name': 'test.py'
                 }],
                 'id': int,
-                'name': 'test_flake8'
+                'name': 'test_flake8.tar.gz'
             }
         )
 
@@ -59,7 +59,7 @@ def test_get_code_metadata(
             f'/api/v1/code/{res["id"]}',
             error if error else 200,
             result=error_template if error else {
-                'name': 'test_flake8',
+                'name': 'test_flake8.tar.gz',
                 'is_directory': True,
                 'id': int,
             },
@@ -750,17 +750,20 @@ def test_update_code(
 
 
 @pytest.mark.parametrize(
-    'filename', [
-        '../test_submissions/multiple_dir_archive.tar.gz',
-        '../test_submissions/multiple_dir_archive.zip',
-        '../test_submissions/multiple_dir_archive.7z',
+    'filename,extension', [
+        ('../test_submissions/multiple_dir_archive.tar.gz', '.tar.gz'),
+        ('../test_submissions/multiple_dir_archive.zip', '.zip'),
+        ('../test_submissions/multiple_dir_archive.7z', '.7z'),
     ],
-    indirect=True
+    indirect=['filename']
 )
 def test_rename_code(
     assignment_real_works, test_client, request, error_template, ta_user,
-    logged_in, session, student_user
+    logged_in, session, student_user, extension, filename
 ):
+    # Sanity check to make sure the extension was set correctly
+    assert filename.endswith(extension)
+
     assignment, work = assignment_real_works
     work_id = work['id']
 
@@ -828,7 +831,7 @@ def test_rename_code(
 
     with logged_in(ta_user):
         files = get_file_tree()
-        assert files['name'] == 'multiple_dir_archive'
+        assert files['name'] == f'multiple_dir_archive{extension}'
         assert len(files['entries']) == 2
         assert 'dir' == files['entries'][0]['name']
         assert 'dir2' == files['entries'][1]['name']
@@ -842,14 +845,15 @@ def test_rename_code(
         assert get_code_data(code_id) == 'new_data\n'
 
         assert rename(
-            code_id, '/multiple_dir_archive/dir///NEW_NAME///', 200
+            code_id, f'/multiple_dir_archive{extension}/dir///NEW_NAME///', 200
         ) == code_id
         assert 'new_data\n' == get_code_data(code_id)
         assert get_file_tree(
         )['entries'][0]['entries'][0]['name'] == 'NEW_NAME'
 
         assert rename(
-            files['entries'][0]['id'], '/multiple_dir_archive/dir3/', 200
+            files['entries'][0]['id'],
+            f'/multiple_dir_archive{extension}/dir3/', 200
         )
         assert 'new_data\n' == get_code_data(code_id)
         files = get_file_tree()
@@ -859,18 +863,27 @@ def test_rename_code(
         assert files['entries'][1]['entries'][0]['id'] == code_id
 
         added_file = adjust_code(
-            create_file('/multiple_dir_archive/dir3/sub_dir/file'),
+            create_file(f'/multiple_dir_archive{extension}/dir3/sub_dir/file'),
             200,
             'CONTENT',
         )
 
-        rename(files['entries'][0]['id'], '/multiple_dir_archive/dir3', 400)
+        rename(
+            files['entries'][0]['id'],
+            f'/multiple_dir_archive{extension}/dir3', 400
+        )
 
         m.Assignment.query.filter_by(id=assignment.id).update(
             {'state': m._AssignmentStateEnum.done}
         )
-        rename(files['entries'][0]['id'], '/multiple_dir_archive/dir3', 403)
-        rename(files['entries'][0]['id'], '/multiple_dir_archive/dir4', 403)
+        rename(
+            files['entries'][0]['id'],
+            f'/multiple_dir_archive{extension}/dir3', 403
+        )
+        rename(
+            files['entries'][0]['id'],
+            f'/multiple_dir_archive{extension}/dir4', 403
+        )
 
     role = m.CourseRole.query.filter_by(
         course_id=assignment.course_id, name='Student'
@@ -880,19 +893,25 @@ def test_rename_code(
 
     with logged_in(student_user):
         added_file2 = adjust_code(
-            create_file('/multiple_dir_archive/dir3/sub_dir/file2'),
+            create_file(
+                f'/multiple_dir_archive{extension}/dir3/sub_dir/file2'
+            ),
             200,
             'CONTENT',
         )
         added_file3 = adjust_code(
-            create_file('/multiple_dir_archive/dir3/sub_dir/file3'),
+            create_file(
+                f'/multiple_dir_archive{extension}/dir3/sub_dir/file3'
+            ),
             200,
             'CONTENT',
         )
 
     with logged_in(ta_user):
         added_file4 = adjust_code(
-            create_file('/multiple_dir_archive/dir3/sub_dir/file4'),
+            create_file(
+                f'/multiple_dir_archive{extension}/dir3/sub_dir/file4'
+            ),
             200,
             'CONTENT',
         )
@@ -906,7 +925,10 @@ def test_rename_code(
         assert len(ff[-1]['entries']) == 2
         del ff
 
-        rename(files['entries'][1]['id'], '/multiple_dir_archive/dir4', 200)
+        rename(
+            files['entries'][1]['id'],
+            f'/multiple_dir_archive{extension}/dir4', 200
+        )
         files = get_file_tree()
 
         assert len(files['entries']) == 2
@@ -947,7 +969,7 @@ def test_rename_code(
         files = get_file_tree()
         rename(
             files['entries'][0]['id'],
-            '/multiple_dir_archive/dir4/sub_dir/dir', 200
+            f'/multiple_dir_archive{extension}/dir4/sub_dir/dir', 200
         )
         files = get_file_tree()
         assert len(files['entries']) == 1

@@ -1,6 +1,86 @@
 Changelog
 ==========
 
+Version 1.6.6 (Izanami.2)
+-------------------------
+
+**Released**: April 04th, 2019
+
+You can now set up detailed hand-in requirements for your students,
+create course snippets and the submission page is easier to and has more
+information (including the possibility to upload multiple files).
+
+**Features & Updates**
+
+-  Add a new version of the ignore file
+   `(#889) <https://github.com/CodeGra-de/CodeGra.de/pull/889>`__: this
+   makes it possible to set detail hand-in requirements for students.
+-  Allow uploading multiple files
+   `(#888) <https://github.com/CodeGra-de/CodeGra.de/pull/888>`__:
+   students can now upload multiple files and archives.
+-  Add course snippets
+   `(#897) <https://github.com/CodeGra-de/CodeGra.de/pull/897>`__:
+   course snippets are shared between all teachers and ta's of a course.
+-  Add Moodle support
+   `(#873) <https://github.com/CodeGra-de/CodeGra.de/pull/873>`__: full
+   LTI integration with Moodle.
+-  Add Blackboard support
+   `(#820) <https://github.com/CodeGra-de/CodeGra.de/pull/820>`__: full
+   LTI integration with Blackboard.
+-  Enhance documentation
+   `(#875) <https://github.com/CodeGra-de/CodeGra.de/pull/875>`__:
+   better documentation which includes user guides.
+-  Rewrite submission list page header
+   `(#885) <https://github.com/CodeGra-de/CodeGra.de/pull/885>`__: more
+   information, including a better visible rubric for students.
+
+**Minor updates**
+
+-  Edit snippets in modal
+   `(#855) <https://github.com/CodeGra-de/CodeGra.de/pull/855>`__: a
+   better UI for adding snippets.
+-  Add border when CodeGrade is loaded in an iframe in Canvas
+   `(#883) <https://github.com/CodeGra-de/CodeGra.de/pull/883>`__: this
+   makes it more clear where CodeGrade begins and Canvas ends.
+-  White background for sidebar when not in dark theme
+   `(#865) <https://github.com/CodeGra-de/CodeGra.de/pull/865>`__: this
+   makes the light mode more beautiful.
+-  Improve the way rubric maximum points are presented
+   `(#895) <https://github.com/CodeGra-de/CodeGra.de/pull/895>`__: added
+   warnings and improved the UI, so the feature is not misused.
+-  Make it possible to filter submissions by member of the group
+   `(#840) <https://github.com/CodeGra-de/CodeGra.de/pull/840>`__.
+-  Increase the default value used for minimal similarity for jplag
+   `(#894) <https://github.com/CodeGra-de/CodeGra.de/pull/894>`__:
+   changed it from 25 to 50, making sure users don't get too much cases
+   by default.
+-  Add multiple file uploader to documentation
+   `(#896) <https://github.com/CodeGra-de/CodeGra.de/pull/896>`__.
+-  Update documentation to apply to new snippet management UI
+   `(#891) <https://github.com/CodeGra-de/CodeGra.de/pull/891>`__.
+-  Improve filtering the course users
+   `(#893) <https://github.com/CodeGra-de/CodeGra.de/pull/893>`__:
+   increased the efficiency of the filtering.
+
+**Fixes**
+
+-  Make sure duplicate filenames are detected and renamed
+   `(#898) <https://github.com/CodeGra-de/CodeGra.de/pull/898>`__.
+-  Show when user has no snippets
+   `(#890) <https://github.com/CodeGra-de/CodeGra.de/pull/890>`__.
+-  Set default deadline time to 23:59
+   `(#879) <https://github.com/CodeGra-de/CodeGra.de/pull/879>`__.
+-  Fix new tab button position in sidebar
+   `(#867) <https://github.com/CodeGra-de/CodeGra.de/pull/867>`__.
+-  Fix home page logo position
+   `(#851) <https://github.com/CodeGra-de/CodeGra.de/pull/851>`__.
+-  Fix header text color in dark theme
+   `(#852) <https://github.com/CodeGra-de/CodeGra.de/pull/852>`__.
+-  Fix file tree resizer z-index
+   `(#853) <https://github.com/CodeGra-de/CodeGra.de/pull/853>`__.
+-  Rename "Old password" to "Current password"
+   `(#856) <https://github.com/CodeGra-de/CodeGra.de/pull/856>`__.
+
 Version 1.3.29 (Izanami.1)
 --------------------------
 
@@ -522,7 +602,7 @@ Version 0.21.4 (FlipFloppedWhiteSocked)
 * Split can manage course permission `(#319) <https://github.com/CodeGra-de/CodeGra.de/pull/319>`_
 * Add autocomplete for adding students to a course `(#330) <https://github.com/CodeGra-de/CodeGra.de/pull/330>`_
 * Add the first implementation of TA communication tools `(#313) <https://github.com/CodeGra-de/CodeGra.de/pull/313>`_
-* Add the Ctrl-Enter keybinding on the .cg-ignore field `(#329) <https://github.com/CodeGra-de/CodeGra.de/pull/329>`_
+* Add the :kbd:`Ctrl+Enter` keybinding on the .cg-ignore field `(#329) <https://github.com/CodeGra-de/CodeGra.de/pull/329>`_
 * Make it possible to reset password even if old password was NULL. `(#323) <https://github.com/CodeGra-de/CodeGra.de/pull/323>`_
 * Add permission descriptions `(#312) <https://github.com/CodeGra-de/CodeGra.de/pull/312>`_
 
@@ -665,7 +745,7 @@ Version 0.3.2 (Belhamel)
 * Fix graders list of an assignment being loaded without correct permissions `(#157) <https://github.com/CodeGra-de/CodeGra.de/pull/157>`_
 * Fix bug where only the second LTI launch would work `(#151) <https://github.com/CodeGra-de/CodeGra.de/pull/151>`_
 * Fix front-end feature usage `(#144) <https://github.com/CodeGra-de/CodeGra.de/pull/144>`_
-* Clear vuex cache on CTRL-F5 `(#134) <https://github.com/CodeGra-de/CodeGra.de/pull/134>`_
+* Clear vuex cache on :kbd:`Ctrl+F5` `(#134) <https://github.com/CodeGra-de/CodeGra.de/pull/134>`_
 * Fix timezone issues on a LTI launch with deadline info `(#127) <https://github.com/CodeGra-de/CodeGra.de/pull/127>`_
 * Make sure all test files are directories `(#132) <https://github.com/CodeGra-de/CodeGra.de/pull/132>`_
 * Fix course link on assignment page `(#126) <https://github.com/CodeGra-de/CodeGra.de/pull/126>`_

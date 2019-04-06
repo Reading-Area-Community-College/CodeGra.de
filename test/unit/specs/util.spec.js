@@ -28,6 +28,10 @@ describe('utils.js', () => {
         it('should work for non zero length', () => {
             expect(range(2, 10)).toEqual([2, 3, 4, 5, 6, 7, 8, 9]);
         });
+
+        it('should work for without begin', () => {
+            expect(range(10)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+        });
     });
 
     describe('last', () => {

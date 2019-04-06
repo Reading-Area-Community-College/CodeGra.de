@@ -104,6 +104,7 @@
             <p>You can also import a rubric from a different assignment:</p>
             <b-alert v-if="loadAssignmentsFailed"
                      variant="danger"
+                     class="assignment-alert"
                      show>
                 Loading assignments failed.
             </b-alert>
@@ -134,6 +135,15 @@
                 </template>
             </b-input-group>
         </div>
+
+        <b-card class="extra-bar" v-if="!editable">
+            <span>
+                To get a full mark you need to score
+                {{ internalFixedMaxPoints || curMaxPoints }} points in this
+                rubric.
+            </span>
+            <slot/>
+        </b-card>
     </b-tabs>
 
     <b-modal id="modal_delete_rubric" title="Are you sure?" :hide-footer="true">
@@ -155,6 +165,40 @@
         </b-button-toolbar>
     </b-modal>
 
+    <div class="button-bar justify-content-center" v-if="editable">
+        <b-alert v-if="showMaxPointsWarning"
+                 variant="warning"
+                 show>
+            {{ maximumPointsWarningText }}
+        </b-alert>
+        <div class="override-checkbox">
+            <b-input-group class="max-points-input-group">
+                <b-input-group-prepend is-text>
+                    Points needed for a 10:
+                </b-input-group-prepend>
+                <input type="number"
+                       min="0"
+                       step="1"
+                       v-model="internalFixedMaxPoints"
+                       class="form-control"
+                       :placeholder="curMaxPoints"/>
+                <b-input-group-append is-text>
+                    out of {{ curMaxPoints }}
+                    <description-popover
+                        placement="top"
+                        hug-text
+                        description="The maximum amount of points a user can get
+                                     for this rubric. You can set this to a
+                                     higher or lower value manually, by default
+                                     it is the sum of the max value in each
+                                     category."/>
+                </b-input-group-append>
+            </b-input-group>
+        </div>
+    </div>
+
+    <hr v-if="editable"/>
+
     <b-card class="button-bar" v-if="editable">
         <b-button-group class="danger-buttons">
             <b-button variant="danger"
@@ -173,47 +217,7 @@
             </submit-button>
         </b-button-group>
 
-        <div class="override-checkbox">
-            <b-input-group>
-                <b-input-group-prepend is-text>
-                    Max points<description-popover
-                                  placement="top"
-                                  description="The maximum amount of
-                                               points a user can get for
-                                               this rubric. You can set
-                                               this to a higher or lower
-                                               value manually, by
-                                               default it is the sum of
-                                               the max value in each
-                                               category."/>
-                </b-input-group-prepend>
-                <input type="number"
-                       min="0"
-                       step="1"
-                       v-model="internalFixedMaxPoints"
-                       class="form-control"
-                       :placeholder="curMaxPoints"/>
-                <b-input-group-append>
-                    <submit-button :submit="resetFixedMaxPoints"
-                                   @success="afterResetFixedMaxPoints"
-                                   class="round"
-                                   :disabled="internalFixedMaxPoints == null"
-                                   v-b-popover.top.hover="internalFixedMaxPoints == null ? '' : 'Reset to the default value.'"
-                                   variant="warning">
-                        <icon name="reply"/>
-                    </submit-button>
-                </b-input-group-append>
-            </b-input-group>
-        </div>
         <submit-button ref="submitButton" :submit="submit"/>
-    </b-card>
-    <b-card class="extra-bar" v-else>
-        <span>
-            To get a full mark you need to score
-            {{ internalFixedMaxPoints || curMaxPoints }} points in this
-            rubric.
-        </span>
-        <slot/>
     </b-card>
 </div>
 </template>
@@ -228,6 +232,8 @@ import 'vue-awesome/icons/times';
 import 'vue-awesome/icons/info';
 import 'vue-awesome/icons/reply';
 import arrayToSentence from 'array-to-sentence';
+
+import { formatGrade } from '@/utils';
 
 import SubmitButton from './SubmitButton';
 import Loader from './Loader';
@@ -280,28 +286,49 @@ export default {
             this.getAndSetRubrics();
         },
 
-        hidden: {
-            immediate: true,
-            handler() {
-                if (!this.hidden && this.assignments === null && this.rubrics.length === 0) {
-                    this.loadAssignments();
-                }
-            },
+        hidden() {
+            this.maybeLoadOtherAssignments();
+        },
+
+        editable() {
+            this.maybeLoadOtherAssignments();
         },
     },
 
-    mounted() {
+    async mounted() {
         if (this.defaultRubric) {
             this.setRubricData(this.defaultRubric);
             this.loading = false;
         } else {
-            this.getAndSetRubrics().then(() => {
+            await this.getAndSetRubrics().then(() => {
                 this.loading = false;
             });
         }
+        this.maybeLoadOtherAssignments();
     },
 
     computed: {
+        maximumPointsWarningText() {
+            const num = Number(this.internalFixedMaxPoints);
+            if (num < this.curMaxPoints) {
+                return `This means that a 10 will already be achieved with ${num} out of ${
+                    this.curMaxPoints
+                } rubric points.`;
+            } else {
+                return `This means that it will not be possible to achieve a 10, but a ${formatGrade(
+                    this.curMaxPoints / num * 10,
+                )} will be the maximum achievable grade.`;
+            }
+        },
+
+        showMaxPointsWarning() {
+            return (
+                this.internalFixedMaxPoints !== '' &&
+                this.internalFixedMaxPoints != null &&
+                Number(this.internalFixedMaxPoints) !== this.curMaxPoints
+            );
+        },
+
         curMaxPoints() {
             return this.rubrics.reduce((cur, row) => {
                 const extra = Math.max(
@@ -317,6 +344,17 @@ export default {
 
     methods: {
         ...mapActions('courses', ['forceLoadSubmissions', 'forceLoadRubric', 'setRubric']),
+
+        maybeLoadOtherAssignments() {
+            if (
+                this.editable &&
+                !this.hidden &&
+                this.assignments === null &&
+                this.rubrics.length === 0
+            ) {
+                this.loadAssignments();
+            }
+        },
 
         loadOldRubric() {
             return this.$http.post(`/api/v1/assignments/${this.assignmentId}/rubric`, {
@@ -680,11 +718,6 @@ ${arrayToSentence(wrongCategories)}.`);
         border-left: 0 !important;
     }
 
-    .rubric {
-        flex: 1 1 0;
-        min-width: 100%;
-    }
-
     .rubric-editor {
         .card-header,
         .card-block {
@@ -698,8 +731,15 @@ ${arrayToSentence(wrongCategories)}.`);
     }
 
     .rubric {
+        flex: 1 1 0;
+        min-width: 100%;
+        background-color: white;
         padding: 1em;
         border: 1px solid transparent !important;
+
+        #app.dark & {
+            background-color: @color-primary;
+        }
 
         .item-description {
             background-color: @color-lightest-gray;
@@ -766,6 +806,10 @@ ${arrayToSentence(wrongCategories)}.`);
         }
     }
 
+    &:not(.editable) .rubric {
+        padding-bottom: 0;
+    }
+
     .item-delete-button,
     .item-info-button {
         color: @color-border-gray;
@@ -800,12 +844,18 @@ ${arrayToSentence(wrongCategories)}.`);
 }
 
 .button-bar {
-    margin-top: 2em;
+    margin-top: 1.25rem;
+
     .override-checkbox {
         justify-content: center;
         display: flex;
+        flex: 0 1 auto;
         flex-direction: column;
         align-items: center;
+
+        .max-points-input-group {
+            width: auto;
+        }
     }
 
     input {
@@ -814,7 +864,7 @@ ${arrayToSentence(wrongCategories)}.`);
 }
 
 .card.extra-bar {
-    padding: 1em;
+    padding: 0 1rem 1rem 1.5rem;
 }
 
 .card-body {
@@ -839,7 +889,7 @@ ${arrayToSentence(wrongCategories)}.`);
     }
 }
 
-.alert {
+.assignment-alert.alert {
     margin-bottom: 0;
 }
 </style>
@@ -850,8 +900,6 @@ ${arrayToSentence(wrongCategories)}.`);
 .rubric-editor {
     &:not(.editable) {
         .nav-tabs {
-            background: @color-lighter-gray;
-            padding-top: 15px;
             .nav-item:first-child {
                 margin-left: 15px;
             }

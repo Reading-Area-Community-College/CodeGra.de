@@ -1,0 +1,10 @@
+policy: deny
+options: {}
+allow a.py
+require b.py
+
+/dir/a.py
+/dir/b.py
+/dir2/b.py
+
+SAME

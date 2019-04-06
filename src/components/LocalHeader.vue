@@ -158,7 +158,7 @@ export default {
 }
 
 .title {
-    flex: 2;
+    flex: 2 1 auto;
     margin-bottom: 0;
     text-align: left;
     line-height: 1;
@@ -166,6 +166,7 @@ export default {
 
 .toolbar {
     flex: 1 0 auto;
+    flex-wrap: nowrap;
     align-items: center;
 }
 

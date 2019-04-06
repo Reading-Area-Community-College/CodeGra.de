@@ -252,5 +252,17 @@
     "course_permission": true,
     "short_description": "Create groups",
     "long_description": "Users with this permission can create new groups in group assignments."
+  },
+  "can_view_course_snippets": {
+    "default_value": false,
+    "course_permission": true,
+    "short_description": "View course snippets",
+    "long_description": "Users with this permission can see the snippets of this course, and use them while writing feedback."
+  },
+  "can_manage_course_snippets": {
+    "default_value": false,
+    "course_permission": true,
+    "short_description": "Manage course snippets",
+    "long_description": "Users with this permission can create, edit, and delete snippets for this course."
   }
 }

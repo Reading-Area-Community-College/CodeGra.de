@@ -170,6 +170,8 @@ class CoursePermission(BasePermission):
     :ivar can_edit_group_assignment: Users with this permission can change an assignment into a group assignment, and change the minimum and maximum required group size.
     :ivar can_edit_group_set: Users with this permissions can create, delete and edit group sets.
     :ivar can_create_groups: Users with this permission can create new groups in group assignments.
+    :ivar can_view_course_snippets: Users with this permission can see the snippets of this course, and use them while writing feedback.
+    :ivar can_manage_course_snippets: Users with this permission can create, edit, and delete snippets for this course.
     """
 
     @staticmethod
@@ -211,5 +213,7 @@ class CoursePermission(BasePermission):
     can_edit_group_assignment = _PermissionValue(item=32, default_value=False)
     can_edit_group_set = _PermissionValue(item=33, default_value=False)
     can_create_groups = _PermissionValue(item=34, default_value=True)
+    can_view_course_snippets = _PermissionValue(item=35, default_value=False)
+    can_manage_course_snippets = _PermissionValue(item=36, default_value=False)
 
 # yapf: enable
