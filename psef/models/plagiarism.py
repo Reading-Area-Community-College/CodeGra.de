@@ -7,8 +7,6 @@ import json
 import typing as t
 import datetime
 
-from sqlalchemy import orm
-
 import psef
 
 from . import Base, db, _MyQuery
@@ -69,9 +67,7 @@ class PlagiarismRun(Base):
     submissions_done: int = db.Column(
         'submissions_done', db.Integer, default=0, nullable=True
     )
-    log: t.Optional[str] = orm.deferred(
-        db.Column('log', db.Unicode, nullable=True)
-    )
+    log: t.Optional[str] = db.Column('log', db.Unicode, nullable=True)
     json_config = db.Column('json_config', db.Unicode, nullable=False)
     assignment_id: int = db.Column(
         'assignment_id',
@@ -153,6 +149,7 @@ class PlagiarismRun(Base):
             'config': json.loads(self.json_config),
             'created_at': self.created_at.isoformat(),
             'assignment': self.assignment,
+            'log': self.log,
         }
 
     def __extended_to_json__(self) -> t.Mapping[str, object]:
@@ -174,7 +171,6 @@ class PlagiarismRun(Base):
         """
         return {
             'cases': self.cases,
-            'log': self.log,
             **self.__to_json__(),
         }
 

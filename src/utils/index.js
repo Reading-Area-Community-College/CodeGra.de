@@ -180,6 +180,12 @@ export function groupMembers(user) {
     return user.group.members.map(nameOfUser);
 }
 
+export function userMatches(user, filter) {
+    return [nameOfUser(user), ...groupMembers(user)].some(
+        name => name.toLocaleLowerCase().indexOf(filter) > -1,
+    );
+}
+
 export function highlightCode(sourceArr, language, maxLen = 5000) {
     if (sourceArr.length > maxLen) {
         return sourceArr.map(htmlEscape);

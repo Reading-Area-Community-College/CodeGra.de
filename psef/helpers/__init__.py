@@ -519,6 +519,22 @@ def ensure_keys_in_dict(
         )
 
 
+def maybe_apply_sql_slice(sql: 'models._MyQuery[T]') -> 'models._MyQuery[T]':
+    """Slice the given query if ``limit`` is given in the request args.
+
+    :param sql: The query to slice.
+    :returns: The slices query with ``limit`` and ``offset`` from the request
+        parameters. If these can not be found in the request parameters the
+        query is returned unaltered.
+    """
+    limit = request.args.get('limit', None, type=int)
+    if limit is None or limit <= 0:
+        return sql
+
+    offset = max(request.args.get('offset', 0, type=int), 0)
+    return sql.slice(offset, offset + limit)
+
+
 def get_json_dict_from_request(
     replace_log: t.Optional[t.Callable[[str, object], object]] = None,
 ) -> t.Dict[str, JSONType]:

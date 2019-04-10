@@ -233,6 +233,9 @@ class _MyQuery(t.Generic[T], t.Iterable):  # pragma: no cover
     def all(self) -> t.List[T]:
         ...
 
+    def slice(self, start: int, end: int) -> '_MyQuery[T]':
+        ...
+
     def select_from(self, other: t.Type[Base]) -> '_MyQuery[T]':
         ...
 

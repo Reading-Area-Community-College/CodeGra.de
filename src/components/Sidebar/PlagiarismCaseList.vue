@@ -8,33 +8,40 @@
                ref="filter">
     </div>
 
-    <ul class="sidebar-list" v-if="cases.length > 0">
-        <li v-for="curCase in filteredCases"
-            class="sidebar-list-item"
-            :class="{ 'light-selected': curCase.id ===  plagiarismCaseId }">
-            <router-link class="sidebar-item name"
-                         :to="caseRoute(curCase)">
-                <div class="name-user" style="width: 100%">
-                    <user :user="curCase.users[0]"/>
-                </div>
-                <div style="display: flex;">
-                    <div class="name-user" style="flex: 0 1 auto; margin-right: 5px">
-                        <user :user="curCase.users[1]"/>
+    <infinite-plagiarism-case-list
+        class="sidebar-list"
+        :filter="filter"
+        v-if="cases.length > 0"
+        :run="run">
+        <ul style="padding: 0;"
+            slot-scope="{ cases }">
+            <li v-for="curCase in cases"
+                class="sidebar-list-item"
+                :class="{ 'light-selected': curCase.id ===  plagiarismCaseId }">
+                <router-link class="sidebar-item name"
+                             :to="caseRoute(curCase)">
+                    <div class="name-user" style="width: 100%">
+                        <user :user="curCase.users[0]"/>
                     </div>
-                    <div>
-                        <sup v-b-popover.hover.top="getOtherAssignmentPlagiarismDesc(curCase, 1)"
-                                                     v-if="curCase.assignments[1].id != run.assignment.id"
-                                                     class="description"
-                                                     >*</sup>
+                    <div style="display: flex;">
+                        <div class="name-user" style="flex: 0 1 auto; margin-right: 5px">
+                            <user :user="curCase.users[1]"/>
+                        </div>
+                        <div>
+                            <sup v-b-popover.hover.top="getOtherAssignmentPlagiarismDesc(curCase, 1)"
+                                 v-if="curCase.assignments[1].id != run.assignment.id"
+                                 class="description"
+                                 >*</sup>
+                        </div>
                     </div>
-                </div>
-                <small style="display: block; line-height: 1.3em">
-                    Avg. match: {{ curCase.match_avg.toFixed(0) }}% &ndash;
-                    Max. match: {{ curCase.match_max.toFixed(0) }}%
-                </small>
-            </router-link class="sidebar-item">
-        </li>
-    </ul>
+                    <small style="display: block; line-height: 1.3em">
+                        Avg. match: {{ curCase.match_avg.toFixed(0) }}% &ndash;
+                        Max. match: {{ curCase.match_max.toFixed(0) }}%
+                    </small>
+                </router-link class="sidebar-item">
+            </li>
+        </ul>
+    </infinite-plagiarism-case-list>
     <span v-else class="sidebar-list no-items-text">
         No plagiarism cases found
     </span>
@@ -43,12 +50,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import { getOtherAssignmentPlagiarismDesc, nameOfUser } from '@/utils';
+import { getOtherAssignmentPlagiarismDesc } from '@/utils';
 
 import Icon from 'vue-awesome/components/Icon';
 import 'vue-awesome/icons/plus';
 
 import User from '@/components/User';
+import InfinitePlagiarismCaseList from '@/components/InfinitePlagiarismCaseList';
 
 export default {
     name: 'plagiarism-case-list',
@@ -84,47 +92,6 @@ export default {
 
         cases() {
             return (this.run && this.run.cases) || [];
-        },
-
-        filteredCases() {
-            if (!this.filter) {
-                return this.cases;
-            }
-
-            const filterParts = this.filter.toLocaleLowerCase().split(' ');
-
-            return this.cases.filter(curCase =>
-                filterParts.every(part => {
-                    if (
-                        nameOfUser(curCase.users[0])
-                            .toLocaleLowerCase()
-                            .indexOf(part) > -1
-                    ) {
-                        return true;
-                    }
-                    if (
-                        nameOfUser(curCase.users[1])
-                            .toLocaleLowerCase()
-                            .indexOf(part) > -1
-                    ) {
-                        return true;
-                    }
-                    if (
-                        curCase.match_avg
-                            .toFixed(2)
-                            .toLocaleLowerCase()
-                            .indexOf(part) > -1
-                    ) {
-                        return true;
-                    }
-                    return (
-                        curCase.match_max
-                            .toFixed(2)
-                            .toLocaleLowerCase()
-                            .indexOf(part) > -1
-                    );
-                }),
-            );
         },
     },
 
@@ -176,6 +143,7 @@ export default {
     components: {
         Icon,
         User,
+        InfinitePlagiarismCaseList,
     },
 };
 </script>
@@ -195,5 +163,10 @@ a {
         line-height: 1.5em;
         overflow-x: hidden;
     }
+}
+
+.load-more-cases-btn {
+    display: block;
+    margin: 15px auto;
 }
 </style>

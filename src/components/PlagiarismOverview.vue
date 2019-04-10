@@ -27,42 +27,47 @@
     </local-header>
 
     <div v-if="run.state === 'crashed'"
-          class="text-muted text-center">
+         class="text-muted text-center">
         The run crashed. Please check the logs for more details.
     </div>
-    <b-table :fields="tableFields"
-             v-else
-             striped
-             show-empty
-             :sort-compare="sortCompareTable"
-             sort-by="match_avg"
-             sort-desc
-             :items="filteredEntries"
-             @row-clicked="rowClicked"
-             @row-hovered="rowHovered"
-             @mouseleave.native="rowHovered(null)"
-             class="overview-table">
-        <template slot="user1" slot-scope="row">
-            <user :user="row.item.users[0]"/>
-        </template>
+    <infinite-plagiarism-case-list
+        v-else
+        :filter="filter"
+        :run="run">
+        <b-table :fields="tableFields"
+                 striped
+                 slot-scope="{ cases }"
+                 show-empty
+                 :sort-compare="sortCompareTable"
+                 sort-by="match_avg"
+                 sort-desc
+                 :items="cases"
+                 @row-clicked="rowClicked"
+                 @row-hovered="rowHovered"
+                 @mouseleave.native="rowHovered(null)"
+                 class="overview-table">
+            <template slot="user1" slot-scope="row">
+                <user :user="row.item.users[0]"/>
+            </template>
 
-        <template slot="user2" slot-scope="row">
-            <span>
-                <user :user="row.item.users[1]"/>
-                <sup v-b-popover.hover.top="getOtherAssignmentPlagiarismDesc(row.item, 1)"
-                                                  class="description"
-                                                  v-if="row.item.assignments[1].id != run.assignment.id"
-                                                  >*</sup>
-            </span>
-        </template>
+            <template slot="user2" slot-scope="row">
+                <span>
+                    <user :user="row.item.users[1]"/>
+                    <sup v-b-popover.hover.top="getOtherAssignmentPlagiarismDesc(row.item, 1)"
+                         class="description"
+                         v-if="row.item.assignments[1].id != run.assignment.id"
+                         >*</sup>
+                </span>
+            </template>
 
-        <template slot="empty">
-            <div style="text-align: center;">
-                <span v-if="run.cases.length == 0">No plagiarism found</span>
+            <template slot="empty">
+                <div style="text-align: center;">
+                    <span v-if="run.cases.length == 0">No plagiarism found</span>
                 <span v-else>No results found</span>
             </div>
         </template>
     </b-table>
+    </infinite-plagiarism-case-list>
 
     <b-popover v-if="disabledPopoverRowId"
                :target="disabledPopoverRowId"
@@ -77,8 +82,14 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 
-import { SubmitButton, Loader, LocalHeader, DescriptionPopover, User } from '@/components';
-
+import {
+    SubmitButton,
+    Loader,
+    LocalHeader,
+    DescriptionPopover,
+    User,
+    InfinitePlagiarismCaseList,
+} from '@/components';
 import { getOtherAssignmentPlagiarismDesc, nameOfUser } from '@/utils';
 
 export default {
@@ -137,20 +148,6 @@ export default {
 
         assignment() {
             return this.assignments[this.assignmentId];
-        },
-
-        filteredEntries() {
-            if (!this.run) {
-                return [];
-            }
-
-            const filter = new RegExp(this.filter, 'i');
-
-            return this.run.cases.filter(
-                entry =>
-                    nameOfUser(entry.users[0]).match(filter) ||
-                    nameOfUser(entry.users[1]).match(filter),
-            );
         },
     },
 
@@ -264,9 +261,10 @@ export default {
     components: {
         SubmitButton,
         LocalHeader,
-        Loader,
         DescriptionPopover,
         User,
+        Loader,
+        InfinitePlagiarismCaseList,
     },
 };
 </script>

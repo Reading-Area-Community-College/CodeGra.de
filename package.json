@@ -42,6 +42,7 @@
     "vue": "^2.5.13",
     "vue-awesome": "^2.3.4",
     "vue-flatpickr-component": "^8.1.1",
+    "vue-infinite-loading": "^2.4.4",
     "vue-masonry-css": "^1.0.3",
     "vue-multiselect": "2.0.3",
     "vue-resize-split-pane": "^0.1.3",

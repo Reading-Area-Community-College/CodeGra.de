@@ -256,6 +256,7 @@ def test_jplag(
                 'assignment': dict,
                 'submissions_done': 0,
                 'submissions_total': int,
+                'log': None,
             }
         )
         if code >= 400:
@@ -286,6 +287,7 @@ def test_jplag(
                 'submissions_total': 3,
                 # This should be one as we output this in our Popen stub
                 'submissions_done': 1,
+                'log': str,
             }
         )
         test_client.req(
@@ -335,6 +337,35 @@ def test_jplag(
             )
             assert len(case['matches']
                        ) == len(row[4:]) / 6, "Amount matches match"
+
+        # Limit without offset should mean a offset of 0
+        test_client.req(
+            'get',
+            f'/api/v1/plagiarism/{plag["id"]}/cases/?limit=1',
+            200,
+            result=cases[:1]
+        )
+        test_client.req(
+            'get',
+            f'/api/v1/plagiarism/{plag["id"]}/cases/?limit=3&offset=2',
+            200,
+            result=cases[2:5]
+        )
+
+        # Offset higher than amount of results should return an empty list
+        test_client.req(
+            'get',
+            f'/api/v1/plagiarism/{plag["id"]}/cases/?limit=3&offset=2000',
+            200,
+            result=[]
+        )
+        # Limit higher than amount results should return all results
+        test_client.req(
+            'get',
+            f'/api/v1/plagiarism/{plag["id"]}/cases/?limit=3000',
+            200,
+            result=cases
+        )
 
     # Make doing these calls as student fails with permission errors
     with logged_in(student_user):
@@ -483,6 +514,7 @@ def test_jplag_old_assignments(
                 'assignment': dict,
                 'submissions_total': int,
                 'submissions_done': 0,
+                'log': None,
             }
         )
         print('next2')
@@ -976,6 +1008,7 @@ def test_chrased_jplag(
                 'assignment': dict,
                 'submissions_done': 0,
                 'submissions_total': int,
+                'log': None,
             }
         )
         plag = test_client.req(

@@ -77,6 +77,11 @@ def get_plagiarism_run(
     auth.ensure_permission(CPerm.can_view_plagiarism, run.assignment.course_id)
 
     if helpers.extended_requested():
+        helpers.add_deprecate_warning(
+            'The extended route for a Plagiarism run will be deleted,'
+            ' use the normal route in combination with'
+            ' "/plagiarism/<plagiarism_id>/cases/" instead.'
+        )
         return extended_jsonify(run, use_extended=models.PlagiarismRun)
     return jsonify(run)
 
@@ -90,6 +95,10 @@ def get_plagiarism_run_cases(
 
     .. :quickref: Plagiarism; Get the cases for a plagiarism run.
 
+    :qparam int limit: The amount of cases to get. Defaults to infinity.
+    :qparam int offset: The amount of cases that should be skipped, only used
+        when limit is given. Defaults to 0.
+
     :param int plagiarism_id: The of the plagiarism run.
     :returns: An array of JSON serialized plagiarism cases.
 
@@ -99,17 +108,28 @@ def get_plagiarism_run_cases(
     run = helpers.get_or_404(
         models.PlagiarismRun,
         plagiarism_id,
-        options=[
-            defaultload(models.PlagiarismRun.cases).defaultload(
-                models.PlagiarismCase.work1
-            ).selectinload(models.Work.selected_items),
-            defaultload(models.PlagiarismRun.cases).defaultload(
-                models.PlagiarismCase.work2
-            ).selectinload(models.Work.selected_items),
-        ],
+        options=[],
     )
     auth.ensure_permission(CPerm.can_view_plagiarism, run.assignment.course_id)
-    return jsonify(run.cases)
+
+    sql = models.PlagiarismCase.query.filter_by(
+        plagiarism_run_id=run.id
+    ).order_by(
+        t.cast(
+            models.DbColumn[float],
+            models.PlagiarismCase.match_avg,
+        ).desc()
+    ).options(
+        defaultload(models.PlagiarismCase.work1).selectinload(
+            models.Work.selected_items
+        ),
+        defaultload(models.PlagiarismCase.work2).selectinload(
+            models.Work.selected_items
+        ),
+    )
+    sql = helpers.maybe_apply_sql_slice(sql)
+
+    return jsonify(sql.all())
 
 
 @api.route(
