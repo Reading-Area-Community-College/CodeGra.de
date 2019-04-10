@@ -1537,6 +1537,43 @@ def test_divide_assignments(
             assert assig['assignee'] is None
 
 
+def test_divide_assignment_negative_weights(
+    teacher_user, logged_in, test_client, error_template, assignment
+):
+    users_roles = filter(
+        lambda user_role: user_role[1].has_permission(CPerm.can_grade_work),
+        assignment.course.get_all_users_in_course().all(),
+    )
+    users = [user_role[0] for user_role in users_roles]
+
+    with logged_in(teacher_user):
+        test_client.req(
+            'patch',
+            f'/api/v1/assignments/{assignment.id}/divide',
+            400,
+            result=error_template,
+            data={
+                'graders': { str(users[0].id): -1 },
+            },
+        )
+
+        res = test_client.req(
+            'patch',
+            f'/api/v1/assignments/{assignment.id}/divide',
+            400,
+            result=error_template,
+            data={
+                'graders': {
+                    str(user.id): (i % 3) - 1
+                    for i, user in enumerate(users)
+                },
+            },
+        )
+        negative_ids = [user.id for i, user in enumerate(users) if i % 3 == 0]
+        for id in negative_ids:
+            assert str(id) in res['description']
+
+
 def test_divide_non_existing_assignment(
     teacher_user, logged_in, test_client, error_template
 ):
