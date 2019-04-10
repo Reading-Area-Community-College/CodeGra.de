@@ -1553,7 +1553,9 @@ def test_divide_assignment_negative_weights(
             400,
             result=error_template,
             data={
-                'graders': { str(users[0].id): -1 },
+                'graders': {
+                    str(users[0].id): -1
+                },
             },
         )
 
@@ -1563,10 +1565,11 @@ def test_divide_assignment_negative_weights(
             400,
             result=error_template,
             data={
-                'graders': {
-                    str(user.id): (i % 3) - 1
-                    for i, user in enumerate(users)
-                },
+                'graders':
+                    {
+                        str(user.id): (i % 3) - 1
+                        for i, user in enumerate(users)
+                    },
             },
         )
         negative_ids = [user.id for i, user in enumerate(users) if i % 3 == 0]

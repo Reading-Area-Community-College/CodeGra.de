@@ -891,15 +891,15 @@ def divide_assignments(assignment_id: int) -> EmptyResponse:
         graders[int(user_id)] = weight
 
     if graders:
-        negative_weights = ', '.join(str(g) for g, w in graders.items() if w < 0)
+        negative_weights = ', '.join(
+            str(g) for g, w in graders.items() if w < 0
+        )
         if negative_weights:
             raise APIException(
-                'Weights must be positive.',
-                (
+                'Weights must be positive.', (
                     f'The graders {negative_weights} have been assigned a'
                     ' negative weight'
-                ),
-                APICodes.INVALID_PARAM, 400
+                ), APICodes.INVALID_PARAM, 400
             )
         users = helpers.filter_all_or_404(
             models.User,

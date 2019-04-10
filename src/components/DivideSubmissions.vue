@@ -219,8 +219,7 @@ export default {
                     },
                 );
             } else {
-                const negativeWeights = Object.values(this.graders)
-                    .filter(x => x.weight < 0);
+                const negativeWeights = Object.values(this.graders).filter(x => x.weight < 0);
 
                 if (negativeWeights.length) {
                     const names = negativeWeights.map(x => x.name).join(', ');
