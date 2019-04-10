@@ -219,8 +219,20 @@ export default {
                     },
                 );
             } else {
-                let req = Promise.resolve();
+                const negativeWeights = Object.values(this.graders)
+                    .filter(x => x.weight < 0);
 
+                if (negativeWeights.length) {
+                    const names = negativeWeights.map(x => x.name).join(', ');
+                    const multi = negativeWeights.length > 1;
+                    throw new Error(
+                        `Negative weights are not allowed, but the
+                        weight${multi ? 's' : ''} for ${names}
+                        ${multi ? 'are' : 'is'} negative.`,
+                    );
+                }
+
+                let req = Promise.resolve();
                 if (this.currentDivisionParent != null) {
                     req = req.then(() =>
                         this.$http.patch(
