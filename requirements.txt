@@ -1,5 +1,5 @@
 alembic==1.0.10
-celery==4.2.1
+celery==4.3.0
 coverage==4.5.2
 Flask==1.0.2
 Flask-JWT-Extended==3.18.0
