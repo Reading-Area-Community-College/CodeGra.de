@@ -39,7 +39,7 @@ pytest-xdist==1.28.0
 dataclasses==0.6
 structlog==19.1.0
 colorama==0.4.1
-defusedxml==0.5.0
+defusedxml==0.6.0
 coolname==1.1.0
 zxcvbn==4.4.27
 pylzma==0.5.0
