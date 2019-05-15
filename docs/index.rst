@@ -25,6 +25,8 @@ details on `the CodeGrade website <https://codegrade.com>`_.
 
    guides/getting-started-with-codegrade
    guides/creating-an-assignment
+   guides/installing-codegrade-filesystem
+   guides/use-codegrade-filesystem
    guides/creating-managing-and-using-snippets
    guides/checking-for-plagiarism
    guides/set-up-group-assignment
