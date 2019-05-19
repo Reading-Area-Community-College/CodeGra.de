@@ -1,0 +1,287 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Create a CodeGrade assignment in Moodle &mdash; CodeGrade v1.6.8 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Create, manage and use snippets" href="creating-managing-and-using-snippets.html" />
+    <link rel="prev" title="Create a CodeGrade assignment in Canvas" href="creating-a-canvas-assignment.html" />
+    <link href="../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.6.8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started-with-codegrade.html">Getting started with CodeGrade</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="creating-an-assignment.html">Create a CodeGrade assignment</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="creating-a-blackboard-assignment.html">In Blackboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="creating-a-canvas-assignment.html">In Canvas</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">In Moodle</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="creating-managing-and-using-snippets.html">Create, manage and use snippets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="checking-for-plagiarism.html">Check for plagiarism in a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="set-up-group-assignment.html">Set up a CodeGrade group assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">Pass back grades to Canvas, Blackboard, Moodle or Brightspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-password-for-codegrade-account.html">Set up a password for my CodeGrade account</a></li>
+<li class="toctree-l1"><a class="reference internal" href="set-up-a-rubric-for-an-assignment.html">Set up a rubric for an assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-shortcuts.html">Using shortcuts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dividing-submissions.html">Divide submissions over graders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cannot-find-feature-in-codegrade.html">I cannot find a feature in CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setting-up-hand-in-requirements.html">Set up hand-in requirements for a CodeGrade assignment</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/overview.html">Overview of CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/codeviewer.html">Code Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/management.html">Course and Assignment Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/plagiarism.html">Plagiarism Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/groups.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/permissions.html">Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/preferences.html">Settings and Site Preferences</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://fs-docs.codegra.de">Filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/lms.html">LMS Integration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About CodeGrade</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/about.html">About CodeGrade</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developerdocs.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CodeGrade</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="creating-an-assignment.html">Create a CodeGrade assignment</a> &raquo;</li>
+        
+      <li>Create a CodeGrade assignment in Moodle</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/guides/creating-a-moodle-assignment.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="create-a-codegrade-assignment-in-moodle">
+<h1>Create a CodeGrade assignment in Moodle<a class="headerlink" href="#create-a-codegrade-assignment-in-moodle" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The guide below assumes CodeGrade has been successfully integrated into
+your Moodle environment as external LTI app.</p>
+</div>
+<p>Creating a new CodeGrade assignment in Moodle will correctly
+add this assignment to the corresponding course in CodeGrade, a new course will
+automatically be created in CodeGrade if it doesn’t exist. Follow
+the steps below to create a new CodeGrade assignment in Moodle:</p>
+<ol class="arabic simple">
+<li>Press the <strong>“gear icon”</strong> and select <strong>“Turn editing on”</strong>.</li>
+<li>Press <strong>“+ Add an activity or resource”</strong>.</li>
+<li>Press <strong>“External tool”</strong> and press <strong>“Add”</strong>.</li>
+<li>Set a name, and under the <strong>“Preconfigured tool”</strong> dropdown select <strong>“CodeGrade”</strong>.</li>
+<li>Set other options you might want, but <strong>do not</strong> set any <strong>“Restrict access”</strong> options.</li>
+<li>Click <strong>“Save and display”</strong> and the CodeGrade assignment will automatically open.</li>
+<li>Click the link in the CodeGrade container to <strong>set a deadline/due date</strong> within CodeGrade.</li>
+</ol>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Never set any <strong>Restrict access</strong> options in Moodle, CodeGrade will
+automatically manage this correctly.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Grades are automatically sent back to Moodle after setting the
+<strong>assignment state</strong> to (<em class="fa codegrade fa-check"></em>) <strong>Done</strong> in CodeGrade. While the
+assignment is in the (<em class="fa codegrade fa-check"></em>) <strong>Done</strong> state, all grades and changes to
+grades are immediately sent back to Moodle.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Students can hand in and review their feedback from within the CodeGrade
+container in Moodle.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="creating-managing-and-using-snippets.html" class="btn btn-neutral float-right" title="Create, manage and use snippets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="creating-a-canvas-assignment.html" class="btn btn-neutral float-left" title="Create a CodeGrade assignment in Canvas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CodeGrade
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

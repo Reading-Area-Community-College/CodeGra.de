@@ -1,0 +1,1519 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>psef.models.assignment &mdash; CodeGrade v1.6.8 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link href="../../../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.6.8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/getting-started-with-codegrade.html">Getting started with CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/creating-an-assignment.html">Create a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/creating-managing-and-using-snippets.html">Create, manage and use snippets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/checking-for-plagiarism.html">Check for plagiarism in a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/set-up-group-assignment.html">Set up a CodeGrade group assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">Pass back grades to Canvas, Blackboard, Moodle or Brightspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/setup-password-for-codegrade-account.html">Set up a password for my CodeGrade account</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/set-up-a-rubric-for-an-assignment.html">Set up a rubric for an assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/using-shortcuts.html">Using shortcuts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/dividing-submissions.html">Divide submissions over graders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/cannot-find-feature-in-codegrade.html">I cannot find a feature in CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/setting-up-hand-in-requirements.html">Set up hand-in requirements for a CodeGrade assignment</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/overview.html">Overview of CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/codeviewer.html">Code Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/management.html">Course and Assignment Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/plagiarism.html">Plagiarism Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/groups.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/permissions.html">Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/preferences.html">Settings and Site Preferences</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://fs-docs.codegra.de">Filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/lms.html">LMS Integration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About CodeGrade</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/about.html">About CodeGrade</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developerdocs.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CodeGrade</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../psef.html">psef</a> &raquo;</li>
+        
+      <li>psef.models.assignment</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for psef.models.assignment</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module defines all models needed for an assignment.</span>
+
+<span class="sd">SPDX-License-Identifier: AGPL-3.0-only</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">shuffle</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="k">import</span> <span class="n">itemgetter</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">cycle</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">defaultdict</span>
+
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="k">import</span> <span class="n">validates</span>
+<span class="kn">from</span> <span class="nn">mypy_extensions</span> <span class="k">import</span> <span class="n">DefaultArg</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.sql.expression</span> <span class="k">import</span> <span class="n">and_</span><span class="p">,</span> <span class="n">func</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm.collections</span> <span class="k">import</span> <span class="n">attribute_mapped_collection</span>
+
+<span class="kn">import</span> <span class="nn">psef</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">UUID_LENGTH</span><span class="p">,</span> <span class="n">Base</span><span class="p">,</span> <span class="n">DbColumn</span><span class="p">,</span> <span class="n">db</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">user</span> <span class="k">as</span> <span class="n">user_models</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">work</span> <span class="k">as</span> <span class="n">work_models</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">group</span> <span class="k">as</span> <span class="n">group_models</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">linter</span> <span class="k">as</span> <span class="n">linter_models</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">_MyQuery</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">auth</span><span class="p">,</span> <span class="n">ignore</span><span class="p">,</span> <span class="n">helpers</span>
+<span class="kn">from</span> <span class="nn">.role</span> <span class="k">import</span> <span class="n">CourseRole</span>
+<span class="kn">from</span> <span class="nn">.rubric</span> <span class="k">import</span> <span class="n">RubricRow</span><span class="p">,</span> <span class="n">RubricItem</span>
+<span class="kn">from</span> <span class="nn">.permission</span> <span class="k">import</span> <span class="n">Permission</span>
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="k">import</span> <span class="n">PermissionException</span><span class="p">,</span> <span class="n">InvalidAssignmentState</span>
+<span class="kn">from</span> <span class="nn">.link_tables</span> <span class="k">import</span> <span class="n">user_course</span><span class="p">,</span> <span class="n">work_rubric_item</span><span class="p">,</span> <span class="n">course_permissions</span>
+<span class="kn">from</span> <span class="nn">..permissions</span> <span class="k">import</span> <span class="n">CoursePermission</span> <span class="k">as</span> <span class="n">CPerm</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="c1"># pylint: disable=unused-import</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">course</span> <span class="k">as</span> <span class="n">course_models</span>
+    <span class="n">cached_property</span> <span class="o">=</span> <span class="nb">property</span>  <span class="c1"># pylint: disable=invalid-name</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">werkzeug.utils</span> <span class="k">import</span> <span class="n">cached_property</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<span class="k">class</span> <span class="nc">_AssignmentStateEnum</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Describes in what state an :class:`.Assignment` is.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hidden</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="nb">open</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="mi">2</span>
+
+
+<div class="viewcode-block" id="AssignmentAssignedGrader"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.AssignmentAssignedGrader">[docs]</a><span class="k">class</span> <span class="nc">AssignmentAssignedGrader</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The class creates the link between an :class:`.user_models.User` and an</span>
+<span class="sd">    :class:`.Assignment`.</span>
+
+<span class="sd">    The user linked to the assignment is an assigned grader. In this link the</span>
+<span class="sd">    weight is the weight this user was given when assigning.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">ClassVar</span><span class="p">[</span><span class="n">_MyQuery</span><span class="p">[</span><span class="s1">&#39;AssignmentAssignedGrader&#39;</span><span class="p">]]</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;AssignmentAssignedGrader&#39;</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;User_id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;User.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s1">&#39;CASCADE&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">assignment_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;Assignment_id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;Assignment.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s1">&#39;CASCADE&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">PrimaryKeyConstraint</span><span class="p">(</span><span class="n">assignment_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">),</span> <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AssignmentGraderDone"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.AssignmentGraderDone">[docs]</a><span class="k">class</span> <span class="nc">AssignmentGraderDone</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class creates the link between an :class:`.user_models.User` and an</span>
+<span class="sd">    :class:`.Assignment` that exists only when the grader is done.</span>
+
+<span class="sd">    If a user is linked to the assignment this indicates that this user is done</span>
+<span class="sd">    with grading.</span>
+
+<span class="sd">    :ivar ~.AssignmentGraderDone.user_id: The id of the user that is linked.</span>
+<span class="sd">    :ivar ~.AssignmentGraderDone.assignment_id: The id of the assignment that</span>
+<span class="sd">        is linked.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">ClassVar</span><span class="p">[</span><span class="n">_MyQuery</span><span class="p">[</span><span class="s1">&#39;AssignmentGraderDone&#39;</span><span class="p">]]</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">Base</span><span class="o">.</span><span class="n">query</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;AssignmentGraderDone&#39;</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;User_id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;User.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s1">&#39;CASCADE&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">assignment_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;Assignment_id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;Assignment.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s1">&#39;CASCADE&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">PrimaryKeyConstraint</span><span class="p">(</span><span class="n">assignment_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">),</span> <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AssignmentDoneType"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.AssignmentDoneType">[docs]</a><span class="k">class</span> <span class="nc">AssignmentDoneType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Describes what type of reminder should be sent.</span>
+
+<span class="sd">    :param none: Nobody should be e-mailed.</span>
+<span class="sd">    :param assigned_only: Only graders that are assigned will be notified.</span>
+<span class="sd">    :param all_graders: All users that have the permission to grade.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assigned_only</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">all_graders</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="AssignmentLinter"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.AssignmentLinter">[docs]</a><span class="k">class</span> <span class="nc">AssignmentLinter</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The class is used when a linter (see :py:mod:`psef.linters`) is used on</span>
+<span class="sd">    a :class:`.Assignment`.</span>
+
+<span class="sd">    Every :class:`.work_models.Work` that is tested is attached by a</span>
+<span class="sd">    :class:`.linter_models.LinterInstance`.</span>
+
+<span class="sd">    The name identifies which :class:`.linter_models.Linter` is used.</span>
+
+<span class="sd">    :ivar ~.AssignmentLinter.name: The name of the linter which is the</span>
+<span class="sd">        `__name__` of a subclass of :py:class:`.linter_models.Linter`.</span>
+<span class="sd">    :ivar tests: All the linter instances for this linter, this are the</span>
+<span class="sd">        recordings of the running of the actual linter (so in the case of the</span>
+<span class="sd">        :py:class:`.Flake8` metadata about the `flake8` program).</span>
+<span class="sd">    :ivar config: The config that was passed to the linter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">Base</span><span class="o">.</span><span class="n">query</span>  <span class="c1"># type: t.ClassVar[_MyQuery[&#39;AssignmentLinter&#39;]]</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;AssignmentLinter&#39;</span>  <span class="c1"># type: str</span>
+    <span class="c1"># This has to be a String object as the id has to be a non guessable uuid.</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">UUID_LENGTH</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">)</span>
+    <span class="n">tests</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s2">&quot;LinterInstance&quot;</span><span class="p">,</span>
+        <span class="n">back_populates</span><span class="o">=</span><span class="s2">&quot;tester&quot;</span><span class="p">,</span>
+        <span class="n">cascade</span><span class="o">=</span><span class="s1">&#39;all,delete&#39;</span><span class="p">,</span>
+        <span class="n">order_by</span><span class="o">=</span><span class="s1">&#39;LinterInstance.work_id&#39;</span>
+    <span class="p">)</span>  <span class="c1"># type: t.Sequence[linter_models.LinterInstance]</span>
+    <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;config&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">assignment_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;Assignment_id&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;Assignment.id&#39;</span><span class="p">),</span>
+    <span class="p">)</span>  <span class="c1"># type: int</span>
+
+    <span class="n">assignment</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;Assignment&#39;</span><span class="p">,</span>
+        <span class="n">foreign_keys</span><span class="o">=</span><span class="n">assignment_id</span><span class="p">,</span>
+        <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;linters&#39;</span><span class="p">,</span> <span class="n">uselist</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="p">)</span>  <span class="c1"># type: &#39;Assignment&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">linters_crashed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The amount of linters that have crashed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_amount_linters_in_state</span><span class="p">(</span><span class="n">linter_models</span><span class="o">.</span><span class="n">LinterState</span><span class="o">.</span><span class="n">crashed</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">linters_done</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The amount of linters that are done.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_amount_linters_in_state</span><span class="p">(</span><span class="n">linter_models</span><span class="o">.</span><span class="n">LinterState</span><span class="o">.</span><span class="n">done</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">linters_running</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The amount of linters that are running.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_amount_linters_in_state</span><span class="p">(</span><span class="n">linter_models</span><span class="o">.</span><span class="n">LinterState</span><span class="o">.</span><span class="n">running</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_amount_linters_in_state</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="s1">&#39;linter_models.LinterState&#39;</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">linter_models</span><span class="o">.</span><span class="n">LinterInstance</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span>
+            <span class="n">tester_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">state</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__extended_to_json__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Creates an extended JSON serializable representation of this</span>
+<span class="sd">        assignment linter.</span>
+
+<span class="sd">        This object will look like this:</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;tests&#39;: t.List[LinterInstance], # The tests done by this</span>
+<span class="sd">                                                 # assignment linter.</span>
+<span class="sd">                &#39;id&#39;: str, # The id of this assignment linter.</span>
+<span class="sd">                &#39;name&#39;: str, # The name.</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :returns: An object as described above.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;tests&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">tests</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__to_json__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Returns the JSON serializable representation of this class.</span>
+
+<span class="sd">        This representation also returns a count of the</span>
+<span class="sd">        :class:`.linter_models.LinterState` of the attached</span>
+<span class="sd">        :class:`.linter_models.LinterInstance` objects.</span>
+
+<span class="sd">        :returns: A dict containing JSON serializable representations of the</span>
+<span class="sd">            attributes and the test state counts of this AssignmentLinter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;done&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">linters_done</span><span class="p">,</span>
+            <span class="s1">&#39;working&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">linters_running</span><span class="p">,</span>
+            <span class="s1">&#39;crashed&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">linters_crashed</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="AssignmentLinter.create_linter"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.AssignmentLinter.create_linter">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create_linter</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Type</span><span class="p">[</span><span class="s1">&#39;AssignmentLinter&#39;</span><span class="p">],</span>
+        <span class="n">assignment_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;AssignmentLinter&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Create a new instance of this class for a given :class:`.Assignment`</span>
+<span class="sd">        with a given :py:class:`.linter_models.Linter`</span>
+
+<span class="sd">        :param assignment_id: The id of the assignment</span>
+<span class="sd">        :param name: Name of the linter</span>
+<span class="sd">        :returns: The created AssignmentLinter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+
+        <span class="c1"># Find a unique id.</span>
+        <span class="k">while</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="n">AssignmentLinter</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">new_id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">scalar</span><span class="p">():</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">new_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+
+        <span class="bp">self</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">new_id</span><span class="p">,</span> <span class="n">assignment_id</span><span class="o">=</span><span class="n">assignment_id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tests</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">assig</span> <span class="o">=</span> <span class="n">Assignment</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">assignment_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">assig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">assig</span><span class="o">.</span><span class="n">get_all_latest_submissions</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">linter_models</span><span class="o">.</span><span class="n">LinterInstance</span><span class="p">(</span><span class="n">work</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div></div>
+
+
+<div class="viewcode-block" id="AssignmentResult"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.AssignmentResult">[docs]</a><span class="k">class</span> <span class="nc">AssignmentResult</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The class creates the link between an :class:`.user_models.User` and an</span>
+<span class="sd">    :class:`.Assignment` in the database and the external users LIS sourcedid.</span>
+
+<span class="sd">    :ivar sourcedid: The ``sourcedid`` for this user for this assignment.</span>
+<span class="sd">    :ivar ~.AssignmentResult.user_id: The id of the user this belongs to.</span>
+<span class="sd">    :ivar ~.AssignmentResult.assignment_id: The id of the assignment this</span>
+<span class="sd">        belongs to.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">Base</span><span class="o">.</span><span class="n">query</span>  <span class="c1"># type: t.ClassVar[_MyQuery[&#39;AssignmentResult&#39;]]</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;AssignmentResult&#39;</span>
+    <span class="n">sourcedid</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;sourcedid&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">)</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;User_id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;User.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s1">&#39;CASCADE&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">assignment_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;Assignment_id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;Assignment.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s1">&#39;CASCADE&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">PrimaryKeyConstraint</span><span class="p">(</span><span class="n">assignment_id</span><span class="p">,</span> <span class="n">user_id</span><span class="p">),</span> <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Assignment"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment">[docs]</a><span class="k">class</span> <span class="nc">Assignment</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>  <span class="c1"># pylint: disable=too-many-public-methods</span>
+    <span class="sd">&quot;&quot;&quot;This class describes a :class:`.course_models.Course` specific assignment.</span>
+
+<span class="sd">    :ivar ~.Assignment.name: The name of the assignment.</span>
+<span class="sd">    :ivar ~.Assignment.cgignore: The .cgignore file of this assignment.</span>
+<span class="sd">    :ivar ~.Assignment.state: The current state the assignment is in.</span>
+<span class="sd">    :ivar ~.Assignment.description: UNUSED</span>
+<span class="sd">    :ivar ~.Assignment.course: The course this assignment belongs to.</span>
+<span class="sd">    :ivar ~.Assignment.created_at: The date this assignment was added.</span>
+<span class="sd">    :ivar ~.Assignment.deadline: The deadline of this assignment.</span>
+<span class="sd">    :ivar ~.Assignment._mail_task_id: This is the id of the current task that</span>
+<span class="sd">        will email all the TA&#39;s to hurry up with grading.</span>
+<span class="sd">    :ivar reminder_email_time: The time the reminder email should be sent. To</span>
+<span class="sd">        see if we should actually send these reminders look at `done_type`</span>
+<span class="sd">    :ivar done_email: The email address we should sent a email if the grading</span>
+<span class="sd">        is done. The function :py:func:`email.utils.getaddresses` should be</span>
+<span class="sd">        able to parse this string.</span>
+<span class="sd">    :ivar done_type: The type of reminder that should be sent.</span>
+<span class="sd">    :ivar assigned_graders: All graders that are assigned to grade mapped by</span>
+<span class="sd">        user_id to `AssignmentAssignedGrader` object.</span>
+<span class="sd">    :ivar rubric_rows: The rubric rows that make up the rubric for this</span>
+<span class="sd">        assignment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">Base</span><span class="o">.</span><span class="n">query</span>  <span class="c1"># type:  t.ClassVar[_MyQuery[&#39;Assignment&#39;]]</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;Assignment&quot;</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">)</span>
+    <span class="n">_cgignore</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;cgignore&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">)</span>
+    <span class="n">_cgignore_version</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;cgignore_version&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span>
+    <span class="p">)</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">_AssignmentStateEnum</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;state&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Enum</span><span class="p">(</span><span class="n">_AssignmentStateEnum</span><span class="p">),</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">_AssignmentStateEnum</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">course_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;Course_id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;Course.id&#39;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">created_at</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span>
+    <span class="p">)</span>
+    <span class="n">deadline</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span>
+                         <span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;deadline&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">)</span>
+
+    <span class="n">_mail_task_id</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;mail_task_id&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">reminder_email_time</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;reminder_email_time&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">done_email</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;done_email&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">done_type</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">AssignmentDoneType</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;done_type&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Enum</span><span class="p">(</span><span class="n">AssignmentDoneType</span><span class="p">),</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">_max_grade</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;max_grade&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Float</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span>
+    <span class="n">lti_points_possible</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;lti_points_possible&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Float</span><span class="p">,</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># All stuff for LTI</span>
+    <span class="n">lti_assignment_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">lti_outcome_service_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">)</span>
+
+    <span class="n">assigned_graders</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">MutableMapping</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> <span class="n">AssignmentAssignedGrader</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+            <span class="s1">&#39;AssignmentAssignedGrader&#39;</span><span class="p">,</span>
+            <span class="n">cascade</span><span class="o">=</span><span class="s1">&#39;delete-orphan, delete, save-update&#39;</span><span class="p">,</span>
+            <span class="n">collection_class</span><span class="o">=</span><span class="n">attribute_mapped_collection</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">),</span>
+            <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;assignment&#39;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;select&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="n">division_parent_id</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;division_parent_id&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;Assignment.id&#39;</span><span class="p">),</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">division_parent</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;Assignment&#39;</span><span class="p">,</span>
+        <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;division_children&#39;</span><span class="p">,</span>
+        <span class="n">foreign_keys</span><span class="o">=</span><span class="n">division_parent_id</span><span class="p">,</span>
+        <span class="n">remote_side</span><span class="o">=</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span>
+        <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;select&#39;</span><span class="p">,</span>
+    <span class="p">)</span>  <span class="c1"># type: t.Optional[Assignment]</span>
+    <span class="n">division_children</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s2">&quot;Assignment&quot;</span><span class="p">,</span>
+        <span class="n">back_populates</span><span class="o">=</span><span class="s2">&quot;division_parent&quot;</span><span class="p">,</span>
+        <span class="n">uselist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;select&#39;</span><span class="p">,</span>
+    <span class="p">)</span>  <span class="c1"># type: t.MutableSequence[Assignment]</span>
+
+    <span class="n">finished_graders</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;AssignmentGraderDone&#39;</span><span class="p">,</span>
+        <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;assignment&#39;</span><span class="p">),</span>
+        <span class="n">cascade</span><span class="o">=</span><span class="s1">&#39;delete-orphan, delete&#39;</span><span class="p">,</span>
+    <span class="p">)</span>  <span class="c1"># type: t.MutableSequence[&#39;AssignmentGraderDone&#39;]</span>
+
+    <span class="n">assignment_results</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">MutableMapping</span><span class="p">[</span>
+        <span class="nb">int</span><span class="p">,</span> <span class="n">AssignmentResult</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+            <span class="s1">&#39;AssignmentResult&#39;</span><span class="p">,</span>
+            <span class="n">collection_class</span><span class="o">=</span><span class="n">attribute_mapped_collection</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">),</span>
+            <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;assignment&#39;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;select&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">course</span><span class="p">:</span> <span class="s1">&#39;course_models.Course&#39;</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;Course&#39;</span><span class="p">,</span>
+        <span class="n">foreign_keys</span><span class="o">=</span><span class="n">course_id</span><span class="p">,</span>
+        <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;assignments&#39;</span><span class="p">,</span>
+        <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;joined&#39;</span><span class="p">,</span>
+        <span class="n">innerjoin</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">fixed_max_rubric_points</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;fixed_max_rubric_points&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Float</span><span class="p">,</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">rubric_rows</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;RubricRow&#39;</span><span class="p">,</span>
+        <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;assignment&#39;</span><span class="p">),</span>
+        <span class="n">cascade</span><span class="o">=</span><span class="s1">&#39;delete-orphan, delete, save-update&#39;</span><span class="p">,</span>
+        <span class="n">order_by</span><span class="o">=</span><span class="s2">&quot;RubricRow.created_at&quot;</span>
+    <span class="p">)</span>  <span class="c1"># type: t.MutableSequence[&#39;RubricRow&#39;]</span>
+
+    <span class="n">group_set_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;group_set_id&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;GroupSet.id&#39;</span><span class="p">),</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">group_set</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;GroupSet&#39;</span><span class="p">,</span>
+        <span class="n">back_populates</span><span class="o">=</span><span class="s1">&#39;assignments&#39;</span><span class="p">,</span>
+        <span class="n">cascade</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
+    <span class="p">)</span>  <span class="c1"># type: t.Optional[&#39;group_models.GroupSet&#39;]</span>
+
+    <span class="c1"># This variable is available through a backref</span>
+    <span class="n">linters</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="s1">&#39;AssignmentLinter&#39;</span><span class="p">]</span>
+
+    <span class="c1"># This variable is available through a backref</span>
+    <span class="n">submissions</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="s1">&#39;work_models.Work&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Assignment.validate_group_set"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.validate_group_set">[docs]</a>    <span class="nd">@validates</span><span class="p">(</span><span class="s1">&#39;group_set&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_group_set</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">group_set</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;group_models.GroupSet&#39;</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;group_models.GroupSet&#39;</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Make sure the course id of the group set is the same as the course</span>
+<span class="sd">        id of the assignment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">group_set</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">course_id</span> <span class="o">==</span> <span class="n">group_set</span><span class="o">.</span><span class="n">course_id</span>
+        <span class="k">return</span> <span class="n">group_set</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max_grade</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the maximum grade possible for this assignment.</span>
+
+<span class="sd">        :returns: The maximum a grade for a submission.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">10</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_grade</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_grade</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">cgignore</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ignore</span><span class="o">.</span><span class="n">SubmissionFilter</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;The submission filter of this assignment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cgignore</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cgignore_version</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="c1"># This branch is needed for backwards compatibility, but it is not</span>
+            <span class="c1"># possible to test as it is not possible to insert this old data</span>
+            <span class="c1"># using the api.</span>
+            <span class="k">return</span> <span class="n">ignore</span><span class="o">.</span><span class="n">IgnoreFilterManager</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cgignore</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">filter_type</span> <span class="o">=</span> <span class="n">ignore</span><span class="o">.</span><span class="n">filter_handlers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_cgignore_version</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">filter_type</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cgignore</span><span class="p">))</span>
+
+    <span class="nd">@cgignore</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">cgignore</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="n">ignore</span><span class="o">.</span><span class="n">SubmissionFilter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cgignore_version</span> <span class="o">=</span> <span class="n">ignore</span><span class="o">.</span><span class="n">filter_handlers</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cgignore</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">export</span><span class="p">())</span>
+
+    <span class="c1"># We don&#39;t use property.setter because in that case `new_val` could only be</span>
+    <span class="c1"># a `float` because of https://github.com/python/mypy/issues/220</span>
+<div class="viewcode-block" id="Assignment.set_max_grade"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.set_max_grade">[docs]</a>    <span class="k">def</span> <span class="nf">set_max_grade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_val</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set or unset the maximum grade for this assignment.</span>
+
+<span class="sd">        :param new_val: The new value for ``_max_grade``.</span>
+<span class="sd">        :return: Nothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_grade</span> <span class="o">=</span> <span class="n">new_val</span></div>
+
+    <span class="n">min_grade</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="sd">&quot;&quot;&quot;The minimum grade for a submission in this assignment.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_submit_grades</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">subs</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_from_latest_submissions</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">),</span> <span class="mi">10</span><span class="p">):</span>
+            <span class="n">psef</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">passback_grades</span><span class="p">([</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">10</span><span class="p">]])</span>
+
+<div class="viewcode-block" id="Assignment.change_notifications"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.change_notifications">[docs]</a>    <span class="k">def</span> <span class="nf">change_notifications</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">done_type</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">AssignmentDoneType</span><span class="p">],</span>
+        <span class="n">grader_date</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">],</span>
+        <span class="n">done_email</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Change the notifications for the current assignment.</span>
+
+<span class="sd">        :param done_type: How to determine when the assignment is done. Set</span>
+<span class="sd">            this value to ``None`` to disable the reminder for this assignment.</span>
+<span class="sd">        :param grader_date: The datetime when to send graders that are causing</span>
+<span class="sd">            the assignment to be not done a reminder email.</span>
+<span class="sd">        :param done_email: The email to send a notification when grading for</span>
+<span class="sd">            this assignment is done.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mail_task_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">psef</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">celery</span><span class="o">.</span><span class="n">control</span><span class="o">.</span><span class="n">revoke</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mail_task_id</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">done_type</span> <span class="o">=</span> <span class="n">done_type</span>
+
+        <span class="c1"># Make sure _reminder_email_time is ``None`` if ``done_type`` is</span>
+        <span class="c1"># ``none``</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reminder_email_time</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">done_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">grader_date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">done_email</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">done_type</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">done_email</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reminder_email_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Make sure id is reset so we don&#39;t revoke it multiple times</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mail_task_id</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">psef</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">send_reminder_mails</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">),</span> <span class="n">eta</span><span class="o">=</span><span class="n">grader_date</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mail_task_id</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">id</span></div>
+
+<div class="viewcode-block" id="Assignment.graders_are_done"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.graders_are_done">[docs]</a>    <span class="k">def</span> <span class="nf">graders_are_done</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check if the graders of this assignment are done.</span>
+
+<span class="sd">        :returns: A boolean indicating if the graders of this assignment are</span>
+<span class="sd">            done.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">done_type</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># We are never done as we have no condition to be done</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">done_type</span> <span class="o">==</span> <span class="n">AssignmentDoneType</span><span class="o">.</span><span class="n">assigned_only</span><span class="p">:</span>
+            <span class="n">assigned</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_assigned_grader_ids</span><span class="p">())</span>
+            <span class="n">finished</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">user_id</span> <span class="k">for</span> <span class="n">fg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">finished_graders</span><span class="p">)</span>
+            <span class="c1"># Check if every assigned grader is done.</span>
+            <span class="k">return</span> <span class="n">assigned</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">finished</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">done_type</span> <span class="o">==</span> <span class="n">AssignmentDoneType</span><span class="o">.</span><span class="n">all_graders</span><span class="p">:</span>
+            <span class="c1"># All graders should be done. As finished_graders all have unique</span>
+            <span class="c1"># user ids we simply need to check if the lengths are the same</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">finished_graders</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_graders</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+        <span class="c1"># This is needed because of https://github.com/python/mypy/issues/4223</span>
+        <span class="c1"># and to please pylint</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">f</span><span class="s1">&#39;The assignment has a invalid `done_type`: </span><span class="si">{self.done_type}</span><span class="s1">&#39;</span>
+        <span class="p">)</span>  <span class="c1"># pragma: no cover</span></div>
+
+<div class="viewcode-block" id="Assignment.get_assigned_grader_ids"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.get_assigned_grader_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_assigned_grader_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Get the ids of all the graders that have submissions assigned.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This only gets graders with latest submissions assigned to them.</span>
+
+<span class="sd">        :returns: The ids of the all the graders that have work assigned within</span>
+<span class="sd">            this assignnment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">map</span><span class="p">(</span>
+            <span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_from_latest_submissions</span><span class="p">(</span>
+                <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">assigned_to</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">(),</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Assignment.set_graders_to_not_done"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.set_graders_to_not_done">[docs]</a>    <span class="k">def</span> <span class="nf">set_graders_to_not_done</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">user_ids</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">send_mail</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">ignore_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set the status of the given graders to &#39;not done&#39;.</span>
+
+<span class="sd">        :param user_ids: The ids of the users that should be set to &#39;not done&#39;</span>
+<span class="sd">        :param send_mail: If ``True`` the users who are reset to &#39;not done&#39;</span>
+<span class="sd">            will get an email notifying them of this.</span>
+<span class="sd">        :param ignore_errors: Do not raise an error if a user in ``user_ids``</span>
+<span class="sd">            was not yet done.</span>
+<span class="sd">        :raise ValueError: If a user in ``user_ids`` was not yet done. This can</span>
+<span class="sd">            happen because the user has not indicated this yet, because this</span>
+<span class="sd">            user does not exist or because of any reason.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user_ids</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">graders</span> <span class="o">=</span> <span class="n">AssignmentGraderDone</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">AssignmentGraderDone</span><span class="o">.</span><span class="n">assignment_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">,</span> <span class="n">AssignmentGraderDone</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">in_</span><span class="p">(</span><span class="n">user_ids</span><span class="p">),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_errors</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">graders</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_ids</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not all graders were found&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">grader</span> <span class="ow">in</span> <span class="n">graders</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">send_mail</span><span class="p">:</span>
+                <span class="n">psef</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">send_grader_status_mail</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">grader</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">grader</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Assignment.has_non_graded_submissions"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.has_non_graded_submissions">[docs]</a>    <span class="k">def</span> <span class="nf">has_non_graded_submissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check if the user with the given ``user_id`` has submissions</span>
+<span class="sd">        assigned without a grade.</span>
+
+<span class="sd">        :param user_id: The id of the user to check for</span>
+<span class="sd">        :returns: A boolean indicating if user has work assigned that does not</span>
+<span class="sd">            have grade or a selected rubric item</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">latest</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_from_latest_submissions</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">sql</span> <span class="o">=</span> <span class="n">latest</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">assigned_to</span> <span class="o">==</span> <span class="n">user_id</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">work_rubric_item</span><span class="p">,</span>
+            <span class="n">work_rubric_item</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">work_id</span> <span class="o">==</span> <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">isouter</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">having</span><span class="p">(</span>
+            <span class="n">and_</span><span class="p">(</span>
+                <span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">work_rubric_item</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">rubricitem_id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="c1"># We access _grade here directly as we need it to do this query</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">DbColumn</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
+                       <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">_grade</span><span class="p">)</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
+            <span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_lti</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Is this assignment a LTI assignment.</span>
+
+<span class="sd">        :returns: A boolean indicating if this is the case.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lti_outcome_service_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max_rubric_points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Get the maximum amount of points possible for the rubric</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">          This is always higher than zero (so also not zero).</span>
+
+
+<span class="sd">        :returns: The maximum amount of points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_max_rubric_points</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_max_rubric_points</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_max_points</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">_dynamic_max_points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="n">sub</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">RubricItem</span><span class="o">.</span><span class="n">points</span><span class="p">)</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="s1">&#39;max_val&#39;</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">RubricRow</span><span class="p">,</span> <span class="n">RubricRow</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">RubricItem</span><span class="o">.</span><span class="n">rubricrow_id</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">RubricRow</span><span class="o">.</span><span class="n">assignment_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="n">RubricRow</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">subquery</span><span class="p">(</span><span class="s1">&#39;sub&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sub</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">max_val</span><span class="p">))</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_open</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Is the current assignment open, which means the assignment is in the</span>
+<span class="sd">        state students submit work.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deadline</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">_AssignmentStateEnum</span><span class="o">.</span><span class="n">open</span> <span class="ow">and</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deadline</span> <span class="o">&gt;=</span> <span class="n">helpers</span><span class="o">.</span><span class="n">get_request_start_time</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_hidden</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Is the assignment hidden.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">_AssignmentStateEnum</span><span class="o">.</span><span class="n">hidden</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_done</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Is the assignment done, which means that grades are open.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">_AssignmentStateEnum</span><span class="o">.</span><span class="n">done</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">should_passback</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Should we passback the current grade.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_done</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">state_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The current name of the grade.</span>
+
+<span class="sd">        .. warning:: This is not the same as ``str(self.state)``.</span>
+
+<span class="sd">        :returns: The correct name of the current state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">_AssignmentStateEnum</span><span class="o">.</span><span class="n">open</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;submitting&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_open</span> <span class="k">else</span> <span class="s1">&#39;grading&#39;</span>
+        <span class="k">return</span> <span class="n">_AssignmentStateEnum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">whitespace_linter_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Does this assignment have a whitespace linter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># pylint: disable=attribute-defined-outside-init</span>
+        <span class="c1"># _whitespace_linter_exists is a cache property, so this is why it is</span>
+        <span class="c1"># defined outside of the init.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_whitespace_linter_exists&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_whitespace_linter_exists</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+                <span class="n">AssignmentLinter</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+                    <span class="n">AssignmentLinter</span><span class="o">.</span><span class="n">assignment_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="n">AssignmentLinter</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;MixedWhitespace&#39;</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_whitespace_linter_exists</span>
+
+    <span class="nd">@whitespace_linter_exists</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">whitespace_linter_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exists</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Preset the cache for ``whitespace_linter_exists`` reducing the</span>
+<span class="sd">        amount of queries needed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># pylint: disable=attribute-defined-outside-init</span>
+        <span class="c1"># _whitespace_linter_exists is a cache property, so this is why it is</span>
+        <span class="c1"># defined outside of the init.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_whitespace_linter_exists</span> <span class="o">=</span> <span class="n">exists</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">whitespace_linter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check if this assignment has an associated MixedWhitespace linter.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            If the assignment is not yet done we check if the ``current_user``</span>
+<span class="sd">            has the permission ``can_see_grade_before_open``.</span>
+
+<span class="sd">        :returns: True if there is an :py:class:`.AssignmentLinter` with name</span>
+<span class="sd">            ``MixedWhitespace`` and ``assignment_id``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_done</span><span class="p">:</span>
+                <span class="n">auth</span><span class="o">.</span><span class="n">ensure_permission</span><span class="p">(</span>
+                    <span class="n">CPerm</span><span class="o">.</span><span class="n">can_see_grade_before_open</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">course_id</span>
+                <span class="p">)</span>
+        <span class="k">except</span> <span class="n">PermissionException</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">whitespace_linter_exists</span>
+
+    <span class="k">def</span> <span class="nf">__to_json__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Creates a JSON serializable representation of this assignment.</span>
+
+<span class="sd">        This object will look like this:</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;id&#39;: int, # The id of this assignment.</span>
+<span class="sd">                &#39;state&#39;: str, # Current state of this assignment.</span>
+<span class="sd">                &#39;description&#39;: str, # Description of this assignment.</span>
+<span class="sd">                &#39;created_at&#39;: str, # ISO UTC date.</span>
+<span class="sd">                &#39;deadline&#39;: str, # ISO UTC date.</span>
+<span class="sd">                &#39;name&#39;: str, # Assignment name.</span>
+<span class="sd">                &#39;is_lti&#39;: bool, # Is this an LTI assignment.</span>
+<span class="sd">                &#39;lms_name&#39;: t.Optional[str], # The LMS providing this LTI</span>
+<span class="sd">                                             # assignment.</span>
+<span class="sd">                &#39;course&#39;: models.Course, # Course of this assignment.</span>
+<span class="sd">                &#39;cgignore&#39;: str, # The cginore of this assignment.</span>
+<span class="sd">                &#39;whitespace_linter&#39;: bool, # Has the whitespace linter</span>
+<span class="sd">                                           # run on this assignment.</span>
+<span class="sd">                &#39;done_type&#39;: str, # The kind of reminder that will be sent.</span>
+<span class="sd">                                  # If you don&#39;t have the permission to see</span>
+<span class="sd">                                  # this it will always be `null`. If this is</span>
+<span class="sd">                                  # not set it will also be `null`.</span>
+<span class="sd">                &#39;reminder_time&#39;: str, # ISO UTC date. This will be `null` if</span>
+<span class="sd">                                      # you don&#39;t have the permission to see</span>
+<span class="sd">                                      # this or if it is unset.</span>
+<span class="sd">                &#39;fixed_max_rubric_points&#39;: float, # The fixed value for the</span>
+<span class="sd">                                                  # maximum that can be</span>
+<span class="sd">                                                  # achieved in a rubric. This</span>
+<span class="sd">                                                  # can be higher and lower</span>
+<span class="sd">                                                  # than the actual max. Will</span>
+<span class="sd">                                                  # be `null` if unset.</span>
+<span class="sd">                &#39;max_grade&#39;: float, # The maximum grade you can get for this</span>
+<span class="sd">                                    # assignment. This is based around the idea</span>
+<span class="sd">                                    # that a 10 is a &#39;perfect&#39; score. So if</span>
+<span class="sd">                                    # this value is 12 a user can score 2</span>
+<span class="sd">                                    # additional bonus points. If this value is</span>
+<span class="sd">                                    # `null` it is unset and regarded as a 10.</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :returns: An object as described above.</span>
+
+<span class="sd">        .. todo:: Remove &#39;description&#39; field from Assignment model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># This property getter is quite expensive, and we evaluate it at most 3</span>
+        <span class="c1"># times so caching it in a local variable is a good idea.</span>
+        <span class="n">cgignore</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cgignore</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_name</span><span class="p">,</span>
+            <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="s1">&#39;created_at&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+            <span class="s1">&#39;deadline&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">deadline</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">deadline</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;is_lti&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_lti</span><span class="p">,</span>
+            <span class="s1">&#39;course&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">course</span><span class="p">,</span>
+            <span class="s1">&#39;cgignore&#39;</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">cgignore</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">cgignore</span><span class="o">.</span><span class="n">export</span><span class="p">(),</span>
+            <span class="s1">&#39;cgignore_version&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cgignore_version</span><span class="p">,</span>
+            <span class="s1">&#39;whitespace_linter&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">whitespace_linter</span><span class="p">,</span>
+            <span class="s1">&#39;done_type&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;done_email&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;reminder_time&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;fixed_max_rubric_points&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">fixed_max_rubric_points</span><span class="p">,</span>
+            <span class="s1">&#39;max_grade&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_grade</span><span class="p">,</span>
+            <span class="s1">&#39;group_set&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_set</span><span class="p">,</span>
+            <span class="s1">&#39;division_parent_id&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">lti_provider</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">res</span><span class="p">[</span><span class="s1">&#39;lms_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">course</span><span class="o">.</span><span class="n">lti_provider</span><span class="o">.</span><span class="n">lms_name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">res</span><span class="p">[</span><span class="s1">&#39;lms_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">psef</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span>
+            <span class="n">CPerm</span><span class="o">.</span><span class="n">can_grade_work</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">course_id</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">done_email</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">res</span><span class="p">[</span><span class="s1">&#39;done_email&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">done_email</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">done_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">res</span><span class="p">[</span><span class="s1">&#39;done_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">done_type</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reminder_email_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">res</span><span class="p">[</span><span class="s1">&#39;reminder_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reminder_email_time</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">psef</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span>
+            <span class="n">CPerm</span><span class="o">.</span><span class="n">can_see_assignee</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">course_id</span>
+        <span class="p">):</span>
+            <span class="n">res</span><span class="p">[</span><span class="s1">&#39;division_parent_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">division_parent_id</span>
+
+        <span class="k">return</span> <span class="n">res</span>
+
+<div class="viewcode-block" id="Assignment.set_state"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.set_state">[docs]</a>    <span class="k">def</span> <span class="nf">set_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Update the current state (class:`_AssignmentStateEnum`).</span>
+
+<span class="sd">        You can update the state to hidden, done or open. A assignment can not</span>
+<span class="sd">        be updated to &#39;submitting&#39; or &#39;grading&#39; as this is an assignment with</span>
+<span class="sd">        state of &#39;open&#39; and, respectively, a deadline before or after the</span>
+<span class="sd">        current time.</span>
+
+<span class="sd">        :param state: The new state, can be &#39;hidden&#39;, &#39;done&#39; or &#39;open&#39;</span>
+<span class="sd">        :returns: Nothing</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;open&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">_AssignmentStateEnum</span><span class="o">.</span><span class="n">open</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;hidden&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">_AssignmentStateEnum</span><span class="o">.</span><span class="n">hidden</span>
+        <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s1">&#39;done&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">_AssignmentStateEnum</span><span class="o">.</span><span class="n">done</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lti_outcome_service_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_submit_grades</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidAssignmentState</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{state}</span><span class="s1"> is not a valid state&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Assignment.get_from_latest_submissions"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.get_from_latest_submissions">[docs]</a>    <span class="k">def</span> <span class="nf">get_from_latest_submissions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">to_query</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_MyQuery[T]&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the given fields from all last submitted submissions.</span>
+
+<span class="sd">        :param to_query: The field to get from the last submitted submissions.</span>
+<span class="sd">        :returns: A query object with the given fields selected from the last</span>
+<span class="sd">            submissions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sub</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">user_id</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">),</span>  <span class="c1"># type: ignore</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="s1">&#39;max_date&#39;</span><span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">assignment_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">user_id</span>
+                                                    <span class="p">)</span><span class="o">.</span><span class="n">subquery</span><span class="p">(</span><span class="s1">&#39;sub&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="o">*</span><span class="n">to_query</span><span class="p">)</span><span class="o">.</span><span class="n">select_from</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="n">sub</span><span class="p">,</span>
+            <span class="n">and_</span><span class="p">(</span>
+                <span class="n">sub</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">user_id</span> <span class="o">==</span> <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+                <span class="n">sub</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">max_date</span> <span class="o">==</span> <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">created_at</span>
+            <span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">assignment_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Assignment.get_all_latest_submissions"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.get_all_latest_submissions">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_latest_submissions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_MyQuery[work_models.Work]&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get a list of all the latest submissions (:class:`.work_models.Work`) by each</span>
+<span class="sd">        :class:`.user_models.User` who has submitted at least one work for this</span>
+<span class="sd">        assignment.</span>
+
+<span class="sd">        :returns: The latest submissions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get_from_latest_submissions uses SQLAlchemy magic that MyPy cannot</span>
+        <span class="c1"># encode.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_from_latest_submissions</span><span class="p">(</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="p">,</span> <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="p">)</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Assignment.get_divided_amount_missing"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.get_divided_amount_missing">[docs]</a>    <span class="k">def</span> <span class="nf">get_divided_amount_missing</span><span class="p">(</span>
+        <span class="bp">self</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">t</span><span class="o">.</span><span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">,</span> <span class="n">DefaultArg</span><span class="p">(</span><span class="nb">bool</span><span class="p">)],</span> <span class="n">t</span><span class="o">.</span>
+                                                   <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]:</span>
+        <span class="sd">&quot;&quot;&quot;Get a mapping between user and the amount of submissions that they</span>
+<span class="sd">        should be assigned but are not.</span>
+
+<span class="sd">        For example if we have two graders, John and Dorian that respectively</span>
+<span class="sd">        have the weights 1 and 1 assigned. Lets say we have three submissions</span>
+<span class="sd">        divided in such a way that John has to grade 2 and Dorian has to grade</span>
+<span class="sd">        one, then our function we return that John is missing -0.5 submissions</span>
+<span class="sd">        and Dorian is missing 0.5.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            If ``self.assigned_graders`` is empty this function and its</span>
+<span class="sd">            recalculate will always return an empty directory.</span>
+
+<span class="sd">        :returns: A mapping between user int and the amount missing as</span>
+<span class="sd">            described above. Furthermore it returns a function that can be used</span>
+<span class="sd">            to recalculate this mapping by given it the user id of the user</span>
+<span class="sd">            that was assigned a submission.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">assigned_graders</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{},</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">__</span><span class="o">=</span><span class="kc">False</span><span class="p">:</span> <span class="p">{}</span>
+
+        <span class="n">total_weight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">weight</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assigned_graders</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="n">amount_subs</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="n">amount_subs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_from_latest_submissions</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">(),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+
+        <span class="n">divided_amount</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">u_id</span><span class="p">,</span> <span class="n">amount</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_from_latest_submissions</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">assigned_to</span><span class="p">,</span> <span class="n">func</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">assigned_to</span><span class="p">):</span>
+            <span class="n">divided_amount</span><span class="p">[</span><span class="n">u_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">amount</span>
+
+        <span class="n">missing</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">assigned</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assigned_graders</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">missing</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">assigned</span><span class="o">.</span><span class="n">weight</span> <span class="o">/</span> <span class="n">total_weight</span> <span class="o">*</span>
+                                <span class="n">amount_subs</span><span class="p">)</span> <span class="o">-</span> <span class="n">divided_amount</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">__recalculate</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">increment_sub_amount</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+                          <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+            <span class="k">nonlocal</span> <span class="n">amount_subs</span>
+
+            <span class="k">if</span> <span class="n">increment_sub_amount</span><span class="p">:</span>
+                <span class="n">amount_subs</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">divided_amount</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">missing</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">for</span> <span class="n">assigned_user_id</span><span class="p">,</span> <span class="n">assigned</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assigned_graders</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">missing</span><span class="p">[</span><span class="n">assigned_user_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">assigned</span><span class="o">.</span><span class="n">weight</span> <span class="o">/</span> <span class="n">total_weight</span> <span class="o">*</span> <span class="n">amount_subs</span>
+                <span class="p">)</span> <span class="o">-</span> <span class="n">divided_amount</span><span class="p">[</span><span class="n">assigned_user_id</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">missing</span>
+
+        <span class="k">return</span> <span class="n">missing</span><span class="p">,</span> <span class="n">__recalculate</span></div>
+
+    <span class="k">def</span> <span class="nf">_weights_changed</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">user_weights</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="s1">&#39;user_models.User&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check if the given users and their weights have changed since the</span>
+<span class="sd">        last division.</span>
+
+<span class="sd">        :param user_weights: A list of tuples that map users and the weights.</span>
+<span class="sd">            The weights are used to determine how many submissions should be</span>
+<span class="sd">            assigned to a single user.</span>
+<span class="sd">        :returns: If the weights have changed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_weights</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assigned_graders</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">user_weights</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assigned_graders</span> <span class="ow">or</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">assigned_graders</span><span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span> <span class="o">!=</span> <span class="n">weight</span>
+                <span class="p">):</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Assignment.divide_submissions"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.divide_submissions">[docs]</a>    <span class="k">def</span> <span class="nf">divide_submissions</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">user_weights</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="s1">&#39;user_models.User&#39;</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Divide all newest submissions for this assignment between the given</span>
+<span class="sd">        users.</span>
+
+<span class="sd">        This methods prefers to keep submissions assigned to the same grader as</span>
+<span class="sd">        much as possible. To get completely new and random assignments first</span>
+<span class="sd">        clear all old assignments.</span>
+
+<span class="sd">        :param user_weights: A list of tuples that map users and the weights.</span>
+<span class="sd">            The weights are used to determine how many submissions should be</span>
+<span class="sd">            assigned to a single user.</span>
+<span class="sd">        :returns: Nothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># If the weights are not changed we should not divide anything as that</span>
+        <span class="c1"># would mean that pressing the button again on accident might change</span>
+        <span class="c1"># the (custom) division.</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weights_changed</span><span class="p">(</span><span class="n">user_weights</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="n">submissions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_latest_submissions</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">shuffle</span><span class="p">(</span><span class="n">submissions</span><span class="p">)</span>
+
+        <span class="n">counts</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">MutableMapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">user_submissions</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">MutableMapping</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">work_models</span><span class="o">.</span>
+                                                                   <span class="n">Work</span><span class="p">]]</span>
+        <span class="n">user_submissions</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+        <span class="c1"># Remove all users not in user_weights</span>
+        <span class="n">new_users</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">user_weights</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">submission</span> <span class="ow">in</span> <span class="n">submissions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">submission</span><span class="o">.</span><span class="n">assigned_to</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">new_users</span><span class="p">:</span>
+                <span class="n">submission</span><span class="o">.</span><span class="n">assigned_to</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">counts</span><span class="p">[</span><span class="n">submission</span><span class="o">.</span><span class="n">assigned_to</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">user_submissions</span><span class="p">[</span><span class="n">submission</span><span class="o">.</span><span class="n">assigned_to</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">submission</span><span class="p">)</span>
+
+        <span class="n">new_total_weight</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">weight</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">user_weights</span><span class="p">)</span>
+
+        <span class="n">negative_weights</span><span class="p">,</span> <span class="n">positive_weights</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">new_weight</span> <span class="ow">in</span> <span class="n">user_weights</span><span class="p">:</span>
+            <span class="n">percentage</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_weight</span> <span class="o">/</span> <span class="n">new_total_weight</span><span class="p">)</span>
+            <span class="n">new</span> <span class="o">=</span> <span class="n">percentage</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">submissions</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">new</span> <span class="o">&lt;</span> <span class="n">counts</span><span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">]:</span>
+                <span class="n">negative_weights</span><span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">-</span> <span class="n">new</span>
+            <span class="k">elif</span> <span class="n">new</span> <span class="o">&gt;</span> <span class="n">counts</span><span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">]:</span>
+                <span class="n">positive_weights</span><span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">new</span> <span class="o">-</span> <span class="n">counts</span><span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">delete_amount</span> <span class="ow">in</span> <span class="n">negative_weights</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">user_submissions</span><span class="p">[</span><span class="n">user_id</span><span class="p">][:</span><span class="nb">round</span><span class="p">(</span><span class="n">delete_amount</span><span class="p">)]:</span>
+                <span class="n">user_submissions</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+
+        <span class="n">to_assign</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">positive_weights</span><span class="p">:</span>
+            <span class="n">ratio</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="nb">min</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">positive_weights</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
+            <span class="k">for</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">new_amount</span> <span class="ow">in</span> <span class="n">positive_weights</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">to_assign</span> <span class="o">+=</span> <span class="p">[</span><span class="n">user_id</span><span class="p">]</span> <span class="o">*</span> <span class="nb">round</span><span class="p">(</span><span class="n">new_amount</span> <span class="o">*</span> <span class="n">ratio</span><span class="p">)</span>
+
+        <span class="n">shuffle</span><span class="p">(</span><span class="n">to_assign</span><span class="p">)</span>
+        <span class="n">newly_assigned</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Set</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">sub</span><span class="p">,</span> <span class="n">user_id</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">user_submissions</span><span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="n">cycle</span><span class="p">(</span><span class="n">to_assign</span><span class="p">)):</span>
+            <span class="n">sub</span><span class="o">.</span><span class="n">assigned_to</span> <span class="o">=</span> <span class="n">user_id</span>
+            <span class="n">newly_assigned</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_graders_to_not_done</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">newly_assigned</span><span class="p">),</span>
+            <span class="n">send_mail</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assigned_graders</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="n">user_weights</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
+                <span class="n">AssignmentAssignedGrader</span><span class="p">(</span>
+                    <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">assignment</span><span class="o">=</span><span class="bp">self</span>
+                <span class="p">)</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Assignment.get_assignee_from_division_children"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.get_assignee_from_division_children">[docs]</a>    <span class="k">def</span> <span class="nf">get_assignee_from_division_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">student_id</span><span class="p">:</span> <span class="nb">int</span>
+                                            <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Get id of the most common grader for a student in the division</span>
+<span class="sd">        children of this assignment.</span>
+
+<span class="sd">        If this is tied a user is chosen arbitrarily from the most common</span>
+<span class="sd">        graders. If the student is not present in the children ``None`` is</span>
+<span class="sd">        returned.</span>
+
+<span class="sd">        :param student_id: The id of the student you want to get the assignee</span>
+<span class="sd">            for.</span>
+<span class="sd">        :returns: The id of the assignee, or ``None`` if there is none.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">division_children</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">division_parent_id</span>
+
+        <span class="n">shuffled_children</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">division_children</span><span class="p">)</span>
+        <span class="n">shuffle</span><span class="p">(</span><span class="n">shuffled_children</span><span class="p">)</span>
+        <span class="n">latest</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">get_from_latest_submissions</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">assigned_to</span><span class="p">)</span><span class="o">.</span>
+            <span class="nb">filter</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">user_id</span> <span class="o">==</span> <span class="n">student_id</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">shuffled_children</span>
+        <span class="p">)</span>
+        <span class="k">del</span> <span class="n">latest</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">latest</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">latest</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Assignment.get_assignee_for_submission"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.get_assignee_for_submission">[docs]</a>    <span class="k">def</span> <span class="nf">get_assignee_for_submission</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">sub</span><span class="p">:</span> <span class="s1">&#39;work_models.Work&#39;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">from_divided</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Get the id of the default assignee for a given submission.</span>
+
+<span class="sd">        This checks if a user has handed in a submission to this assignment</span>
+<span class="sd">        before. In that is the case the same assignee is returned. Otherwise,</span>
+<span class="sd">        if the assignment has a division parent it checks for an assignee</span>
+<span class="sd">        there, and uses the value if it is not ``None``.</span>
+
+<span class="sd">        If the assignment doesn&#39;t have a submission by the same user and is a</span>
+<span class="sd">        parent it will search through the children. There the most common</span>
+<span class="sd">        assignee for the submitting user is found. If such an assignee exists</span>
+<span class="sd">        this value is returned.</span>
+
+<span class="sd">        Finally if ``from_divided`` is enabled it finds a assignee among the</span>
+<span class="sd">        divided graders. If no assignee is found ``None`` is returned.</span>
+
+<span class="sd">        :param sub: The submission you want to get the assignee for.</span>
+<span class="sd">        :param from_divided: Get a grader from the divided graders if all other</span>
+<span class="sd">            methods fail.</span>
+<span class="sd">        :returns: The id of the assignee or ``None`` if no assignee was found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_from_latest_submissions</span><span class="p">(</span>
+            <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">assigned_to</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">user_id</span> <span class="o">==</span> <span class="n">sub</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">user</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">division_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">division_parent</span><span class="o">.</span><span class="n">get_assignee_for_submission</span><span class="p">(</span>
+                <span class="n">sub</span><span class="p">,</span> <span class="n">from_divided</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">user</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">division_children</span><span class="p">:</span>
+            <span class="n">most_common</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_assignee_from_division_children</span><span class="p">(</span><span class="n">sub</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">most_common</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">most_common</span>
+
+        <span class="k">if</span> <span class="n">from_divided</span><span class="p">:</span>
+            <span class="n">missing</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_divided_amount_missing</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">missing</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">missing</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">missing</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Assignment.connect_division"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.connect_division">[docs]</a>    <span class="k">def</span> <span class="nf">connect_division</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="s1">&#39;Assignment&#39;</span><span class="p">]</span>
+                         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="s1">&#39;work_models.Work&#39;</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Set the division parent of this assignment.</span>
+
+<span class="sd">        :param parent: The assignment that should be the new division parent of</span>
+<span class="sd">            this assignment. Set this to ``None`` to remove the division parent</span>
+<span class="sd">            of this assignment.</span>
+<span class="sd">        :returns: A list of submissions that couldn&#39;t be assigned and are left</span>
+<span class="sd">            unassigned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># If we unset the division parent we don&#39;t touch the divisions at all.</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">division_parent</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="k">assert</span> <span class="n">parent</span><span class="o">.</span><span class="n">division_parent</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="n">parent</span><span class="o">.</span><span class="n">course_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">course_id</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">division_parent_id</span> <span class="o">==</span> <span class="n">parent</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="c1"># We first empty this value. This is needed as</span>
+        <span class="c1"># `AssignmentAssignedGrader` objects have a primary key constraint on</span>
+        <span class="c1"># the tuple `(assignment_id, user_id)`. If a assignee only changes</span>
+        <span class="c1"># weight sqlalchemy gets confused as this tuple doesn&#39;t change. This is</span>
+        <span class="c1"># a bit slower (as the flush does a db roundtrip) but fixes that issue.</span>
+        <span class="c1"># TODO: Investigate if this is possible without the db.session.flush()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assigned_graders</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assigned_graders</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">AssignmentAssignedGrader</span><span class="p">(</span>
+                <span class="n">weight</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
+                <span class="n">user_id</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+                <span class="n">assignment_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">assigned_graders</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">division_parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="n">user_sub</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="o">.</span><span class="n">user_id</span><span class="p">:</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_latest_submissions</span><span class="p">()}</span>
+        <span class="n">todo</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">user_sub</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">sub</span><span class="o">.</span><span class="n">assigned_to</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">todo</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub</span>
+
+        <span class="k">for</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">assigned_to</span> <span class="ow">in</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_from_latest_submissions</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+            <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+            <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">assigned_to</span><span class="p">,</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">user_id</span> <span class="ow">in</span> <span class="n">user_sub</span><span class="p">:</span>
+                <span class="n">user_sub</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span><span class="o">.</span><span class="n">assigned_to</span> <span class="o">=</span> <span class="n">assigned_to</span>
+                <span class="k">if</span> <span class="n">user_sub</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span><span class="o">.</span><span class="n">assigned_to</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="n">todo</span><span class="p">[</span><span class="n">user_sub</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">missing</span><span class="p">,</span> <span class="n">recalc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_divided_amount_missing</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">todo</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">get_assignee_from_division_children</span><span class="p">(</span><span class="n">sub</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">other</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">missing</span><span class="p">:</span>
+                <span class="n">other</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">missing</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">missing</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+            <span class="n">sub</span><span class="o">.</span><span class="n">assigned_to</span> <span class="o">=</span> <span class="n">other</span>
+            <span class="k">if</span> <span class="n">sub</span><span class="o">.</span><span class="n">assigned_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">recalc</span><span class="p">(</span><span class="n">sub</span><span class="o">.</span><span class="n">assigned_to</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="k">del</span> <span class="n">todo</span><span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">todo</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Assignment.get_all_graders"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.get_all_graders">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_graders</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">sort</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;_MyQuery[t.Tuple[str, int, bool]]&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get all graders for this assignment.</span>
+
+<span class="sd">        The graders are retrieved from the database using a single query. The</span>
+<span class="sd">        return value is a query with three items selected: the first is the</span>
+<span class="sd">        name of the grader, the second is the database id of the user object</span>
+<span class="sd">        of grader and the third and last is a boolean indicating if this grader</span>
+<span class="sd">        is done grading. You can use this query as an iterator.</span>
+
+<span class="sd">        :param sort: Should the graders be sorted by name.</span>
+<span class="sd">        :returns: A query with items selected as described above.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">done_graders</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">DbColumn</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">user_models</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">),</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">DbColumn</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">user_models</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span>
+                <span class="n">DbColumn</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span>
+                <span class="o">~</span><span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">DbColumn</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">AssignmentGraderDone</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">is_</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="s2">&quot;done&quot;</span><span class="p">),</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">DbColumn</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">user_course</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">course_id</span><span class="p">)</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="s2">&quot;course_id&quot;</span><span class="p">),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">AssignmentGraderDone</span><span class="p">,</span>
+            <span class="n">and_</span><span class="p">(</span>
+                <span class="n">user_models</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">AssignmentGraderDone</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+                <span class="n">AssignmentGraderDone</span><span class="o">.</span><span class="n">assignment_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">isouter</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">user_course</span><span class="p">,</span>
+            <span class="n">user_models</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">user_course</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">subquery</span><span class="p">(</span><span class="s1">&#39;done_graders&#39;</span><span class="p">)</span>
+
+        <span class="n">graders</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">course_permissions</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">course_role_id</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">CourseRole</span><span class="p">,</span>
+            <span class="n">CourseRole</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">course_permissions</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">course_role_id</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">Permission</span><span class="p">,</span>
+            <span class="n">course_permissions</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">permission_id</span> <span class="o">==</span> <span class="n">Permission</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">CourseRole</span><span class="o">.</span><span class="n">course_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">course_id</span><span class="p">,</span>
+            <span class="n">Permission</span><span class="p">[</span><span class="n">CPerm</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="n">CPerm</span><span class="o">.</span><span class="n">can_grade_work</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">subquery</span><span class="p">(</span><span class="s1">&#39;graders&#39;</span><span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">done_graders</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">done_graders</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">done_graders</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">done</span><span class="p">),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">graders</span><span class="p">,</span> <span class="n">done_graders</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">course_id</span> <span class="o">==</span> <span class="n">graders</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">course_role_id</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">lower</span><span class="p">(</span><span class="n">done_graders</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="Assignment.has_group_submissions"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.assignment.Assignment.has_group_submissions">[docs]</a>    <span class="k">def</span> <span class="nf">has_group_submissions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check if the assignment has submissions by a group.</span>
+
+<span class="sd">        :returns: ``True`` if the assignment has a submission by a group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+                <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">assignment_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">user_models</span><span class="o">.</span><span class="n">User</span><span class="p">,</span>
+                <span class="n">user_models</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">work_models</span><span class="o">.</span><span class="n">Work</span><span class="o">.</span><span class="n">user_id</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">group_models</span><span class="o">.</span><span class="n">Group</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">scalar</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CodeGrade
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,496 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>psef.models.file &mdash; CodeGrade v1.6.8 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link href="../../../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.6.8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/getting-started-with-codegrade.html">Getting started with CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/creating-an-assignment.html">Create a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/creating-managing-and-using-snippets.html">Create, manage and use snippets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/checking-for-plagiarism.html">Check for plagiarism in a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/set-up-group-assignment.html">Set up a CodeGrade group assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">Pass back grades to Canvas, Blackboard, Moodle or Brightspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/setup-password-for-codegrade-account.html">Set up a password for my CodeGrade account</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/set-up-a-rubric-for-an-assignment.html">Set up a rubric for an assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/using-shortcuts.html">Using shortcuts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/dividing-submissions.html">Divide submissions over graders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/cannot-find-feature-in-codegrade.html">I cannot find a feature in CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/setting-up-hand-in-requirements.html">Set up hand-in requirements for a CodeGrade assignment</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/overview.html">Overview of CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/codeviewer.html">Code Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/management.html">Course and Assignment Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/plagiarism.html">Plagiarism Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/groups.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/permissions.html">Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/preferences.html">Settings and Site Preferences</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://fs-docs.codegra.de">Filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/lms.html">LMS Integration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About CodeGrade</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/about.html">About CodeGrade</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developerdocs.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CodeGrade</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../psef.html">psef</a> &raquo;</li>
+        
+      <li>psef.models.file</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for psef.models.file</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module defines a File.</span>
+
+<span class="sd">SPDX-License-Identifier: AGPL-3.0-only</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">current_app</span>
+
+<span class="kn">import</span> <span class="nn">psef</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">Base</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">_MyQuery</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">auth</span>
+<span class="kn">from</span> <span class="nn">..exceptions</span> <span class="k">import</span> <span class="n">APICodes</span><span class="p">,</span> <span class="n">APIException</span>
+<span class="kn">from</span> <span class="nn">..permissions</span> <span class="k">import</span> <span class="n">CoursePermission</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">work</span> <span class="k">as</span> <span class="n">work_models</span>  <span class="c1"># pylint: disable=unused-import</span>
+
+
+<div class="viewcode-block" id="FileOwner"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.file.FileOwner">[docs]</a><span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<span class="k">class</span> <span class="nc">FileOwner</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Describes to which version of a submission (student&#39;s submission or</span>
+<span class="sd">    teacher&#39;s revision) a file belongs. When a student adds or changes a file</span>
+<span class="sd">    after the deadline for the assignment has passed, the original file&#39;s owner</span>
+<span class="sd">    is set `teacher` and the new file&#39;s to `student`.</span>
+
+<span class="sd">    :param student: The file is in the student&#39;s submission, but changed in the</span>
+<span class="sd">        teacher&#39;s revision.</span>
+<span class="sd">    :param teacher: The inverse of `student`. The file is added or changed in</span>
+<span class="sd">        the teacher&#39;s revision.</span>
+<span class="sd">    :param both: The file is not changed in the teacher&#39;s revision and belongs</span>
+<span class="sd">        to both versions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">student</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">teacher</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">both</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span></div>
+
+
+<div class="viewcode-block" id="File"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.file.File">[docs]</a><span class="k">class</span> <span class="nc">File</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This object describes a file or directory that stored is stored on the</span>
+<span class="sd">    server.</span>
+
+<span class="sd">    Files are always connected to :class:`.work_models.Work` objects. A</span>
+<span class="sd">    directory file does not physically exist but is stored only in the database</span>
+<span class="sd">    to preserve the submitted work structure. Each submission should have a</span>
+<span class="sd">    single top level file. Each other file in a submission should be directly</span>
+<span class="sd">    or indirectly connected to this file via the parent attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">ClassVar</span><span class="p">[</span><span class="n">_MyQuery</span><span class="p">[</span><span class="s1">&#39;File&#39;</span><span class="p">]]</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;File&quot;</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">work_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;Work_id&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;Work.id&#39;</span><span class="p">,</span> <span class="n">ondelete</span><span class="o">=</span><span class="s1">&#39;CASCADE&#39;</span><span class="p">),</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># The given name of the file.</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># This is the filename for the actual file on the disk. This is probably a</span>
+    <span class="c1"># randomly generated uuid.</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">modification_date</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;modification_date&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">DateTime</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span>
+    <span class="p">)</span>
+
+    <span class="n">fileowner</span><span class="p">:</span> <span class="n">FileOwner</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span>
+        <span class="s1">&#39;fileowner&#39;</span><span class="p">,</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">Enum</span><span class="p">(</span><span class="n">FileOwner</span><span class="p">),</span>
+        <span class="n">default</span><span class="o">=</span><span class="n">FileOwner</span><span class="o">.</span><span class="n">both</span><span class="p">,</span>
+        <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+
+    <span class="n">is_directory</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;is_directory&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Boolean</span><span class="p">)</span>
+    <span class="n">parent_id</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;parent_id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;File.id&#39;</span><span class="p">))</span>
+
+    <span class="c1"># This variable is generated from the backref from the parent</span>
+    <span class="n">children</span><span class="p">:</span> <span class="s1">&#39;_MyQuery[&quot;File&quot;]&#39;</span>
+
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;File&#39;</span><span class="p">,</span>
+        <span class="n">remote_side</span><span class="o">=</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span>
+        <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;children&#39;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;dynamic&#39;</span><span class="p">)</span>
+    <span class="p">)</span>  <span class="c1"># type: &#39;File&#39;</span>
+
+    <span class="n">work</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">relationship</span><span class="p">(</span>
+        <span class="s1">&#39;Work&#39;</span><span class="p">,</span>
+        <span class="n">foreign_keys</span><span class="o">=</span><span class="n">work_id</span><span class="p">,</span>
+        <span class="n">backref</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">backref</span><span class="p">(</span>
+            <span class="s1">&#39;files&#39;</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="s1">&#39;select&#39;</span><span class="p">,</span> <span class="n">uselist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cascade</span><span class="o">=</span><span class="s1">&#39;all,delete&#39;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>  <span class="c1"># type: &#39;work_models.Work&#39;</span>
+
+<div class="viewcode-block" id="File.get_exclude_owner"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.file.File.get_exclude_owner">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_exclude_owner</span><span class="p">(</span><span class="n">owner</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">course_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FileOwner</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the :class:`.FileOwner` the current user does not want to see</span>
+<span class="sd">        files for.</span>
+
+<span class="sd">        The result will be decided like this, if the given str is not</span>
+<span class="sd">        `student`, `teacher` or `auto` the result will be `FileOwner.teacher`.</span>
+<span class="sd">        If the str is `student`, the result will be `FileOwner.teacher`, vica</span>
+<span class="sd">        versa for `teacher` as input. If the input is auto `student` will be</span>
+<span class="sd">        returned if the currently logged in user is a teacher, otherwise it</span>
+<span class="sd">        will be `student`.</span>
+
+<span class="sd">        :param owner: The owner that was given in the `GET` paramater.</span>
+<span class="sd">        :param course_id: The course for which the files are requested.</span>
+<span class="sd">        :returns: The object determined as described above.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">auth</span><span class="o">.</span><span class="n">ensure_logged_in</span><span class="p">()</span>
+
+        <span class="n">teacher</span><span class="p">,</span> <span class="n">student</span> <span class="o">=</span> <span class="n">FileOwner</span><span class="o">.</span><span class="n">teacher</span><span class="p">,</span> <span class="n">FileOwner</span><span class="o">.</span><span class="n">student</span>
+        <span class="k">if</span> <span class="n">owner</span> <span class="o">==</span> <span class="s1">&#39;student&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">teacher</span>
+        <span class="k">elif</span> <span class="n">owner</span> <span class="o">==</span> <span class="s1">&#39;teacher&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">student</span>
+        <span class="k">elif</span> <span class="n">owner</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">psef</span><span class="o">.</span><span class="n">current_user</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span>
+                <span class="n">CoursePermission</span><span class="o">.</span><span class="n">can_edit_others_work</span><span class="p">,</span> <span class="n">course_id</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="n">student</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">teacher</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">teacher</span></div>
+
+<div class="viewcode-block" id="File.get_diskname"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.file.File.get_diskname">[docs]</a>    <span class="k">def</span> <span class="nf">get_diskname</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the absolute path on the disk for this file.</span>
+
+<span class="sd">        :returns: The absolute path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_directory</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;UPLOAD_DIR&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">res</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;UPLOAD_DIR&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="File.delete_from_disk"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.file.File.delete_from_disk">[docs]</a>    <span class="k">def</span> <span class="nf">delete_from_disk</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Delete the file from disk if it is not a directory.</span>
+
+<span class="sd">        :returns: Nothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_directory</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_diskname</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="File.list_contents"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.file.File.list_contents">[docs]</a>    <span class="k">def</span> <span class="nf">list_contents</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">exclude</span><span class="p">:</span> <span class="n">FileOwner</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;psef.files.FileTree&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;List the basic file info and the info of its children.</span>
+
+<span class="sd">        If the file is a directory it will return a tree like this:</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;name&#39;: &#39;dir_1&#39;,</span>
+<span class="sd">                &#39;id&#39;: 1,</span>
+<span class="sd">                &#39;entries&#39;: [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;name&#39;: &#39;file_1&#39;,</span>
+<span class="sd">                        &#39;id&#39;: 2</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;name&#39;: &#39;file_2&#39;,</span>
+<span class="sd">                        &#39;id&#39;: 3</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;name&#39;: &#39;dir_2&#39;,</span>
+<span class="sd">                        &#39;id&#39;: 4,</span>
+<span class="sd">                        &#39;entries&#39;: []</span>
+<span class="sd">                    }</span>
+<span class="sd">                ]</span>
+<span class="sd">            }</span>
+
+<span class="sd">        Otherwise it will formatted like one of the file children of the above</span>
+<span class="sd">        tree.</span>
+
+<span class="sd">        :param exclude: The file owner to exclude from the tree.</span>
+
+<span class="sd">        :returns: A tree as described above.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work</span><span class="o">.</span><span class="n">get_file_children_mapping</span><span class="p">(</span><span class="n">exclude</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_contents</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_list_contents</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">exclude</span><span class="p">:</span> <span class="n">FileOwner</span><span class="p">,</span>
+        <span class="n">cache</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Sequence</span><span class="p">[</span><span class="s1">&#39;File&#39;</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;psef.files.FileTree&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_directory</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">children</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">c</span><span class="o">.</span><span class="n">_list_contents</span><span class="p">(</span><span class="n">exclude</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span>  <span class="c1"># pylint: disable=protected-access</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cache</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+            <span class="p">]</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s2">&quot;entries&quot;</span><span class="p">:</span> <span class="n">children</span><span class="p">,</span>
+            <span class="p">}</span>
+
+<div class="viewcode-block" id="File.rename_code"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.file.File.rename_code">[docs]</a>    <span class="k">def</span> <span class="nf">rename_code</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">new_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">new_parent</span><span class="p">:</span> <span class="s1">&#39;File&#39;</span><span class="p">,</span>
+        <span class="n">exclude_owner</span><span class="p">:</span> <span class="n">FileOwner</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Rename the this file to the given new name.</span>
+
+<span class="sd">        :param new_name: The new name to be given to the given file.</span>
+<span class="sd">        :param new_parent: The new parent of this file.</span>
+<span class="sd">        :param exclude_owner: The owner to exclude while searching for</span>
+<span class="sd">            collisions.</span>
+<span class="sd">        :returns: Nothing.</span>
+
+<span class="sd">        :raises APIException: If renaming would result in a naming collision</span>
+<span class="sd">            (INVALID_STATE).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_parent</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">new_name</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">File</span><span class="o">.</span><span class="n">fileowner</span> <span class="o">!=</span> <span class="n">exclude_owner</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">APIException</span><span class="p">(</span>
+                <span class="s1">&#39;This file already exists within this directory&#39;</span><span class="p">,</span>
+                <span class="n">f</span><span class="s1">&#39;The file &quot;</span><span class="si">{new_parent.id}</span><span class="s1">&quot; has &#39;</span>
+                <span class="n">f</span><span class="s1">&#39;a child with the name &quot;</span><span class="si">{new_name}</span><span class="s1">&quot;&#39;</span><span class="p">,</span> <span class="n">APICodes</span><span class="o">.</span><span class="n">INVALID_STATE</span><span class="p">,</span>
+                <span class="mi">400</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">new_name</span></div>
+
+    <span class="k">def</span> <span class="nf">__to_json__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Creates a JSON serializable representation of this object.</span>
+
+
+<span class="sd">        This object will look like this:</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            {</span>
+<span class="sd">                &#39;name&#39;: str, # The name of the file or directory.</span>
+<span class="sd">                &#39;id&#39;: int, # The id of this file.</span>
+<span class="sd">                &#39;is_directory&#39;: bool, # Is this file a directory.</span>
+<span class="sd">            }</span>
+
+<span class="sd">        :returns: A object as described above.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="s1">&#39;is_directory&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_directory</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="p">}</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CodeGrade
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

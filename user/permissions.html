@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Permissions &mdash; CodeGrade v1.6.8 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Settings and Site Preferences" href="preferences.html" />
+    <link rel="prev" title="Groups" href="groups.html" />
+    <link href="../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.6.8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/getting-started-with-codegrade.html">Getting started with CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/creating-an-assignment.html">Create a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/creating-managing-and-using-snippets.html">Create, manage and use snippets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/checking-for-plagiarism.html">Check for plagiarism in a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/set-up-group-assignment.html">Set up a CodeGrade group assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">Pass back grades to Canvas, Blackboard, Moodle or Brightspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/setup-password-for-codegrade-account.html">Set up a password for my CodeGrade account</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/set-up-a-rubric-for-an-assignment.html">Set up a rubric for an assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/using-shortcuts.html">Using shortcuts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/dividing-submissions.html">Divide submissions over graders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/cannot-find-feature-in-codegrade.html">I cannot find a feature in CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/setting-up-hand-in-requirements.html">Set up hand-in requirements for a CodeGrade assignment</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview of CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codeviewer.html">Code Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management.html">Course and Assignment Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plagiarism.html">Plagiarism Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="groups.html">Groups</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Permissions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#site-permissions">Site Permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#course-permissions">Course Permissions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="preferences.html">Settings and Site Preferences</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://fs-docs.codegra.de">Filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lms.html">LMS Integration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About CodeGrade</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/about.html">About CodeGrade</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developerdocs.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CodeGrade</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Permissions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/user/permissions.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="permissions">
+<span id="permissions-chapter"></span><h1>Permissions<a class="headerlink" href="#permissions" title="Permalink to this headline">¶</a></h1>
+<p>CodeGrade works with an extensive permission system to allow different types of
+users (<em>roles</em>) to access and manage things on the site.</p>
+<p>The permissions are divided into site-wide permissions and course
+permissions. Site-wide permissions are administered by the site administrators
+and apply to all courses. Course permissions only apply to one course and
+CodeGrade users can have different roles and permissions for different courses.</p>
+<div class="section" id="site-permissions">
+<span id="id1"></span><h2>Site Permissions<a class="headerlink" href="#site-permissions" title="Permalink to this headline">¶</a></h2>
+<p>General site permissions can be accessed by the <em class="fa codegrade fa-tachometer"></em> button, which
+is only visible to site administrators. Four roles are provided for site
+permissions: admin, staff, student and nobody (no role).</p>
+<p>The available global permissions can be found in the
+<a class="reference internal" href="#globalpermissions">table below</a>.</p>
+<table border="1" class="colwidths-given docutils" id="globalpermissions">
+<caption><span class="caption-text">Global permissions</span><a class="headerlink" href="#globalpermissions" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Add users</strong></td>
+<td>Users with this permission can add other users to the website.</td>
+</tr>
+<tr class="row-odd"><td><strong>Snippets</strong> *</td>
+<td>Users with this permission can use the snippets feature on the website.</td>
+</tr>
+<tr class="row-even"><td><strong>Edit user info</strong> *</td>
+<td>Users with this permission can edit their own personal information.</td>
+</tr>
+<tr class="row-odd"><td><strong>Edit password</strong> *</td>
+<td>Users with this permission can edit their own password.</td>
+</tr>
+<tr class="row-even"><td><strong>Create course</strong></td>
+<td>Users with this permission can create new courses.</td>
+</tr>
+<tr class="row-odd"><td><strong>Manage site users</strong></td>
+<td>Users with this permission can change the global permissions for other users on the site.</td>
+</tr>
+<tr class="row-even"><td><strong>Search users</strong> *</td>
+<td>Users with this permission can search for users on the side, this means they can see all other users on the site.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="course-permissions">
+<span id="id2"></span><h2>Course Permissions<a class="headerlink" href="#course-permissions" title="Permalink to this headline">¶</a></h2>
+<p>Permissions and roles can be specified per course, this can be done in
+<a class="reference internal" href="management.html#course-management"><span class="std std-ref">course management</span></a> under the <em>roles</em> tab. The five
+default roles are: designer, observer, student, TA (teaching assistant) and
+teacher. Default roles can be removed, their permissions can be altered and new
+roles can be added to the course.</p>
+<p>The available course permissions can be found in the
+<a class="reference internal" href="#coursepermissions"><span class="std std-ref">table below</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Roles can only be removed if no current users act in that role in the course.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Tip: create a <em>late student</em> role to temporarily assign to students that are
+allowed to hand in late submissions.</p>
+</div>
+<table border="1" class="colwidths-given docutils" id="coursepermissions">
+<caption><span class="caption-text">Course permissions</span><a class="headerlink" href="#coursepermissions" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="22%" />
+<col width="78%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>Submit others work</strong></td>
+<td>Users with this permission can submit work to an assignment for other users. This means they can submit work that will have another user as the author.</td>
+</tr>
+<tr class="row-odd"><td><strong>Submit own work</strong> *</td>
+<td>Users with this permission can submit their work to assignments of this course. Usually only students have this permission.</td>
+</tr>
+<tr class="row-even"><td><strong>Edit others work</strong></td>
+<td>Users with this permission can edit files in the submissions of this course. Usually TAs and teachers have this permission, so they can change files in the CodeGra.de filesystem if code doesn’t compile, for example.</td>
+</tr>
+<tr class="row-odd"><td><strong>Grade submission</strong></td>
+<td>Users with this permission can grade submissions.</td>
+</tr>
+<tr class="row-even"><td><strong>See grade before done</strong></td>
+<td>Users with this permission can see the grade for a submission before an assignment is set to “done”.</td>
+</tr>
+<tr class="row-odd"><td><strong>See others submission</strong></td>
+<td>Users with this permission can see submissions of other users of this course.</td>
+</tr>
+<tr class="row-even"><td><strong>See assignments</strong> *</td>
+<td>Users with this permission can view the assignments of this course.</td>
+</tr>
+<tr class="row-odd"><td><strong>See hidden assignments</strong></td>
+<td>Users with this permission can view assignments of this course that are set to “hidden”.</td>
+</tr>
+<tr class="row-even"><td><strong>Linter</strong></td>
+<td>Users with this permission can run linters on all submissions of an assignment.</td>
+</tr>
+<tr class="row-odd"><td><strong>Edit assignment info</strong></td>
+<td>Users with this permission can update the assignment info such as name, deadline and status.</td>
+</tr>
+<tr class="row-even"><td><strong>Assign graders</strong></td>
+<td>Users with this permission can assign a grader to submissions of assignments.</td>
+</tr>
+<tr class="row-odd"><td><strong>Edit .cgignore</strong></td>
+<td>Users with this permission can edit the .cgignore file for an assignment.</td>
+</tr>
+<tr class="row-even"><td><strong>Upload BlackBoard zip</strong></td>
+<td>Users with this permission can upload a zip file with submissions in the BlackBoard format.</td>
+</tr>
+<tr class="row-odd"><td><strong>Edit course roles</strong></td>
+<td>Users with this permission can assign or remove permissions from course roles and add new course roles.</td>
+</tr>
+<tr class="row-even"><td><strong>Edit course users</strong></td>
+<td>Users with this permission can add users to this course and assign roles to those users.</td>
+</tr>
+<tr class="row-odd"><td><strong>Create assignment</strong></td>
+<td>Users with this permission can create new assignments for this course.</td>
+</tr>
+<tr class="row-even"><td><strong>Upload after deadline</strong></td>
+<td>Users with this permission can submit their work after the deadline of an assignment.</td>
+</tr>
+<tr class="row-odd"><td><strong>See assignee</strong></td>
+<td>Users with this permission can see who is assigned to assess a submission.</td>
+</tr>
+<tr class="row-even"><td><strong>Manage rubrics</strong></td>
+<td>Users with this permission can update the rubrics for the assignments of this course.</td>
+</tr>
+<tr class="row-odd"><td><strong>View teacher revision</strong> *</td>
+<td>Users with this permission can view the teacher’s revision of their submitted work.</td>
+</tr>
+<tr class="row-even"><td><strong>Grade history</strong></td>
+<td>Users with this permission can see the grade history of an assignment.</td>
+</tr>
+<tr class="row-odd"><td><strong>Delete submission</strong></td>
+<td>Users with this permission can delete submissions.</td>
+</tr>
+<tr class="row-even"><td><strong>Update grader status</strong></td>
+<td>Users with this permission can change the status of graders for this course, whether they are done grading their assigned submissions or not.</td>
+</tr>
+<tr class="row-odd"><td><strong>Update course notifications</strong></td>
+<td>Users with this permission can change the all notifications that are configured for this course. This includes when to send them and who to send them to.</td>
+</tr>
+<tr class="row-even"><td><strong>Edit the maximum grade possible</strong></td>
+<td>Users with this permission can edit the maximum grade possible, and therefore also determine if getting a ‘bonus’ for an assignment is also possible.</td>
+</tr>
+<tr class="row-odd"><td><strong>View plagiarism</strong></td>
+<td>Users with this permission can view the summary of a plagiarism check and see details of a plagiarism case. To view a plagiarism case between this and another course, the user must also have either this permission, or both “See assignments” and “See other’s work” in the other course.</td>
+</tr>
+<tr class="row-even"><td><strong>Manage plagiarism</strong></td>
+<td>Users with this permission can add and delete plagiarism runs.</td>
+</tr>
+<tr class="row-odd"><td><strong>List course users</strong> *</td>
+<td>Users with this permission can see all users of this course including the name of their role.</td>
+</tr>
+<tr class="row-even"><td><strong>Edit own groups</strong> *</td>
+<td>Users with this permission can edit groups they are in. This means they can join groups, add users to groups they are in and change the name of groups they are in. They cannot remove users from groups they are in, except for themselves.</td>
+</tr>
+<tr class="row-odd"><td><strong>Edit others groups</strong></td>
+<td>Users with this permission can edit groups they are not in, they can add users, remove users and rename all groups. Users with this permission can also edit groups they are in.</td>
+</tr>
+<tr class="row-even"><td><strong>Edit groups after first submission</strong></td>
+<td>Users with this permission can edit groups which handed in a submission. Users with this permission cannot automatically edit groups, they also need either “Edit own groups” or “Edit others groups”.</td>
+</tr>
+<tr class="row-odd"><td><strong>View others groups</strong> *</td>
+<td>Users with this permission can view groups they are not in, and the members of these groups.</td>
+</tr>
+<tr class="row-even"><td><strong>Edit group assignment</strong></td>
+<td>Users with this permission can change an assignment into a group assignment, and change the minimum and maximum required group size.</td>
+</tr>
+<tr class="row-odd"><td><strong>Edit group set</strong></td>
+<td>Users with this permissions can create, delete and edit group sets.</td>
+</tr>
+<tr class="row-even"><td><strong>Create groups</strong> *</td>
+<td>Users with this permission can create new groups in group assignments.</td>
+</tr>
+<tr class="row-odd"><td><strong>View course snippets</strong></td>
+<td>Users with this permission can see the snippets of this course, and use them while writing feedback.</td>
+</tr>
+<tr class="row-even"><td><strong>Manage course snippets</strong></td>
+<td>Users with this permission can create, edit, and delete snippets for this course.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Permissions indicated with <cite>*</cite> are added by default for new roles.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="preferences.html" class="btn btn-neutral float-right" title="Settings and Site Preferences" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="groups.html" class="btn btn-neutral float-left" title="Groups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CodeGrade
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

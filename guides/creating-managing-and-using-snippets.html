@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Create, manage and use snippets &mdash; CodeGrade v1.6.8 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Check for plagiarism in a CodeGrade assignment" href="checking-for-plagiarism.html" />
+    <link rel="prev" title="Create a CodeGrade assignment in Moodle" href="creating-a-moodle-assignment.html" />
+    <link href="../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.6.8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started-with-codegrade.html">Getting started with CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="creating-an-assignment.html">Create a CodeGrade assignment</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Create, manage and use snippets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#personal-snippets">Personal Snippets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-snippets">Creating snippets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#code-viewer">Code Viewer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#profile-page">Profile page</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#managing-snippets">Managing snippets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Code Viewer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Profile page</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#course-snippets">Course Snippets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Creating snippets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Managing snippets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-snippets">Using snippets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="checking-for-plagiarism.html">Check for plagiarism in a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="set-up-group-assignment.html">Set up a CodeGrade group assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">Pass back grades to Canvas, Blackboard, Moodle or Brightspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-password-for-codegrade-account.html">Set up a password for my CodeGrade account</a></li>
+<li class="toctree-l1"><a class="reference internal" href="set-up-a-rubric-for-an-assignment.html">Set up a rubric for an assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using-shortcuts.html">Using shortcuts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dividing-submissions.html">Divide submissions over graders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cannot-find-feature-in-codegrade.html">I cannot find a feature in CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setting-up-hand-in-requirements.html">Set up hand-in requirements for a CodeGrade assignment</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/overview.html">Overview of CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/codeviewer.html">Code Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/management.html">Course and Assignment Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/plagiarism.html">Plagiarism Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/groups.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/permissions.html">Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/preferences.html">Settings and Site Preferences</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://fs-docs.codegra.de">Filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/lms.html">LMS Integration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About CodeGrade</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/about.html">About CodeGrade</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developerdocs.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CodeGrade</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Create, manage and use snippets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/guides/creating-managing-and-using-snippets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="create-manage-and-use-snippets">
+<h1>Create, manage and use snippets<a class="headerlink" href="#create-manage-and-use-snippets" title="Permalink to this headline">¶</a></h1>
+<p>Snippets allow you to easily re-use inline feedback messages when grading in
+CodeGrade. Follow the guide below to learn how to create, manage and use
+snippets.</p>
+<p>Snippets in CodeGrade are both available on a course-wide level and a personal
+level. Personal snippets are linked to your CodeGrade account and are available
+to you for any assignment from any course you grade. Course-wide snippets are
+specific to a course and can only be used when grading assignments in that
+course, these are however shared by all graders grading in the course.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Course snippets can be set up by anyone with the <strong>Manage course snippets</strong>
+permission, this is enabled for <strong>Teacher</strong> roles only by default.</p>
+</div>
+<div class="section" id="personal-snippets">
+<h2>Personal Snippets<a class="headerlink" href="#personal-snippets" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="creating-snippets">
+<h3>Creating snippets<a class="headerlink" href="#creating-snippets" title="Permalink to this headline">¶</a></h3>
+<p>There are two ways to create personal snippets: in the Code Viewer in
+the inline feedback field and on the profile page.</p>
+<div class="section" id="code-viewer">
+<h4>Code Viewer<a class="headerlink" href="#code-viewer" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li><strong>Click anywhere</strong> to add inline feedback.</li>
+<li>Type your snippet message in the <strong>inline feedback field</strong>.</li>
+<li>Press the <em class="fa codegrade fa-plus"></em> icon.</li>
+<li>In the field that will appear above the inline feedback field, type your <strong>snippet shortcut</strong>.</li>
+<li>Press the <em class="fa codegrade fa-check"></em> icon or press <kbd class="kbd docutils literal notranslate">Ctrl+Enter</kbd> to save your snippet.</li>
+<li>Your snippet is now ready to use anywhere.</li>
+</ol>
+</div>
+<div class="section" id="profile-page">
+<h4>Profile page<a class="headerlink" href="#profile-page" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>Navigate to the profile (<em class="fa codegrade fa-user-circle-o"></em>) page.</li>
+<li>Scroll to the bottom, where you find your list with personal snippets.</li>
+<li>Press the <em class="fa codegrade fa-plus"></em> icon to add a new snippet.</li>
+<li>In the dialog, type your <strong>snippet name</strong> (<em>shortcut</em>) and <strong>snippet replacement text</strong> (<em>content of feedback</em>).</li>
+<li>Press the <strong>Save</strong> button or press <kbd class="kbd docutils literal notranslate">Ctrl+Enter</kbd> to save your snippet.</li>
+<li>Your snippet is now ready to use anywhere.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="managing-snippets">
+<h3>Managing snippets<a class="headerlink" href="#managing-snippets" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>Code Viewer<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>Autocomplete your snippet like you would do usually.</li>
+<li>If you press the <em class="fa codegrade fa-plus"></em> icon, the shortcut name of the snippet will be displayed.</li>
+<li>If you change the contents of the inline feedback field and press the <em class="fa codegrade fa-check"></em> icon next to the shortcut, the snippet will be edited.</li>
+</ol>
+</div>
+<div class="section" id="id2">
+<h4>Profile page<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>Use the <em class="fa codegrade fa-floppy-o"></em> or <em class="fa codegrade fa-times"></em> icons to edit or delete the snippet.</p>
+</div>
+</div>
+</div>
+<div class="section" id="course-snippets">
+<h2>Course Snippets<a class="headerlink" href="#course-snippets" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id3">
+<h3>Creating snippets<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Navigate to the <strong>Course Management</strong> page of the course you want to add course snippets to by clicking the <em class="fa codegrade fa-cog"></em> button.</li>
+<li>Navigate to the <strong>Snippets</strong> tab to find an overview of existing course snippets and options to add them.</li>
+<li>To create a new course snippet, that will be available to all graders grading in this course, press the  <em class="fa codegrade fa-plus"></em> icon.</li>
+<li>In the dialog, type your <strong>snippet name</strong> (<em>shortcut</em>) and <strong>snippet replacement text</strong> (<em>content of feedback</em>).</li>
+<li>Press the <strong>Save</strong> button or press <kbd class="kbd docutils literal notranslate">Ctrl+Enter</kbd> to save your snippet.</li>
+<li>Your snippet is now ready to use by all graders of the course.</li>
+</ol>
+</div>
+<div class="section" id="id4">
+<h3>Managing snippets<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Managing course snippets is also done on the <strong>Course Management</strong> page, under
+the <strong>Snippets</strong> tab a list of course snippets can be found.Use the <em class="fa codegrade fa-times"></em>
+icon next to a snippet to permanently delete this snippet.
+Use the <em class="fa codegrade fa-pencil"></em> icon to edit the snippet.</p>
+</div>
+</div>
+<div class="section" id="using-snippets">
+<h2>Using snippets<a class="headerlink" href="#using-snippets" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Click anywhere to add an inline feedback comment.</li>
+<li>Start typing your <strong>snippet shortcut</strong>.</li>
+<li>Your snippet will appear in the autocomplete list below. Snippets indicated by <em class="fa codegrade fa-user-circle-o"></em> are personal snippets, <em class="fa codegrade fa-book"></em> indicates course snippets.</li>
+<li>Press <kbd class="kbd docutils literal notranslate">Tab</kbd> to cycle through this list and select the snippet.</li>
+<li>Press <kbd class="kbd docutils literal notranslate">Ctrl+Enter</kbd> to save the inline feedback.</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="checking-for-plagiarism.html" class="btn btn-neutral float-right" title="Check for plagiarism in a CodeGrade assignment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="creating-a-moodle-assignment.html" class="btn btn-neutral float-left" title="Create a CodeGrade assignment in Moodle" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CodeGrade
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

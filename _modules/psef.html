@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>psef &mdash; CodeGrade v1.6.8 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link href="../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.6.8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/getting-started-with-codegrade.html">Getting started with CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/creating-an-assignment.html">Create a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/creating-managing-and-using-snippets.html">Create, manage and use snippets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/checking-for-plagiarism.html">Check for plagiarism in a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/set-up-group-assignment.html">Set up a CodeGrade group assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">Pass back grades to Canvas, Blackboard, Moodle or Brightspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/setup-password-for-codegrade-account.html">Set up a password for my CodeGrade account</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/set-up-a-rubric-for-an-assignment.html">Set up a rubric for an assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/using-shortcuts.html">Using shortcuts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/dividing-submissions.html">Divide submissions over graders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/cannot-find-feature-in-codegrade.html">I cannot find a feature in CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/setting-up-hand-in-requirements.html">Set up hand-in requirements for a CodeGrade assignment</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/overview.html">Overview of CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/codeviewer.html">Code Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/management.html">Course and Assignment Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/plagiarism.html">Plagiarism Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/groups.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/permissions.html">Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/preferences.html">Settings and Site Preferences</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://fs-docs.codegra.de">Filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/lms.html">LMS Integration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About CodeGrade</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/about.html">About CodeGrade</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../developerdocs.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">CodeGrade</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>psef</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for psef</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This package implements the backend for codegrade. Because of historic reasons</span>
+<span class="sd">this backend is named ``psef``.</span>
+
+<span class="sd">SPDX-License-Identifier: AGPL-3.0-only</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span> <span class="k">as</span> <span class="nn">system_json</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">types</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">import</span> <span class="nn">flask</span>
+<span class="kn">import</span> <span class="nn">structlog</span>
+<span class="kn">import</span> <span class="nn">flask_jwt_extended</span> <span class="k">as</span> <span class="nn">flask_jwt</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">g</span><span class="p">,</span> <span class="n">jsonify</span><span class="p">,</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">flask_limiter</span> <span class="k">import</span> <span class="n">Limiter</span><span class="p">,</span> <span class="n">RateLimitExceeded</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span>
+    <span class="n">t</span><span class="p">,</span> <span class="s1">&#39;SPHINX&#39;</span><span class="p">,</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="kn">from</span> <span class="nn">config</span> <span class="k">import</span> <span class="n">FlaskConfig</span>
+    <span class="kn">from</span> <span class="nn">json</span> <span class="k">import</span> <span class="n">JSONEncoder</span>
+
+    <span class="n">current_app</span><span class="p">:</span> <span class="s1">&#39;psef.Flask&#39;</span>
+
+    <span class="k">class</span> <span class="nc">Flask</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;A stub for flask.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">before_request</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Callable</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">after_request</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Callable</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Callable</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">teardown_request</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Callable</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">app_context</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Callable</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span> <span class="n">FlaskConfig</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">json_encoder</span> <span class="o">=</span> <span class="n">JSONEncoder</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">current_app</span>  <span class="c1"># type: ignore</span>
+
+
+<div class="viewcode-block" id="PsefFlask"><a class="viewcode-back" href="../psef_api/psef.html#psef.PsefFlask">[docs]</a><span class="k">class</span> <span class="nc">PsefFlask</span><span class="p">(</span><span class="n">Flask</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Our subclass of flask.</span>
+
+<span class="sd">    This contains the extra property :meth:`.PsefFlask.do_sanity_checks`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max_single_file_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;psef.archive.FileSize&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The maximum allowed size for a single file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MAX_FILE_SIZE&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max_file_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;psef.archive.FileSize&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The maximum allowed size for normal files.</span>
+
+<span class="sd">        .. note:: An individual file has a different limit!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MAX_NORMAL_UPLOAD_SIZE&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max_large_file_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;psef.archive.FileSize&#39;</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The maximum allowed size for large files (such as blackboard zips).</span>
+
+<span class="sd">        .. note:: An individual file has a different limit!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;MAX_LARGE_UPLOAD_SIZE&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">do_sanity_checks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Should we do sanity checks for this app.</span>
+
+<span class="sd">        :returns: ``True`` if ``debug`` or ``testing`` is enabled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;testing&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">structlog</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+
+<span class="n">app</span><span class="p">:</span> <span class="s1">&#39;PsefFlask&#39;</span> <span class="o">=</span> <span class="n">current_app</span>  <span class="c1"># pylint: disable=invalid-name</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="kn">import</span> <span class="nn">psef.models</span>
+    <span class="n">current_user</span><span class="p">:</span> <span class="s1">&#39;psef.models.User&#39;</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s1">&#39;psef.models.User&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">current_user</span> <span class="o">=</span> <span class="n">flask_jwt</span><span class="o">.</span><span class="n">current_user</span>  <span class="c1"># pylint: disable=invalid-name</span>
+
+
+<div class="viewcode-block" id="limiter_key_func"><a class="viewcode-back" href="../psef_api/psef.html#psef.limiter_key_func">[docs]</a><span class="k">def</span> <span class="nf">limiter_key_func</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="sd">&quot;&quot;&quot;This is the default key function for the limiter.</span>
+
+<span class="sd">    The key function should be set locally at every place the limiter is used</span>
+<span class="sd">    so this function always raises a :py:exc:`ValueError`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Key function should be overridden&#39;</span><span class="p">)</span></div>
+
+
+<span class="n">limiter</span> <span class="o">=</span> <span class="n">Limiter</span><span class="p">(</span><span class="n">key_func</span><span class="o">=</span><span class="n">limiter_key_func</span><span class="p">)</span>  <span class="c1"># pylint: disable=invalid-name</span>
+
+
+<div class="viewcode-block" id="create_app"><a class="viewcode-back" href="../psef_api/psef.html#psef.create_app">[docs]</a><span class="k">def</span> <span class="nf">create_app</span><span class="p">(</span>  <span class="c1"># pylint: disable=too-many-statements</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Mapping</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">skip_celery</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">skip_perm_check</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">skip_secret_key_check</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Any</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Create a new psef app.</span>
+
+<span class="sd">    :param config: The config mapping that can be used to override config.</span>
+<span class="sd">    :param skip_celery: Set to true to disable sanity checks for celery.</span>
+<span class="sd">    :returns: A new psef app object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">config</span> <span class="k">as</span> <span class="nn">global_config</span>
+
+    <span class="n">resulting_app</span> <span class="o">=</span> <span class="n">PsefFlask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+    <span class="nd">@resulting_app</span><span class="o">.</span><span class="n">before_request</span>
+    <span class="k">def</span> <span class="nf">__set_request_start_time</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pylint: disable=unused-variable</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">request_start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+
+    <span class="nd">@resulting_app</span><span class="o">.</span><span class="n">before_request</span>
+    <span class="k">def</span> <span class="nf">__set_query_durations</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">queries_amount</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">queries_total_duration</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">queries_max_duration</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">query_start</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@resulting_app</span><span class="o">.</span><span class="n">teardown_request</span>
+    <span class="k">def</span> <span class="nf">__teardown_request</span><span class="p">(</span><span class="n">exception</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">Type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pylint: disable=unused-variable</span>
+        <span class="k">if</span> <span class="n">exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">expire_all</span><span class="p">()</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">rollback</span><span class="p">()</span>
+
+    <span class="c1"># Configurations</span>
+    <span class="n">resulting_app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">global_config</span><span class="o">.</span><span class="n">CONFIG</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">resulting_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SQLALCHEMY_TRACK_MODIFICATIONS&#39;</span>  <span class="c1"># type: ignore</span>
+                         <span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">resulting_app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">skip_secret_key_check</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="n">resulting_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SECRET_KEY&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+            <span class="n">resulting_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;LTI_SECRET_KEY&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">)</span>
+    <span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The option to generate keys has been removed&#39;</span><span class="p">)</span>
+
+    <span class="nd">@resulting_app</span><span class="o">.</span><span class="n">before_request</span>
+    <span class="k">def</span> <span class="nf">__create_logger</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pylint: disable=unused-variable</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">request_id</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span>
+        <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+            <span class="n">request_id</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">request_id</span><span class="p">),</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">flask</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">view</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">flask</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">url_rule</span><span class="p">,</span> <span class="s1">&#39;rule&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">base_url</span><span class="o">=</span><span class="n">resulting_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;EXTERNAL_URL&#39;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">flask_jwt</span><span class="o">.</span><span class="n">verify_jwt_in_request_optional</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">current_user</span><span class="o">=</span><span class="n">current_user</span> <span class="ow">and</span> <span class="n">current_user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Request started&quot;</span><span class="p">,</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">host_url</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">flask</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="n">processors</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">filter_by_level</span><span class="p">,</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">add_logger_name</span><span class="p">,</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">add_log_level</span><span class="p">,</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">PositionalArgumentsFormatter</span><span class="p">(),</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">format_exc_info</span><span class="p">,</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">TimeStamper</span><span class="p">(</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;iso&quot;</span><span class="p">),</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">StackInfoRenderer</span><span class="p">(),</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">format_exc_info</span><span class="p">,</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">UnicodeDecoder</span><span class="p">(),</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">JSONRenderer</span><span class="p">(),</span>
+    <span class="p">]</span>
+    <span class="n">structlog</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+        <span class="n">processors</span><span class="o">=</span><span class="n">processors</span><span class="p">,</span>
+        <span class="n">context_class</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">threadlocal</span><span class="o">.</span><span class="n">wrap_dict</span><span class="p">(</span><span class="nb">dict</span><span class="p">),</span>
+        <span class="n">logger_factory</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">LoggerFactory</span><span class="p">(),</span>
+        <span class="n">wrapper_class</span><span class="o">=</span><span class="n">structlog</span><span class="o">.</span><span class="n">stdlib</span><span class="o">.</span><span class="n">BoundLogger</span><span class="p">,</span>
+        <span class="n">cache_logger_on_first_use</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">structlog</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span>
+            <span class="n">processors</span><span class="o">=</span><span class="n">processors</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span>
+                <span class="n">structlog</span><span class="o">.</span><span class="n">dev</span><span class="o">.</span><span class="n">ConsoleRenderer</span><span class="p">(</span>
+                    <span class="n">colors</span><span class="o">=</span><span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">,</span> <span class="s1">&#39;testing&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;psef&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;werkzeug&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+    <span class="c1"># Let the celery logger shut up</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;celery&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="nd">@resulting_app</span><span class="o">.</span><span class="n">errorhandler</span><span class="p">(</span><span class="n">RateLimitExceeded</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__handle_error</span><span class="p">(</span><span class="n">_</span><span class="p">:</span> <span class="n">RateLimitExceeded</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;flask.Response&#39;</span><span class="p">:</span>  <span class="c1"># pylint: disable=unused-variable</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">jsonify</span><span class="p">(</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">APIException</span><span class="p">(</span>
+                <span class="s1">&#39;Rate limit exceeded, slow down!&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;Rate limit is exceeded&#39;</span><span class="p">,</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">APICodes</span><span class="o">.</span><span class="n">RATE_LIMIT_EXCEEDED</span><span class="p">,</span>
+                <span class="mi">429</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">status_code</span> <span class="o">=</span> <span class="mi">429</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="n">limiter</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">permissions</span>
+    <span class="n">permissions</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">,</span> <span class="n">skip_perm_check</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">cache</span>
+    <span class="n">cache</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">features</span>
+    <span class="n">features</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">auth</span>
+    <span class="n">auth</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">parsers</span>
+    <span class="n">parsers</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">models</span>
+    <span class="n">models</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">mail</span>
+    <span class="n">mail</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">errors</span>
+    <span class="n">errors</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">tasks</span>
+    <span class="n">tasks</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">json_encoders</span>
+    <span class="n">json_encoders</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">files</span>
+    <span class="n">files</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">lti</span>
+    <span class="n">lti</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">helpers</span>
+    <span class="n">helpers</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">linters</span>
+    <span class="n">linters</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">plagiarism</span>
+    <span class="n">plagiarism</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="c1"># Register blueprint(s)</span>
+    <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">v1</span> <span class="k">as</span> <span class="n">api_v1</span>
+    <span class="n">api_v1</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">resulting_app</span><span class="p">)</span>
+
+    <span class="c1"># Make sure celery is working</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_celery</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tasks</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="nb">print</span><span class="p">(</span>  <span class="c1"># pylint: disable=bad-builtin</span>
+                <span class="s1">&#39;Celery is not responding! Please check your config&#39;</span><span class="p">,</span>
+                <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+            <span class="p">)</span>
+            <span class="k">raise</span>
+
+    <span class="n">typ</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;typ&#39;</span><span class="p">)</span>
+
+    <span class="nd">@resulting_app</span><span class="o">.</span><span class="n">after_request</span>
+    <span class="k">def</span> <span class="nf">__after_request</span><span class="p">(</span><span class="n">res</span><span class="p">:</span> <span class="n">typ</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">typ</span><span class="p">:</span>  <span class="c1"># pylint: disable=unused-variable</span>
+        <span class="n">queries_amount</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;queries_amount&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">queries_total_duration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;queries_total_duration&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">queries_max_duration</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;queries_max_duration&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+        <span class="n">log_msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span> <span class="k">if</span> <span class="n">queries_max_duration</span> <span class="o">&lt;</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">queries_amount</span> <span class="o">&lt;</span> <span class="mi">20</span>
+            <span class="k">else</span> <span class="n">logger</span><span class="o">.</span><span class="n">warning</span>
+        <span class="p">)</span>
+
+        <span class="n">cache_hits</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;cache_hits&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">cache_misses</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;cache_misses&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s1">&#39;request_start_time&#39;</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)</span>
+        <span class="n">log_msg</span><span class="p">(</span>
+            <span class="s1">&#39;Request finished&#39;</span><span class="p">,</span>
+            <span class="n">request_time</span><span class="o">=</span><span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">(),</span>
+            <span class="n">status_code</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;status_code&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">queries_amount</span><span class="o">=</span><span class="n">queries_amount</span><span class="p">,</span>
+            <span class="n">queries_total_duration</span><span class="o">=</span><span class="n">queries_total_duration</span><span class="p">,</span>
+            <span class="n">queries_max_duration</span><span class="o">=</span><span class="n">queries_max_duration</span><span class="p">,</span>
+            <span class="n">cache_hits</span><span class="o">=</span><span class="n">cache_hits</span><span class="p">,</span>
+            <span class="n">cache_misses</span><span class="o">=</span><span class="n">cache_misses</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="k">return</span> <span class="n">resulting_app</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CodeGrade
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

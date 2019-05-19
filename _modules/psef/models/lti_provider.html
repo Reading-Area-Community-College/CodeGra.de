@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>psef.models.lti_provider &mdash; CodeGrade v1.6.8 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link href="../../../_static/style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html">
+          
+
+          
+            
+            <img src="../../../_static/logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v1.6.8
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/getting-started-with-codegrade.html">Getting started with CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/creating-an-assignment.html">Create a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/creating-managing-and-using-snippets.html">Create, manage and use snippets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/checking-for-plagiarism.html">Check for plagiarism in a CodeGrade assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/set-up-group-assignment.html">Set up a CodeGrade group assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/pass-back-grades-to-canvas-blackboard-moodle-brightspace.html">Pass back grades to Canvas, Blackboard, Moodle or Brightspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/setup-password-for-codegrade-account.html">Set up a password for my CodeGrade account</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/set-up-a-rubric-for-an-assignment.html">Set up a rubric for an assignment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/using-shortcuts.html">Using shortcuts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/dividing-submissions.html">Divide submissions over graders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/cannot-find-feature-in-codegrade.html">I cannot find a feature in CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guides/setting-up-hand-in-requirements.html">Set up hand-in requirements for a CodeGrade assignment</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/overview.html">Overview of CodeGrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/codeviewer.html">Code Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/management.html">Course and Assignment Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/plagiarism.html">Plagiarism Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/groups.html">Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/permissions.html">Permissions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/preferences.html">Settings and Site Preferences</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://fs-docs.codegra.de">Filesystem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user/lms.html">LMS Integration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About CodeGrade</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/about.html">About CodeGrade</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../developerdocs.html">Developer documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CodeGrade</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../../psef.html">psef</a> &raquo;</li>
+        
+      <li>psef.models.lti_provider</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for psef.models.lti_provider</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module defines all LTI models.</span>
+
+<span class="sd">SPDX-License-Identifier: AGPL-3.0-only</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">t</span>
+
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">current_app</span>
+
+<span class="kn">import</span> <span class="nn">psef</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">UUID_LENGTH</span><span class="p">,</span> <span class="n">Base</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">_MyQuery</span>
+
+<span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="c1"># pylint: disable=unused-import</span>
+    <span class="kn">from</span> <span class="nn">.work</span> <span class="k">import</span> <span class="n">Work</span>
+
+
+<div class="viewcode-block" id="LTIProvider"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.lti_provider.LTIProvider">[docs]</a><span class="k">class</span> <span class="nc">LTIProvider</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class defines the handshake with an LTI</span>
+
+<span class="sd">    :ivar ~.LTIProvider.key: The OAuth consumer key for this LTI provider.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">query</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">ClassVar</span><span class="p">[</span><span class="n">_MyQuery</span><span class="p">[</span><span class="s1">&#39;LTIProvider&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Base</span><span class="o">.</span><span class="n">query</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;LTIProvider&#39;</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">UUID_LENGTH</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">db</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LTIProvider.passback_grade"><a class="viewcode-back" href="../../../psef_api/psef.html#psef.models.lti_provider.LTIProvider.passback_grade">[docs]</a>    <span class="k">def</span> <span class="nf">passback_grade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub</span><span class="p">:</span> <span class="s1">&#39;Work&#39;</span><span class="p">,</span> <span class="n">initial</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Passback the grade for a given submission to this lti provider.</span>
+
+<span class="sd">        :param sub: The submission to passback.</span>
+<span class="sd">        :param initial: If true no grade will be send, this is to make sure the</span>
+<span class="sd">            ``created_at`` date is correct in the LMS. Not all providers</span>
+<span class="sd">            actually do a passback when this is set to ``True``.</span>
+<span class="sd">        :returns: Nothing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sub</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">group</span><span class="p">:</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="n">sub</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">members</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="p">[</span><span class="n">sub</span><span class="o">.</span><span class="n">user</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lti_class</span><span class="o">.</span><span class="n">passback_grade</span><span class="p">(</span>
+                <span class="n">key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span>
+                <span class="n">secret</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">secret</span><span class="p">,</span>
+                <span class="n">grade</span><span class="o">=</span><span class="n">sub</span><span class="o">.</span><span class="n">grade</span><span class="p">,</span>
+                <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">,</span>
+                <span class="n">service_url</span><span class="o">=</span><span class="n">sub</span><span class="o">.</span><span class="n">assignment</span><span class="o">.</span><span class="n">lti_outcome_service_url</span><span class="p">,</span>
+                <span class="n">sourcedid</span><span class="o">=</span><span class="n">sub</span><span class="o">.</span><span class="n">assignment</span><span class="o">.</span><span class="n">assignment_results</span><span class="p">[</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">]</span><span class="o">.</span><span class="n">sourcedid</span><span class="p">,</span>
+                <span class="n">lti_points_possible</span><span class="o">=</span><span class="n">sub</span><span class="o">.</span><span class="n">assignment</span><span class="o">.</span><span class="n">lti_points_possible</span><span class="p">,</span>
+                <span class="n">submission</span><span class="o">=</span><span class="n">sub</span><span class="p">,</span>
+                <span class="n">host</span><span class="o">=</span><span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;EXTERNAL_URL&#39;</span><span class="p">],</span>
+            <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">public_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+
+        <span class="k">while</span> <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="n">LTIProvider</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">public_id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">scalar</span><span class="p">():</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">public_id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">public_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_lms_and_secret</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Return the OAuth consumer secret and the name of the LMS.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lms</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;LTI_CONSUMER_KEY_SECRETS&#39;</span><span class="p">][</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">lms</span> <span class="ow">and</span> <span class="n">sec</span>
+        <span class="k">return</span> <span class="n">lms</span><span class="p">,</span> <span class="n">sec</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lms_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The name of the LMS for this LTIProvider.</span>
+
+<span class="sd">        :getter: Get the LMS name.</span>
+<span class="sd">        :setter: Impossible as this is fixed during startup of CodeGrade.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lms_and_secret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">secret</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The OAuth consumer secret for this LTIProvider.</span>
+
+<span class="sd">        :getter: Get the OAuth secret.</span>
+<span class="sd">        :setter: Impossible as all secrets are fixed during startup of</span>
+<span class="sd">            codegra.de</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lms_and_secret</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lti_class</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">t</span><span class="o">.</span><span class="n">Type</span><span class="p">[</span><span class="s1">&#39;psef.lti.LTI&#39;</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;The name of the LTI class to be used for this LTIProvider.</span>
+
+<span class="sd">        :getter: Get the LTI class name.</span>
+<span class="sd">        :setter: Impossible as this is fixed during startup of CodeGrade.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lms_name</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="n">psef</span><span class="o">.</span><span class="n">lti</span><span class="o">.</span><span class="n">lti_classes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lms</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">psef</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">APIException</span><span class="p">(</span>
+                <span class="s1">&#39;The requested LMS is not supported&#39;</span><span class="p">,</span>
+                <span class="n">f</span><span class="s1">&#39;The LMS &quot;</span><span class="si">{lms}</span><span class="s1">&quot; is not supported&#39;</span><span class="p">,</span>
+                <span class="n">psef</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">APICodes</span><span class="o">.</span><span class="n">INVALID_PARAM</span><span class="p">,</span> <span class="mi">400</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CodeGrade
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
